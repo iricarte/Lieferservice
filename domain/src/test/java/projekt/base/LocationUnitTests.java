@@ -15,7 +15,8 @@ public class LocationUnitTests {
 
     @BeforeAll
     public static void initialize() {
-        crash(); // TODO: H12.2 - remove if implemented
+        Location location = new Location(-1024, -1024);
+        location.hashCode();
     }
 
     @Test
@@ -25,7 +26,7 @@ public class LocationUnitTests {
 
     @Test
     public void testHashCode() {
-        crash(); // TODO: H12.2 - remove if implemented
+        objectUnitTests.testHashCode();
     }
 
     @Test

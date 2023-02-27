@@ -2,6 +2,7 @@ package projekt.base;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.Comparator;
 
 import static org.tudalgo.algoutils.student.Student.crash;
@@ -70,12 +71,25 @@ public final class Location implements Comparable<Location> {
 
     @Override
     public int compareTo(@NotNull Location o) {
-        return crash(); // TODO: H1.1 - remove if implemented
+        if (o.x == this.x && o.y == this.y) {
+            return 0;
+        } else if (o.x < this.x || (o.x == this.x && o.y < this.y)){
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     @Override
     public int hashCode() {
-        return crash(); // TODO: H1.2 - remove if implemented
+        int hashCode = 0;
+        if (Math.signum(x) == -1)
+            hashCode += 1000000000;
+        if (Math.signum(y) == -1)
+            hashCode += 10000;
+        hashCode += Math.abs(x) * 100000;
+        hashCode += Math.abs(y);
+        return hashCode;
     }
 
     @Override
@@ -85,6 +99,6 @@ public final class Location implements Comparable<Location> {
 
     @Override
     public String toString() {
-        return crash(); // TODO: H1.4 - remove if implemented
+        return "("+this.x+","+this.y+")";
     }
 }
