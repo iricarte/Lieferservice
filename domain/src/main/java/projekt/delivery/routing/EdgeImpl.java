@@ -1,7 +1,8 @@
 package projekt.delivery.routing;
 
-import org.jetbrains.annotations.NotNull;
 import projekt.base.Location;
+
+import org.jetbrains.annotations.NotNull;
 
 import static org.tudalgo.algoutils.student.Student.crash;
 

@@ -1,6 +1,7 @@
 package projekt.gui.scene;
 
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -30,6 +31,7 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
 
     private int simulationRuns = 1;
     private DeliveryService.Factory deliveryServiceFactory;
+    private final Insets preferredPadding = new Insets(20, 20, 20, 20);
 
     public MainMenuScene() {
         super(new MainMenuSceneController(), "Delivery Service Simulation");
@@ -52,6 +54,7 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
         optionsVbox.setPrefSize(200, 100);
         optionsVbox.setAlignment(Pos.CENTER);
         optionsVbox.setSpacing(10);
+        optionsVbox.setPadding(preferredPadding);
 
         optionsVbox.getChildren().addAll(
             createStartSimulationButton(),
@@ -63,7 +66,10 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
         optionsVbox.getChildren().stream()
             .filter(Button.class::isInstance)
             .map(Button.class::cast)
-            .forEach(button -> button.setPrefSize(200, 50));
+            .forEach(button -> {
+                button.setPrefSize(200, 50);
+                button.setMaxWidth(Double.MAX_VALUE);
+            });
 
         return optionsVbox;
     }

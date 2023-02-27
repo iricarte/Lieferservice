@@ -1,14 +1,15 @@
 package projekt.delivery.routing;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * An abstract class combining basic functionality of all {@link VehicleManager.Occupied} implementations.
+ *
  * @param <C> The type of the occupied {@link Region.Component}.
  */
 abstract class AbstractOccupied<C extends Region.Component<? super C>> implements VehicleManager.Occupied<C> {

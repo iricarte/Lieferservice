@@ -48,17 +48,18 @@ public class AmountDeliveredRater implements Rater {
             this.factor = factor;
         }
 
-        @Override
-        public Rater create() {
-            return new AmountDeliveredRater(factor);
-        }
-
         /**
          * Creates a new {@link AmountDeliveredRater.FactoryBuilder}.
+         *
          * @return The created {@link AmountDeliveredRater.FactoryBuilder}.
          */
-        public static AmountDeliveredRater.FactoryBuilder builder() {
-            return new AmountDeliveredRater.FactoryBuilder();
+        public static FactoryBuilder builder() {
+            return new FactoryBuilder();
+        }
+
+        @Override
+        public AmountDeliveredRater create() {
+            return new AmountDeliveredRater(factor);
         }
     }
 
@@ -69,10 +70,11 @@ public class AmountDeliveredRater implements Rater {
 
         public double factor = 0.99;
 
-        private FactoryBuilder() {}
+        private FactoryBuilder() {
+        }
 
         @Override
-        public Rater.Factory build() {
+        public Factory build() {
             return new Factory(factor);
         }
 

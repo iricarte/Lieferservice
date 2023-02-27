@@ -1,6 +1,10 @@
 package projekt.io;
 
-import projekt.delivery.rating.*;
+import projekt.delivery.rating.AmountDeliveredRater;
+import projekt.delivery.rating.InTimeRater;
+import projekt.delivery.rating.Rater;
+import projekt.delivery.rating.RatingCriteria;
+import projekt.delivery.rating.TravelDistanceRater;
 import projekt.delivery.routing.VehicleManager;
 
 import java.io.BufferedReader;
@@ -84,9 +88,9 @@ public class RaterFactoryMapIO {
                         inTimeFactory.maxTicksOff
                     ));
                 } else if (entry.getValue() instanceof AmountDeliveredRater.Factory amountDeliveredFactory) {
-                    writer.write(" %f\n".formatted(amountDeliveredFactory.factor));
+                    writer.write(" %s\n".formatted(Double.toString(amountDeliveredFactory.factor)));
                 } else if (entry.getValue() instanceof TravelDistanceRater.Factory travelDistanceFactory) {
-                    writer.write(" %f\n".formatted(travelDistanceFactory.factor));
+                    writer.write(" %s\n".formatted(Double.toString(travelDistanceFactory.factor)));
                 }
             }
             writer.write("END RATER\n");

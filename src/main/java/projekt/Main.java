@@ -4,7 +4,6 @@ public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         startWithGUI();
-        //New Commit
         //startWithoutGUI(); //can bew used instead to run a simulation without a gui
     }
 

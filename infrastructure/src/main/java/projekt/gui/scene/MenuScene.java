@@ -14,11 +14,8 @@ import javafx.scene.layout.Region;
 import projekt.delivery.archetype.ProblemArchetype;
 import projekt.gui.controller.ControlledScene;
 import projekt.gui.controller.MenuSceneController;
-import projekt.io.ProblemArchetypeIO;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -68,11 +65,16 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         buttons.setPadding(new Insets(20, 20, 20, 20));
 
         returnButton = new Button("Return");
+        returnButton.setMaxWidth(600);
         buttons.getChildren().add(returnButton);
 
         quitButton = new Button("Quit");
+        quitButton.setMaxWidth(600);
         quitButton.setOnAction(e -> getController().quit());
         buttons.getChildren().add(quitButton);
+
+        HBox.setHgrow(returnButton, Priority.ALWAYS);
+        HBox.setHgrow(quitButton, Priority.ALWAYS);
 
         root.setBottom(buttons);
 

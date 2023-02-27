@@ -1,11 +1,16 @@
 package projekt.delivery.routing;
 
-import org.jetbrains.annotations.Nullable;
 import projekt.base.DistanceCalculator;
 import projekt.base.EuclideanDistanceCalculator;
 import projekt.base.Location;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
 
 import static org.tudalgo.algoutils.student.Student.crash;
 

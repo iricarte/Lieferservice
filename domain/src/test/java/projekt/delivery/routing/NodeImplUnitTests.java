@@ -1,12 +1,12 @@
 package projekt.delivery.routing;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import projekt.ComparableUnitTests;
 import projekt.ObjectUnitTests;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import static org.tudalgo.algoutils.student.Student.crash;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class NodeImplUnitTests {
 

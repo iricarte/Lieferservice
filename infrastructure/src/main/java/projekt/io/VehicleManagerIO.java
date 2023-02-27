@@ -1,7 +1,12 @@
 package projekt.io;
 
 import projekt.base.Location;
-import projekt.delivery.routing.*;
+import projekt.delivery.routing.CachedPathCalculator;
+import projekt.delivery.routing.DijkstraPathCalculator;
+import projekt.delivery.routing.PathCalculator;
+import projekt.delivery.routing.Region;
+import projekt.delivery.routing.Vehicle;
+import projekt.delivery.routing.VehicleManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -66,10 +71,10 @@ public class VehicleManagerIO {
     }
 
     private static String serializeVehicle(Vehicle vehicle) {
-        return "%d,%d,%f".formatted(
+        return "%d,%d,%s".formatted(
             vehicle.getStartingNode().getComponent().getLocation().getX(),
             vehicle.getStartingNode().getComponent().getLocation().getY(),
-            vehicle.getCapacity());
+            Double.toString(vehicle.getCapacity()));
 
     }
 

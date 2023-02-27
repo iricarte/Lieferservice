@@ -2,13 +2,11 @@ package projekt.delivery.runner;
 
 import projekt.delivery.archetype.ProblemGroup;
 import projekt.delivery.rating.RatingCriteria;
-import projekt.delivery.routing.VehicleManager;
 import projekt.delivery.service.DeliveryService;
 import projekt.delivery.simulation.BasicDeliverySimulation;
 import projekt.delivery.simulation.SimulationConfig;
 
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * A runner for executing a {@link ProblemGroup}.

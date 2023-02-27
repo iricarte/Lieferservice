@@ -4,7 +4,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import projekt.delivery.archetype.ProblemArchetype;
 import projekt.delivery.simulation.Simulation;
 import projekt.delivery.simulation.SimulationConfig;
@@ -21,21 +25,24 @@ public class ControlsPane extends BorderPane {
 
     private final long simulationLength;
 
-    public ControlsPane(Simulation simulation, ProblemArchetype problem, int run, int simulationRuns, long simulationLength) {
+    public ControlsPane(Simulation simulation, ProblemArchetype problem, int run, int simulationRuns, long simulationLength, MapPane mapPane) {
         this.simulationLength = simulationLength;
         this.simulation = simulation;
         this.simulationConfig = simulation.getSimulationConfig();
-        initComponents(problem, run, simulationRuns);
+        initComponents(problem, run, simulationRuns, mapPane);
         updateText();
         setPadding(new Insets(5));
     }
 
-    private void initComponents(ProblemArchetype problem, int run, int simulationRuns) {
+    private void initComponents(ProblemArchetype problem, int run, int simulationRuns, MapPane mapPane) {
         Button playPauseButton = new Button("Play / Pause");
         playPauseButton.setOnAction(e -> togglePaused());
 
         singleStepButton.setDisable(true);
         singleStepButton.setOnAction(e -> simulation.runCurrentTick());
+
+        Button centerButton = new Button("Center Map");
+        centerButton.setOnAction(e -> mapPane.center());
 
         tickIntervalSlider.setValue(simulationConfig.getMillisecondsPerTick());
         tickIntervalSlider.setMin(20);
@@ -56,7 +63,7 @@ public class ControlsPane extends BorderPane {
         intermediateRegion.setMinWidth(0);
         HBox.setHgrow(intermediateRegion, Priority.ALWAYS);
 
-        HBox box = new HBox(playPauseButton, singleStepButton, sliderBox, intermediateRegion, labels);
+        HBox box = new HBox(playPauseButton, singleStepButton, centerButton, sliderBox, intermediateRegion, labels);
         box.setPadding(new Insets(0, 10, 0, 10));
         box.setSpacing(10);
 

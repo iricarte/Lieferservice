@@ -3,12 +3,13 @@ package projekt.gui.scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.Nullable;
 import projekt.gui.controller.SceneAndController;
 import projekt.gui.controller.SceneController;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A SceneSwitcher is responsible for switching between the different {@link Scene}s.

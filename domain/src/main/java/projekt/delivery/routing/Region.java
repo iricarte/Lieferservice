@@ -1,12 +1,13 @@
 package projekt.delivery.routing;
 
-import org.jetbrains.annotations.Nullable;
 import projekt.base.DistanceCalculator;
 import projekt.base.Location;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents A Region using a graph.
@@ -15,6 +16,7 @@ public interface Region {
 
     /**
      * Returns a new {@link Region.Builder} instance.
+     *
      * @return A new {@link Region.Builder} instance.
      */
     static Builder builder() {

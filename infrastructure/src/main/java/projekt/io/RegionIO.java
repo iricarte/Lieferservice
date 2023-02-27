@@ -1,13 +1,17 @@
 package projekt.io;
 
-import projekt.base.*;
-import projekt.delivery.routing.CachedPathCalculator;
+import projekt.base.ChessboardDistanceCalculator;
+import projekt.base.DistanceCalculator;
+import projekt.base.EuclideanDistanceCalculator;
+import projekt.base.Location;
+import projekt.base.ManhattanDistanceCalculator;
 import projekt.delivery.routing.Region;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +20,7 @@ import java.util.function.Supplier;
 public class RegionIO {
 
     private static final Map<String, Supplier<? extends DistanceCalculator>> DESERIALIZED_DISTANCE_CALCULATOR = Map.of(
-        CachedPathCalculator.class.getSimpleName(), ChessboardDistanceCalculator::new,
+        ChessboardDistanceCalculator.class.getSimpleName(), ChessboardDistanceCalculator::new,
         EuclideanDistanceCalculator.class.getSimpleName(), EuclideanDistanceCalculator::new,
         ManhattanDistanceCalculator.class.getSimpleName(), ManhattanDistanceCalculator::new
     );
@@ -43,10 +47,7 @@ public class RegionIO {
                 } else if (line.startsWith("R ")) {
                     String[] serializedNode = line.substring(2).split(",");
 
-                    List<String> availableFood = new ArrayList<>();
-                    for (int i = 3; i < serializedNode.length; i++) {
-                        availableFood.add(serializedNode[3]);
-                    }
+                    List<String> availableFood = new ArrayList<>(Arrays.asList(serializedNode).subList(3, serializedNode.length));
 
                     builder.addRestaurant(parseLocation(serializedNode[1], serializedNode[2]), new Region.Restaurant.Preset(serializedNode[0], availableFood));
                 } else if (line.startsWith("E ")) {

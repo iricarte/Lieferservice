@@ -1,11 +1,12 @@
 package projekt.delivery.routing;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
 
 import static org.tudalgo.algoutils.student.Student.crash;
 
@@ -24,27 +25,34 @@ public interface Vehicle extends Comparable<Vehicle> {
 
     /**
      * Returns the previous component this Vehicle occupied.
+     *
      * @return the previous component or null if this vehicle has not moved yet.
      */
     @Nullable VehicleManager.Occupied<?> getPreviousOccupied();
 
+    /**
+     * Returns a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
+     * It starts with the first {@link Path}.
+     *
+     * @return a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
+     */
     List<? extends Path> getPaths();
 
     /**
      * Deletes the entire move queue and moves directly to the provided {@link Region.Node}.
      */
     default void moveDirect(Region.Node node) {
-        moveDirect(node, v -> {
+        moveDirect(node, (v, t) -> {
         });
     }
 
-    void moveDirect(Region.Node node, Consumer<? super Vehicle> arrivalAction);
+    void moveDirect(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction);
 
     /**
      * Adds the provided {@link Region.Node} to the move queue.
      */
     default void moveQueued(Region.Node node) {
-        moveQueued(node, v -> {
+        moveQueued(node, (v, t) -> {
         });
     }
 
@@ -52,7 +60,7 @@ public interface Vehicle extends Comparable<Vehicle> {
      * Adds the provided {@link Region.Node} to the move queue.
      * As soon as the vehicle arrives at the specified node, {@code arrivalAction} is run.
      */
-    void moveQueued(Region.Node node, Consumer<? super Vehicle> arrivalAction);
+    void moveQueued(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction);
 
     int getId();
 
@@ -110,8 +118,11 @@ public interface Vehicle extends Comparable<Vehicle> {
 
         /**
          * Returns the {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
+         * <p>The first parameter of the {@link BiConsumer} is the {@link Vehicle} that reached the end this {@link Path}
+         * and the second parameter is the tick at which the {@link Vehicle} reached the end this {@link Path}.</p>
+         *
          * @return The {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
          */
-        Consumer<? super Vehicle> arrivalAction();
+        BiConsumer<? super Vehicle, Long> arrivalAction();
     }
 }
