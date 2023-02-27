@@ -2,8 +2,7 @@ package projekt;
 
 import java.util.function.Function;
 
-import static org.tudalgo.algoutils.student.Student.crash;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
 
 public class ObjectUnitTests<T> {
 
@@ -11,8 +10,8 @@ public class ObjectUnitTests<T> {
     private final Function<T, String> toString;
 
     private T[] testObjects;
-    private T[] testObjectsReferenceEquality;
     private T[] testObjectsContentEquality;
+    private T[] testObjectsReferenceEquality;
 
     public ObjectUnitTests(Function<Integer, T> testObjectFactory, Function<T, String> toString) {
         this.testObjectFactory = testObjectFactory;
@@ -21,19 +20,48 @@ public class ObjectUnitTests<T> {
 
     @SuppressWarnings("unchecked")
     public void initialize(int testObjectCount) {
-        crash(); // TODO: H12.1 - remove if implemented
+        this.testObjects = (T[]) new Object[testObjectCount];
+        this.testObjectsContentEquality = (T[]) new Object[testObjectCount];
+        this.testObjectsReferenceEquality = (T[]) new Object[testObjectCount];
+
+        for (int i = 0; i < testObjectCount; i++) {
+            this.testObjects[i] = testObjectFactory.apply(testObjectCount);
+            this.testObjectsContentEquality[i] = testObjectFactory.apply(testObjectCount);
+            this.testObjectsReferenceEquality[i] = this.testObjects[i];
+        }
     }
 
     public void testEquals() {
-        crash(); // TODO: H12.1 - remove if implemented
+        for (int i = 0; i < this.testObjects.length; i++) {
+            for (int j = 0; j < this.testObjects.length; j++) {
+                if (i == j) {
+                    Assertions.assertEquals(this.testObjects[i], this.testObjects[i]);
+                    Assertions.assertEquals(this.testObjects[i], this.testObjectsContentEquality[i]);
+                    Assertions.assertEquals(this.testObjects[i], this.testObjectsReferenceEquality[i]);
+                } else {
+                    Assertions.assertNotEquals(this.testObjects[i], this.testObjects[j]);
+                }
+            }
+        }
     }
 
     public void testHashCode() {
-        crash(); // TODO: H12.1 - remove if implemented
+        for (int i = 0; i < this.testObjects.length; i++) {
+            for (int j = 0; j < this.testObjects.length; j++) {
+                if (i == j) {
+                    Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjects[i].hashCode());
+                    Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjectsContentEquality[i].hashCode());
+                    Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjectsReferenceEquality[i].hashCode());
+                } else {
+                    Assertions.assertNotEquals(this.testObjects[i].hashCode(), this.testObjects[j].hashCode());
+                }
+            }
+        }
     }
 
     public void testToString() {
-        crash(); // TODO: H12.1 - remove if implemented
+        for (T testObject : this.testObjects) {
+            Assertions.assertEquals(toString.apply(testObject), testObject.toString());
+        }
     }
-
 }
