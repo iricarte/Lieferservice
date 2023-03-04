@@ -2,6 +2,7 @@ package projekt.delivery.routing;
 
 import projekt.base.Location;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
@@ -70,21 +71,33 @@ class NodeImpl implements Region.Node {
 
     @Override
     public int compareTo(Region.Node o) {
-         return crash(); // TODO: H3.4 - remove if implemented
+        return this.location.compareTo(o.getLocation());
     }
 
     @Override
     public boolean equals(Object o) {
-        return crash(); // TODO: H3.5 - remove if implemented
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        NodeImpl node = (NodeImpl) o;
+        return Objects.equals(name, node.name) && Objects.equals(location, node.location) && Objects.equals(connections, node.connections);
     }
 
     @Override
     public int hashCode() {
-        return crash(); // TODO: H3.6 - remove if implemented
+        return Objects.hash(name, location, connections);
     }
 
     @Override
     public String toString() {
-        return crash(); // TODO: H3.7 - remove if implemented
+        return "NodeImpl{" +
+            "connections=" + connections +
+            ", region=" + region +
+            ", name='" + name + '\'' +
+            ", location=" + location +
+            '}';
     }
 }

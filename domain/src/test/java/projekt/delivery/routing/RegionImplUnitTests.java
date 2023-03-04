@@ -1,6 +1,9 @@
 package projekt.delivery.routing;
 
 import projekt.ObjectUnitTests;
+import projekt.base.Location;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,9 +15,20 @@ public class RegionImplUnitTests {
 
     private static ObjectUnitTests<RegionImpl> objectUnitTests;
 
+    /*
+     * TestRegion has one node:
+     *       (0,0)
+     *      /    \
+     * (x, 1)    (x, 2)
+     */
     @BeforeAll
     public static void initialize() {
-        objectUnitTests = new ObjectUnitTests<>(x -> new RegionImpl(), Object::toString);
+        objectUnitTests = new ObjectUnitTests<>(x -> {
+            RegionImpl region = new RegionImpl();
+            NodeImpl node = new NodeImpl(region, "node", new Location(0, 0), Set.of(new Location(x, 1), new Location(x, 2)));
+            region.putNode(node);
+            return region;
+        }, Object::toString);
         objectUnitTests.initialize(100);
     }
 
