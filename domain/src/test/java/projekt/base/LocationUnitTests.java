@@ -1,12 +1,12 @@
 package projekt.base;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import projekt.ComparableUnitTests;
 import projekt.ObjectUnitTests;
 
-import static org.tudalgo.algoutils.student.Student.crash;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.function.Function;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class LocationUnitTests {
 
@@ -15,13 +15,16 @@ public class LocationUnitTests {
 
     @BeforeAll
     public static void initialize() {
-        Location location = new Location(-1024, -1024);
-        location.hashCode();
+        Function<Integer, Location> xToLocation = x -> new Location(x, x ^ 2 - x);
+        comparableUnitTests = new ComparableUnitTests<>(xToLocation);
+        objectUnitTests = new ObjectUnitTests<>(xToLocation, Object::toString);
+        comparableUnitTests.initialize(100);
+        objectUnitTests.initialize(100);
     }
 
     @Test
     public void testEquals() {
-        crash(); // TODO: H12.2 - remove if implemented
+        objectUnitTests.testEquals();
     }
 
     @Test
@@ -31,22 +34,22 @@ public class LocationUnitTests {
 
     @Test
     public void testToString() {
-        crash(); // TODO: H12.2 - remove if implemented
+        objectUnitTests.testToString();
     }
 
     @Test
     public void testBiggerThen() {
-        crash(); // TODO: H12.2 - remove if implemented
+        comparableUnitTests.testBiggerThen();
     }
 
     @Test
     public void testAsBigAs() {
-        crash(); // TODO: H12.2 - remove if implemented
+        comparableUnitTests.testAsBigAs();
     }
 
     @Test
     public void testLessThen() {
-        crash(); // TODO: H12.2 - remove if implemented
+        comparableUnitTests.testLessThen();
     }
 
 }

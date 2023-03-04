@@ -19,7 +19,7 @@ public class ComparableUnitTests<T extends Comparable<? super T>> {
     public void initialize(int testObjectCount) {
         this.testObjects = (T[]) new Comparable<?>[testObjectCount];
         for (int i = 0; i < testObjectCount; i++) {
-            this.testObjects[i] = testObjectFactory.apply(testObjectCount);
+            this.testObjects[i] = testObjectFactory.apply(i);
         }
     }
 
@@ -41,7 +41,7 @@ public class ComparableUnitTests<T extends Comparable<? super T>> {
     public void testLessThen() {
         for (int i = 0; i < this.testObjects.length; i++) {
             for (int j = i + 1; j < this.testObjects.length; j++) {
-                Assertions.assertEquals(1, this.testObjects[i].compareTo(this.testObjects[j]));
+                Assertions.assertEquals(-1, this.testObjects[i].compareTo(this.testObjects[j]));
             }
         }
     }

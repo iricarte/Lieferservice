@@ -1,11 +1,8 @@
 package projekt.base;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Array;
 import java.util.Comparator;
 
-import static org.tudalgo.algoutils.student.Student.crash;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A tuple for the x- and y-coordinates of a point.
@@ -73,28 +70,37 @@ public final class Location implements Comparable<Location> {
     public int compareTo(@NotNull Location o) {
         if (o.x == this.x && o.y == this.y) {
             return 0;
-        } else if (o.x < this.x || (o.x == this.x && o.y < this.y)){
-            return -1;
-        } else {
+        } else if (o.x < this.x || (o.x == this.x && o.y < this.y)) {
             return 1;
+        } else {
+            return -1;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Location location = (Location) o;
+        return x == location.x && y == location.y;
     }
 
     @Override
     public int hashCode() {
         int hashCode = 0;
-        if (Math.signum(x) == -1)
+        if (Math.signum(x) == -1) {
             hashCode += 1000000000;
-        if (Math.signum(y) == -1)
+        }
+        if (Math.signum(y) == -1) {
             hashCode += 10000;
+        }
         hashCode += Math.abs(x) * 100000;
         hashCode += Math.abs(y);
         return hashCode;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return crash(); // TODO: H1.3 - remove if implemented
     }
 
     @Override
