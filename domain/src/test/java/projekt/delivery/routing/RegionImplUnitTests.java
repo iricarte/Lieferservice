@@ -14,26 +14,55 @@ public class RegionImplUnitTests {
 
     @BeforeAll
     public static void initialize() {
-        crash(); // TODO: H12.3 - remove if implemented
+        objectUnitTests = new ObjectUnitTests<>(x -> new RegionImpl(), Object::toString);
+        objectUnitTests.initialize(100);
     }
 
     @Test
     public void testEquals() {
-        crash(); // TODO: H12.3 - remove if implemented
+        objectUnitTests.testEquals();
     }
 
     @Test
     public void testHashCode() {
-        crash(); // TODO: H12.3 - remove if implemented
+        objectUnitTests.testHashCode();
     }
 
     @Test
     public void testNodes() {
-        crash(); // TODO: H12.3 - remove if implemented
+        RegionImpl region = new RegionImpl();
     }
 
     @Test
     public void testEdges() {
         crash(); // TODO: H12.3 - remove if implemented
+    }
+
+    @Test
+    public void getNode() {
+    }
+
+    @Test
+    public void getEdge() {
+    }
+
+    @Test
+    public void getNodes() {
+    }
+
+    @Test
+    public void getEdges() {
+    }
+
+    @Test
+    public void getDistanceCalculator() {
+    }
+
+    @Test
+    public void putNode() {
+    }
+
+    @Test
+    public void putEdge() {
     }
 }

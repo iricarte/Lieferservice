@@ -25,8 +25,8 @@ public class ObjectUnitTests<T> {
         this.testObjectsReferenceEquality = (T[]) new Object[testObjectCount];
 
         for (int i = 0; i < testObjectCount; i++) {
-            this.testObjects[i] = testObjectFactory.apply(testObjectCount);
-            this.testObjectsContentEquality[i] = testObjectFactory.apply(testObjectCount);
+            this.testObjects[i] = testObjectFactory.apply(i);
+            this.testObjectsContentEquality[i] = testObjectFactory.apply(i);
             this.testObjectsReferenceEquality[i] = this.testObjects[i];
         }
     }
