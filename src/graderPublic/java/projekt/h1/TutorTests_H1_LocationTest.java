@@ -116,7 +116,6 @@ public class TutorTests_H1_LocationTest {
 
         testEquals(new Location(1, 2), null, false, "Method did not return false for null");
     }
-
     private void testEquals(Object a, Object b, boolean expected, String description) {
         Context context = contextBuilder()
             .subject("Location#equals(Object)")

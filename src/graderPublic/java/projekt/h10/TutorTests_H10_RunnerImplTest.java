@@ -392,13 +392,6 @@ public class TutorTests_H10_RunnerImplTest {
     }
 
 
-    private enum SimulationActions {
-        SETUP,
-        RUN,
-        FINISHED,
-        RESULT
-    }
-
     private static class SimulationAction {
 
 
@@ -443,12 +436,19 @@ public class TutorTests_H10_RunnerImplTest {
         }
     }
 
+    private enum SimulationActions {
+        SETUP,
+        RUN,
+        FINISHED,
+        RESULT
+    }
+
     private static class TestSimulation implements Simulation {
 
-        final Function<Integer, Integer> ratingFunction;
-        final List<SimulationAction> simulationActions;
         int runSimulationCalls = 0;
         long maxTicks = 0;
+        final Function<Integer, Integer> ratingFunction;
+        final List<SimulationAction> simulationActions;
 
         public TestSimulation(List<SimulationAction> simulationActions) {
             this.simulationActions = simulationActions;

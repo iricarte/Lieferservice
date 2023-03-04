@@ -4,8 +4,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +54,7 @@ public class CachedPathCalculator implements PathCalculator {
     public Map<Region.Node, Deque<Region.Node>> getAllPathsTo(Region.Node end) {
         @Nullable Map<Region.Node, Deque<Region.Node>> path = cache.get(end);
         if (path != null) {
-            return path;
+            return copyPath(path);
         }
 
         path = delegate.getAllPathsTo(end);
@@ -69,7 +71,13 @@ public class CachedPathCalculator implements PathCalculator {
         accessOrder.add(end);
         cache.put(end, path);
 
-        return path;
+        return copyPath(path);
+    }
+
+    private Map<Region.Node, Deque<Region.Node>> copyPath(Map<Region.Node, Deque<Region.Node>> path) {
+        return path.entrySet().stream()
+            .map(entry -> Map.entry(entry.getKey(), new LinkedList<>(entry.getValue())))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

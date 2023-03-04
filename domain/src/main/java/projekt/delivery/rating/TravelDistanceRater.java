@@ -58,6 +58,11 @@ public class TravelDistanceRater implements Rater {
             this.factor = factor;
         }
 
+        @Override
+        public TravelDistanceRater create() {
+            return new TravelDistanceRater(vehicleManager, factor);
+        }
+
         /**
          * Creates a new {@link TravelDistanceRater.FactoryBuilder}.
          *
@@ -65,11 +70,6 @@ public class TravelDistanceRater implements Rater {
          */
         public static FactoryBuilder builder() {
             return new FactoryBuilder();
-        }
-
-        @Override
-        public TravelDistanceRater create() {
-            return new TravelDistanceRater(vehicleManager, factor);
         }
 
 
@@ -83,8 +83,7 @@ public class TravelDistanceRater implements Rater {
         public VehicleManager vehicleManager;
         public double factor = 0.5;
 
-        private FactoryBuilder() {
-        }
+        private FactoryBuilder() {}
 
         @Override
         public Factory build() {

@@ -193,7 +193,6 @@ public class MapPane extends Pane {
 
         handleEdgeClick(edges.get(edge).line(), edge);
     }
-
     /**
      * Sets the action that is supposed to be executed when the user selects an {@link Region.Edge}.
      *
@@ -557,10 +556,10 @@ public class MapPane extends Pane {
     private void initListeners() {
 
         setOnMouseDragged(actionEvent -> {
-            Point2D point = new Point2D.Double(actionEvent.getX(), actionEvent.getY());
-            Point2D diff = getDifference(point, lastPoint.get());
+                Point2D point = new Point2D.Double(actionEvent.getX(), actionEvent.getY());
+                Point2D diff = getDifference(point, lastPoint.get());
 
-            transformation.translate(diff.getX() / transformation.getScaleX(), diff.getY() / transformation.getScaleY());
+                transformation.translate(diff.getX() / transformation.getScaleX(), diff.getY() / transformation.getScaleY());
 
                 redrawMap();
                 redrawGrid();
@@ -571,6 +570,9 @@ public class MapPane extends Pane {
         );
 
         setOnScroll(event -> {
+            if (event.getDeltaY() == 0) {
+                return;
+            }
             double scale = event.getDeltaY() > 0 ? SCALE_IN : SCALE_OUT;
 
             if (((transformation.getScaleX() < MIN_SCALE || transformation.getScaleY() < MIN_SCALE) && scale < 1)

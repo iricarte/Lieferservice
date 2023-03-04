@@ -25,7 +25,6 @@ public interface Vehicle extends Comparable<Vehicle> {
 
     /**
      * Returns the previous component this Vehicle occupied.
-     *
      * @return the previous component or null if this vehicle has not moved yet.
      */
     @Nullable VehicleManager.Occupied<?> getPreviousOccupied();
@@ -33,7 +32,6 @@ public interface Vehicle extends Comparable<Vehicle> {
     /**
      * Returns a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
      * It starts with the first {@link Path}.
-     *
      * @return a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
      */
     List<? extends Path> getPaths();
@@ -120,7 +118,6 @@ public interface Vehicle extends Comparable<Vehicle> {
          * Returns the {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
          * <p>The first parameter of the {@link BiConsumer} is the {@link Vehicle} that reached the end this {@link Path}
          * and the second parameter is the tick at which the {@link Vehicle} reached the end this {@link Path}.</p>
-         *
          * @return The {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
          */
         BiConsumer<? super Vehicle, Long> arrivalAction();

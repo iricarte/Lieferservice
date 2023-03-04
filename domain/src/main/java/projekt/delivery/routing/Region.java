@@ -16,7 +16,6 @@ public interface Region {
 
     /**
      * Returns a new {@link Region.Builder} instance.
-     *
      * @return A new {@link Region.Builder} instance.
      */
     static Builder builder() {

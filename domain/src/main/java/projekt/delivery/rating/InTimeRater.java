@@ -61,6 +61,11 @@ public class InTimeRater implements Rater {
             this.maxTicksOff = maxTicksOff;
         }
 
+        @Override
+        public InTimeRater create() {
+            return new InTimeRater(ignoredTicksOff, maxTicksOff);
+        }
+
         /**
          * Creates a new {@link InTimeRater.FactoryBuilder}.
          *
@@ -68,11 +73,6 @@ public class InTimeRater implements Rater {
          */
         public static FactoryBuilder builder() {
             return new FactoryBuilder();
-        }
-
-        @Override
-        public InTimeRater create() {
-            return new InTimeRater(ignoredTicksOff, maxTicksOff);
         }
     }
 

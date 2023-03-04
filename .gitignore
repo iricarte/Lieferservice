@@ -81,3 +81,9 @@ out/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
+
+### Java Misc ###
+*.hprof
+
+### Jagr ####
+jagr.conf
