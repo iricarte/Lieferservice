@@ -93,11 +93,8 @@ class NodeImpl implements Region.Node {
 
     @Override
     public String toString() {
-        return "NodeImpl{" +
-            "connections=" + connections +
-            ", region=" + region +
-            ", name='" + name + '\'' +
-            ", location=" + location +
-            '}';
+        return "NodeImpl(name='" + name + "', " +
+            "location='" + location + "', " +
+            "connections='" + connections + "')";
     }
 }

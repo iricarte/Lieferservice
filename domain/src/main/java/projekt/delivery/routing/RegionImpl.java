@@ -59,12 +59,12 @@ class RegionImpl implements Region {
 
     @Override
     public Collection<Node> getNodes() {
-        return new ArrayList<>(this.nodes.values()); //give back a copy
+        return this.nodes.values().stream().map(node -> (Node) node).toList();
     }
 
     @Override
     public Collection<Edge> getEdges() {
-        return new ArrayList<>(this.allEdges); //give back a copy
+        return this.allEdges.stream().map(edge -> (Edge) edge).toList();
     }
 
     @Override
@@ -89,14 +89,16 @@ class RegionImpl implements Region {
      * @param edge the {@link EdgeImpl} to add.
      */
     void putEdge(EdgeImpl edge) {
-        if (edge.getNodeA() == null || edge.getNodeB() == null) {
-            throw new IllegalArgumentException("Node{A,B} " + edge.getLocationA() + " is not part of the region");
-        }
-        if (!this.equals(edge.getRegion()) ||
-            !this.equals(edge.getNodeA().getRegion()) ||
-            !this.equals(edge.getNodeB().getRegion())) {
+        if (!this.equals(edge.getRegion())) {
             throw new IllegalArgumentException("Edge " + edge + " has incorrect region");
         }
+        if (edge.getNodeA() == null || !this.equals(edge.getNodeA().getRegion())) {
+            throw new IllegalArgumentException("NodeA " + edge.getLocationA() + " is not part of the region");
+        }
+        if (edge.getNodeB() == null || !this.equals(edge.getNodeB().getRegion())) {
+            throw new IllegalArgumentException("NodeB " + edge.getLocationB() + " is not part of the region");
+        }
+
         Edge existingEdge = this.getEdge(edge.getNodeA(), edge.getNodeB());
         Map<Location, EdgeImpl> value = existingEdge == null ? new HashMap<>() : this.edges.get(existingEdge.getNodeA().getLocation());
         value.put(edge.getLocationA(), edge);

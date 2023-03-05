@@ -106,7 +106,6 @@ public class Projekt_RubricProvider implements RubricProvider {
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnNode"),
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnEdgeToNodeA"),
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnEdgeToNodeB"));
-    public static final Criterion H5_4 = createParentCriterion("5.4", "Auf anderen Wegen", H5_4_1, H5_4_2, H5_4_3, H5_4_4, H5_4_5, H5_4_6);
 
     public static final Criterion H2_4 = createParentCriterion("2.4", "putEdge", H2_4_1, H2_4_2, H2_4_3, H2_4_4);
 
@@ -297,6 +296,8 @@ public class Projekt_RubricProvider implements RubricProvider {
     private static Criterion createCriterion(String shortDescription, Callable<Method>... methodReferences) {
         return createCriterion(shortDescription, 1, methodReferences);
     }
+
+    public static final Criterion H5_4 = createParentCriterion("5.4", "Auf anderen Wegen", H5_4_1, H5_4_2, H5_4_3, H5_4_4, H5_4_5, H5_4_6);
 
     public static final Criterion H5 = createParentCriterion("5", "Hab mein Wage, voll gelade...", H5_1, H5_2, H5_3, H5_4);
 
