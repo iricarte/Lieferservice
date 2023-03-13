@@ -13,7 +13,6 @@ import javafx.util.StringConverter;
 import projekt.delivery.archetype.ProblemArchetype;
 import projekt.delivery.archetype.ProblemGroup;
 import projekt.delivery.archetype.ProblemGroupImpl;
-import projekt.delivery.rating.RatingCriteria;
 import projekt.delivery.service.BasicDeliveryService;
 import projekt.delivery.service.BogoDeliveryService;
 import projekt.delivery.service.DeliveryService;
@@ -23,7 +22,6 @@ import projekt.gui.controller.MainMenuSceneController;
 import projekt.io.IOHelper;
 import projekt.runner.RunnerImpl;
 
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -77,11 +75,15 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
     private Button createStartSimulationButton() {
         Button startSimulationButton = new Button("Start Simulation");
         startSimulationButton.setOnAction((e) -> {
+            if (problems.size() == 0) {
+                throw new IllegalArgumentException("No problems selected");
+            }
+
             //store the SimulationScene
             AtomicReference<SimulationScene> simulationScene = new AtomicReference<>();
             //Execute the GUIRunner in a separate Thread to prevent it from blocking the GUI
             new Thread(() -> {
-                ProblemGroup problemGroup = new ProblemGroupImpl(problems, Arrays.stream(RatingCriteria.values()).toList());
+                ProblemGroup problemGroup = new ProblemGroupImpl(problems, problems.get(0).raterFactoryMap().keySet().stream().toList());
                 new RunnerImpl().run(
                     problemGroup,
                     new SimulationConfig(20),

@@ -106,6 +106,7 @@ public class Projekt_RubricProvider implements RubricProvider {
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnNode"),
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnEdgeToNodeA"),
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnEdgeToNodeB"));
+    public static final Criterion H11_4_2 = createUntestedCriterion("Es existiert ein Knopf zum Hinzufügen neuer Probleme, welcher eine neue Szene öffnet", 1);
 
     public static final Criterion H2_4 = createParentCriterion("2.4", "putEdge", H2_4_1, H2_4_2, H2_4_3, H2_4_4);
 
@@ -250,6 +251,8 @@ public class Projekt_RubricProvider implements RubricProvider {
 
     public static final Criterion H5_4_3 = createCriterion("Die Methode moveDirect der Klasse VehicleImpl funktioniert korrekt wenn sich das Fahrzeug auf einem Knoten befindet",
         () -> TutorTests_H5_VehicleTest.class.getMethod("testMoveDirectOnNode"));
+    public static final Criterion H11_4_23 = createUntestedCriterion("Nachdem ein neues Problem hinzugefügt wurde, wird es mithilfe der Methode IOHelper.writeProblem gespeichert", 1);
+    public static final Criterion H11_4_24 = createUntestedCriterion("Es ist möglich das Erstellen eines neuen Problemes vorzeitigt über den Return Knopf abzubrechen, wodurch sich das Hauptmenü mit den davor ausgewählten Problemen öffnet", 1);
 
     @SafeVarargs
     private static Criterion createCriterion(String shortDescription, int maxPoints, Callable<Method>... methodReferences) {
@@ -275,26 +278,6 @@ public class Projekt_RubricProvider implements RubricProvider {
                 .build())
             .maxPoints(maxPoints)
             .build();
-    }
-
-    private static Criterion createUntestedCriterion(String shortDescription, int maxPoints) {
-        return Criterion.builder()
-            .shortDescription(shortDescription)
-            .maxPoints(maxPoints)
-            .grader((testCycle, criterion) -> GradeResult.of(0, maxPoints, "Not tested by public tests"))
-            .build();
-    }
-
-    private static Criterion createParentCriterion(String task, String shortDescription, Criterion... children) {
-        return Criterion.builder()
-            .shortDescription("H" + task + " | " + shortDescription)
-            .addChildCriteria(children)
-            .build();
-    }
-
-    @SafeVarargs
-    private static Criterion createCriterion(String shortDescription, Callable<Method>... methodReferences) {
-        return createCriterion(shortDescription, 1, methodReferences);
     }
 
     public static final Criterion H5_4 = createParentCriterion("5.4", "Auf anderen Wegen", H5_4_1, H5_4_2, H5_4_3, H5_4_4, H5_4_5, H5_4_6);
@@ -591,7 +574,13 @@ public class Projekt_RubricProvider implements RubricProvider {
 
     public static final Criterion H11_4_1 = createUntestedCriterion("Es können Probleme aus der Übersicht entfernt werden, worauf diese nicht simuliert werden", 1);
 
-    public static final Criterion H11_4_2 = createUntestedCriterion("Es existiert ein Knopf zum Hinzufügen neuer Probleme, welche eine neue Szene öffnet", 1);
+    private static Criterion createUntestedCriterion(String shortDescription, int maxPoints) {
+        return Criterion.builder()
+            .shortDescription(shortDescription)
+            .maxPoints(maxPoints)
+            .grader((testCycle, criterion) -> GradeResult.of(0, maxPoints, "Not tested by public tests"))
+            .build();
+    }
 
     public static final Criterion H11_4_3 = createUntestedCriterion("Es gibt eine Auswahl, ob entweder ein existierend hinzugefügt werden soll oder ein neues erzeugt werden soll", 1);
 
@@ -633,9 +622,17 @@ public class Projekt_RubricProvider implements RubricProvider {
 
     public static final Criterion H11_4_22 = createUntestedCriterion("Wenn ein neues Problem hinzugefügt wird, kann man ausgewählte Fahrzeuge wieder entfernen", 1);
 
-    public static final Criterion H11_4_23 = createUntestedCriterion("Wenn ein neues Problem hinzugefügt wird, werden alle vorhanden Probleme in einer Übersicht angezeigt", 1);
+    private static Criterion createParentCriterion(String task, String shortDescription, Criterion... children) {
+        return Criterion.builder()
+            .shortDescription("H" + task + " | " + shortDescription)
+            .addChildCriteria(children)
+            .build();
+    }
 
-    public static final Criterion H11_4_24 = createUntestedCriterion("Wenn ein neues Problem hinzugefügt wird, werden alle gewählten Eigenschaften in einer Übersicht angezeigt", 1);
+    @SafeVarargs
+    private static Criterion createCriterion(String shortDescription, Callable<Method>... methodReferences) {
+        return createCriterion(shortDescription, 1, methodReferences);
+    }
 
     public static final Criterion H11_4_25 = createUntestedCriterion("Die Option, ein neues Problem hinzuzufügen, kann nur gewählt werden, wenn alle Eigenschaften korrekt ausgewählt werden", 1);
 
