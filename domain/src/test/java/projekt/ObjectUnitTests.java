@@ -18,8 +18,14 @@ public class ObjectUnitTests<T> {
         this.toString = toString;
     }
 
+    public static <T> ObjectUnitTests<T> initialize100(Function<Integer, T> testObjectFactory, Function<T, String> toString) {
+        ObjectUnitTests<T> retVal = new ObjectUnitTests<>(testObjectFactory, toString);
+        retVal.initialize100(100);
+        return retVal;
+    }
+
     @SuppressWarnings("unchecked")
-    public void initialize(int testObjectCount) {
+    public void initialize100(int testObjectCount) {
         this.testObjects = (T[]) new Object[testObjectCount];
         this.testObjectsContentEquality = (T[]) new Object[testObjectCount];
         this.testObjectsReferenceEquality = (T[]) new Object[testObjectCount];

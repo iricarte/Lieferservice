@@ -98,13 +98,12 @@ class RegionImpl implements Region {
         if (edge.getNodeB() == null || !this.equals(edge.getNodeB().getRegion())) {
             throw new IllegalArgumentException("NodeB " + edge.getLocationB() + " is not part of the region");
         }
-
-        Edge existingEdge = this.getEdge(edge.getNodeA(), edge.getNodeB());
-        Map<Location, EdgeImpl> value = existingEdge == null ? new HashMap<>() : this.edges.get(existingEdge.getNodeA().getLocation());
-        value.put(edge.getLocationA(), edge);
-        value.put(edge.getLocationB(), edge);
-        this.edges.put(edge.getNodeA().getLocation(), value);
-        this.edges.put(edge.getNodeB().getLocation(), value);
+        Map<Location, EdgeImpl> existingEdge = this.edges.get(edge.getNodeA().getLocation());
+        if (existingEdge == null) {
+            existingEdge = new HashMap<>();
+        }
+        existingEdge.put(edge.getLocationB(), edge);
+        this.edges.put(edge.getNodeA().getLocation(), existingEdge);
         this.allEdges.add(edge);
     }
 

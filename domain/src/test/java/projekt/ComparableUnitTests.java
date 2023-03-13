@@ -15,8 +15,14 @@ public class ComparableUnitTests<T extends Comparable<? super T>> {
         this.testObjectFactory = testObjectFactory;
     }
 
+    public static <T extends Comparable<? super T>> ComparableUnitTests<T> initialize100(Function<Integer, T> testObjectFactory) {
+        ComparableUnitTests<T> retVal = new ComparableUnitTests<>(testObjectFactory);
+        retVal.initialize100(100);
+        return retVal;
+    }
+
     @SuppressWarnings("unchecked")
-    public void initialize(int testObjectCount) {
+    public void initialize100(int testObjectCount) {
         this.testObjects = (T[]) new Comparable<?>[testObjectCount];
         for (int i = 0; i < testObjectCount; i++) {
             this.testObjects[i] = testObjectFactory.apply(i);

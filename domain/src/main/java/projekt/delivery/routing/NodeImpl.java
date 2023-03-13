@@ -4,10 +4,9 @@ import projekt.base.Location;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
-
-import static org.tudalgo.algoutils.student.Student.crash;
 
 class NodeImpl implements Region.Node {
 
@@ -56,17 +55,17 @@ class NodeImpl implements Region.Node {
 
     @Override
     public @Nullable Region.Edge getEdge(Region.Node other) {
-        return crash(); // TODO: H3.1 - remove if implemented
+        return this.region.getEdge(this, other);
     }
 
     @Override
     public Set<Region.Node> getAdjacentNodes() {
-        return crash(); // TODO: H3.2 - remove if implemented
+        return this.connections.stream().map(region::getNode).collect(Collectors.toSet());
     }
 
     @Override
     public Set<Region.Edge> getAdjacentEdges() {
-        return crash(); // TODO: H3.3 - remove if implemented
+        return this.connections.stream().map(l -> this.region.getEdge(this.location, l)).collect(Collectors.toSet());
     }
 
     @Override

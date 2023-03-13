@@ -24,8 +24,7 @@ public class RegionImplUnitTests {
 
     @BeforeAll
     public static void initialize() {
-        objectUnitTests = new ObjectUnitTests<>(RegionImplUnitTests::testRegion, Object::toString);
-        objectUnitTests.initialize(100);
+        objectUnitTests = ObjectUnitTests.initialize100(RegionImplUnitTests::testRegion, Object::toString);
     }
 
     @BeforeEach
@@ -71,9 +70,7 @@ public class RegionImplUnitTests {
     @Test
     public void testNodes_Exceptions() {
         NodeImpl invalidNode = new NodeImpl(testRegion, "node3", testLocation0_0, Set.of(testLocation1_1));
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new RegionImpl().putNode(invalidNode),
-            "Node " + invalidNode + " has incorrect region");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new RegionImpl().putNode(invalidNode), "Node " + invalidNode + " has incorrect region");
     }
 
     @Test
@@ -87,14 +84,8 @@ public class RegionImplUnitTests {
         EdgeImpl invalidEdge = new EdgeImpl(testRegion, "edge", testLocation0_0, testLocation1_1, 10);
         EdgeImpl invalidEdgeNodeA = new EdgeImpl(testRegion, "edge2", new Location(-1, -1), testLocation0_0, 10);
         EdgeImpl invalidEdgeNodeB = new EdgeImpl(testRegion, "edge3", testLocation0_0, new Location(3, -3), 10);
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new RegionImpl().putEdge(invalidEdge),
-            "Edge " + invalidEdge + " has incorrect region");
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> testRegion.putEdge(invalidEdgeNodeA),
-            "NodeA " + invalidEdgeNodeA + " has incorrect region");
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> testRegion.putEdge(invalidEdgeNodeB),
-            "NodeB " + invalidEdgeNodeB + " has incorrect region");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new RegionImpl().putEdge(invalidEdge), "Edge " + invalidEdge + " has incorrect region");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testRegion.putEdge(invalidEdgeNodeA), "NodeA " + invalidEdgeNodeA + " has incorrect region");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testRegion.putEdge(invalidEdgeNodeB), "NodeB " + invalidEdgeNodeB + " has incorrect region");
     }
 }

@@ -15,11 +15,9 @@ public class LocationUnitTests {
 
     @BeforeAll
     public static void initialize() {
-        Function<Integer, Location> xToLocation = x -> new Location(x, x ^ 2 - x);
-        comparableUnitTests = new ComparableUnitTests<>(xToLocation);
-        objectUnitTests = new ObjectUnitTests<>(xToLocation, Object::toString);
-        comparableUnitTests.initialize(100);
-        objectUnitTests.initialize(100);
+        Function<Integer, Location> xToLocation = x -> new Location(x, x * 2);
+        comparableUnitTests = ComparableUnitTests.initialize100(xToLocation);
+        objectUnitTests = ObjectUnitTests.initialize100(xToLocation, Object::toString);
     }
 
     @Test
