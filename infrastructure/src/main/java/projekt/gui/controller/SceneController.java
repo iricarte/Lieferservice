@@ -22,16 +22,6 @@ public abstract class SceneController {
     }
 
     /**
-     * Specifies the title of the {@link Stage}.
-     * This is used in {@link #initStage(Stage)} to set the title of the {@link Stage}.
-     *
-     * @return The title of the {@link Stage}.
-     */
-    public abstract String getTitle();
-
-    // --Setup Methods-- //
-
-    /**
      * Initializes the {@link Stage} of this {@link SceneController}.
      * This default implementation sets the title of the {@link Stage} to {@link #getTitle()}.
      *
@@ -40,4 +30,14 @@ public abstract class SceneController {
     public void initStage(final Stage stage) {
         (this.stage = stage).setTitle(getTitle());
     }
+
+    // --Setup Methods-- //
+
+    /**
+     * Specifies the title of the {@link Stage}.
+     * This is used in {@link #initStage(Stage)} to set the title of the {@link Stage}.
+     *
+     * @return The title of the {@link Stage}.
+     */
+    public abstract String getTitle();
 }

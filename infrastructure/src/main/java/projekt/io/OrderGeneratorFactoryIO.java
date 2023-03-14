@@ -15,11 +15,13 @@ import java.util.function.Supplier;
 public class OrderGeneratorFactoryIO {
 
     private static final Map<String, Supplier<? extends OrderGenerator.FactoryBuilder>> DESERIALIZED_ORDER_GENERATOR_FACTORY_BUILDER = Map.of(
-        EmptyOrderGenerator.Factory.class.getName(), EmptyOrderGenerator.FactoryBuilder::new,
-        FridayOrderGenerator.Factory.class.getName(), FridayOrderGenerator.Factory::builder
-    );
+            EmptyOrderGenerator.Factory.class.getName(),
+            EmptyOrderGenerator.FactoryBuilder::new,
+            FridayOrderGenerator.Factory.class.getName(),
+            FridayOrderGenerator.Factory::builder);
 
-    public static OrderGenerator.Factory readOrderGeneratorFactory(BufferedReader reader, VehicleManager vehicleManager) {
+    public static OrderGenerator.Factory readOrderGeneratorFactory(BufferedReader reader,
+                                                                   VehicleManager vehicleManager) {
         OrderGenerator.FactoryBuilder builder = null;
 
         try {
@@ -36,7 +38,8 @@ public class OrderGeneratorFactoryIO {
                     try {
                         builder = DESERIALIZED_ORDER_GENERATOR_FACTORY_BUILDER.get(serializedOrderGenerator[0]).get();
                     } catch (NullPointerException e) {
-                        throw new RuntimeException("unknown name of OrderGeneratorFactory: %s".formatted(serializedOrderGenerator[0]));
+                        throw new RuntimeException("unknown name of OrderGeneratorFactory: %s".formatted(
+                                serializedOrderGenerator[0]));
                     }
 
                     if (builder instanceof FridayOrderGenerator.FactoryBuilder fridayBuilder) {
@@ -50,7 +53,6 @@ public class OrderGeneratorFactoryIO {
                         }
                         fridayBuilder.setVehicleManager(vehicleManager);
                     }
-
                 } else {
                     throw new RuntimeException("Illegal line read: %s".formatted(line));
                 }
@@ -70,14 +72,12 @@ public class OrderGeneratorFactoryIO {
             writer.write("O %s".formatted(factory.getClass().getName()));
 
             if (factory instanceof FridayOrderGenerator.Factory fridayFactory) {
-                writer.write(" %d %d %s %s %d %d\n".formatted(
-                    fridayFactory.orderCount,
-                    fridayFactory.deliveryInterval,
-                    Double.toString(fridayFactory.maxWeight),
-                    Double.toString(fridayFactory.standardDeviation),
-                    fridayFactory.lastTick,
-                    fridayFactory.seed)
-                );
+                writer.write(" %d %d %s %s %d %d\n".formatted(fridayFactory.orderCount,
+                                                              fridayFactory.deliveryInterval,
+                                                              Double.toString(fridayFactory.maxWeight),
+                                                              Double.toString(fridayFactory.standardDeviation),
+                                                              fridayFactory.lastTick,
+                                                              fridayFactory.seed));
             } else {
                 writer.write("\n");
             }
@@ -87,6 +87,4 @@ public class OrderGeneratorFactoryIO {
             throw new RuntimeException(e);
         }
     }
-
-
 }

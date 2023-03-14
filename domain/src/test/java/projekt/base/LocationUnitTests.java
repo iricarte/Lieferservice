@@ -49,5 +49,4 @@ public class LocationUnitTests {
     public void testLessThen() {
         comparableUnitTests.testLessThen();
     }
-
 }

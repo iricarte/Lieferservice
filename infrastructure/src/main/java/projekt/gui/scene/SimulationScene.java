@@ -65,23 +65,22 @@ public class SimulationScene extends Scene implements SimulationListener, Contro
         //Execute GUI updates on the javafx application thread
         Platform.runLater(() -> {
             events.stream()
-                .filter(SpawnEvent.class::isInstance)
-                .map(SpawnEvent.class::cast)
-                .forEach(spawnEvent -> mapPane.addVehicle(spawnEvent.getVehicle()));
+                  .filter(SpawnEvent.class::isInstance)
+                  .map(SpawnEvent.class::cast)
+                  .forEach(spawnEvent -> mapPane.addVehicle(spawnEvent.getVehicle()));
 
             events.stream()
-                .filter(ArrivedAtNodeEvent.class::isInstance)
-                .map(ArrivedAtNodeEvent.class::cast)
-                .forEach(arrivedAtNodeEvent -> mapPane.redrawVehicle(arrivedAtNodeEvent.getVehicle()));
+                  .filter(ArrivedAtNodeEvent.class::isInstance)
+                  .map(ArrivedAtNodeEvent.class::cast)
+                  .forEach(arrivedAtNodeEvent -> mapPane.redrawVehicle(arrivedAtNodeEvent.getVehicle()));
 
             events.stream()
-                .filter(ArrivedAtEdgeEvent.class::isInstance)
-                .map(ArrivedAtEdgeEvent.class::cast)
-                .forEach(arrivedAtEdgeEvent -> mapPane.redrawVehicle(arrivedAtEdgeEvent.getVehicle()));
+                  .filter(ArrivedAtEdgeEvent.class::isInstance)
+                  .map(ArrivedAtEdgeEvent.class::cast)
+                  .forEach(arrivedAtEdgeEvent -> mapPane.redrawVehicle(arrivedAtEdgeEvent.getVehicle()));
 
             controlsPane.updateTickLabel(tick);
         });
-
     }
 
     @Override

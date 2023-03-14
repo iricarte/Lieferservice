@@ -27,7 +27,10 @@ public class NodeImplUnitTests {
     @BeforeAll
     public static void initialize() {
         RegionImpl region = new RegionImpl();
-        Function<Integer, NodeImpl> xToNodeImpl = x -> new NodeImpl(region, "Node" + x, new Location(x, x * 2), Set.of());
+        Function<Integer, NodeImpl> xToNodeImpl = x -> new NodeImpl(region,
+                                                                    "Node" + x,
+                                                                    new Location(x, x * 2),
+                                                                    Set.of());
         comparableUnitTests = ComparableUnitTests.initialize100(xToNodeImpl);
         objectUnitTests = ObjectUnitTests.initialize100(xToNodeImpl, Object::toString);
         Location locationNodeA = new Location(0, 0);
@@ -94,7 +97,6 @@ public class NodeImplUnitTests {
         Assertions.assertEquals(Set.of(nodeA, nodeC), nodeB.getAdjacentNodes());
         Assertions.assertEquals(Set.of(nodeB), nodeC.getAdjacentNodes());
         Assertions.assertEquals(Set.of(), nodeD.getAdjacentNodes());
-
     }
 
     @Test

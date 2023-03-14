@@ -9,7 +9,8 @@ class OccupiedNodeImpl<C extends Region.Node> extends AbstractOccupied<C> {
 
     /**
      * Creates a new {@link OccupiedNodeImpl} instance.
-     * @param node The represented {@link Region.Node}.
+     *
+     * @param node           The represented {@link Region.Node}.
      * @param vehicleManager the corresponding {@link VehicleManager}.
      */
     OccupiedNodeImpl(C node, VehicleManager vehicleManager) {
@@ -18,7 +19,8 @@ class OccupiedNodeImpl<C extends Region.Node> extends AbstractOccupied<C> {
 
     @Override
     public void tick(long currentTick) {
-        // it is important to create a copy here. The move method in vehicle will probably modify this map
+        // it is important to create a copy here. The move method in vehicle will probably modify
+        // this map
         // TODO: Only move things that can be moved
         for (Map.Entry<VehicleImpl, VehicleStats> entry : List.copyOf(vehicles.entrySet())) {
             entry.getKey().move(currentTick);
@@ -44,12 +46,7 @@ class OccupiedNodeImpl<C extends Region.Node> extends AbstractOccupied<C> {
     }
 
     protected void emitArrivedEvent(VehicleImpl vehicle, OccupiedEdgeImpl previousEdge, long tick) {
-        vehicleManager.getEventBus().queuePost(ArrivedAtNodeEvent.of(
-                tick,
-                vehicle,
-                component,
-                previousEdge.getComponent()
-            )
-        );
+        vehicleManager.getEventBus()
+                      .queuePost(ArrivedAtNodeEvent.of(tick, vehicle, component, previousEdge.getComponent()));
     }
 }

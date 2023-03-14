@@ -55,9 +55,6 @@ public record TickInterval(long start, long end) {
 
     @Override
     public String toString() {
-        return "TickInterval{" +
-            "start=" + start +
-            ", end=" + end +
-            '}';
+        return "TickInterval{" + "start=" + start + ", end=" + end + '}';
     }
 }

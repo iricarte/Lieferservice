@@ -20,6 +20,7 @@ public class EventBus {
 
     /**
      * Adds an {@link Event} to the bus.
+     *
      * @param event The {@link Event} to add.
      */
     public void queuePost(Event event) {
@@ -33,6 +34,7 @@ public class EventBus {
 
     /**
      * Add all given {@link Event}s to the bus.
+     *
      * @param events The {@link Event}s to add.
      */
     public void queuePost(Collection<Event> events) {
@@ -45,7 +47,9 @@ public class EventBus {
     }
 
     /**
-     * Returns all {@link Event}s that have been added since the last time this bus has been cleared and clears this bus.
+     * Returns all {@link Event}s that have been added since the last time this bus has been
+     * cleared and clears this bus.
+     *
      * @param tick The current Tick.
      * @return All {@link Event}s that have been added since the last time this bus has been cleared
      */
@@ -72,6 +76,7 @@ public class EventBus {
 
     /**
      * Returns a log of this bus.
+     *
      * @return A log of this bus containing all {@link Event}s popped at a specific tick.
      */
     public Map<Long, List<Event>> getLog() {

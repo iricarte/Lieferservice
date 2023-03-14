@@ -18,5 +18,4 @@ public interface SimulationSetupHandler {
      * @param i          the current iteration count.
      */
     void accept(Simulation simulation, ProblemArchetype problem, int i);
-
 }

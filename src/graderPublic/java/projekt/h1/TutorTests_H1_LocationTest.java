@@ -24,41 +24,49 @@ public class TutorTests_H1_LocationTest {
 
     @Test
     public void testCompareToXValueDifferent() {
-        Context context = contextBuilder()
-            .subject("Location#compareTo(Location)")
-            .build();
+        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(2, 2);
 
-        assertTrue(location1.compareTo(location2) < 0, context, TR -> "Method did not return value lower than zero when location1.x < location2.x");
-        assertTrue(location2.compareTo(location1) > 0, context, TR -> "Method did not return value higher than zero when location1.x > location2.x");
+        assertTrue(location1.compareTo(location2) < 0,
+                   context,
+                   TR -> "Method did not return value lower than zero when location1.x < " + "location2.x");
+        assertTrue(location2.compareTo(location1) > 0,
+                   context,
+                   TR -> "Method did not return value higher than zero when location1.x > " + "location2.x");
     }
 
     @Test
     public void testCompareToEqual() {
-        Context context = contextBuilder()
-            .subject("Location#compareTo(Location)")
-            .build();
+        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(1, 2);
 
-        assertEquals(0, location1.compareTo(location2), context, TR -> "Method did not return zero when location1.x == location2.x");
-        assertEquals(0, location2.compareTo(location1), context, TR -> "Method did not return zero when location1.x == location2.x");
+        assertEquals(0,
+                     location1.compareTo(location2),
+                     context,
+                     TR -> "Method did not return zero when location1.x == location2.x");
+        assertEquals(0,
+                     location2.compareTo(location1),
+                     context,
+                     TR -> "Method did not return zero when location1.x == location2.x");
     }
 
     @Test
     public void testCompareToYValueDifferent() {
-        Context context = contextBuilder()
-            .subject("Location#compareTo(Location)")
-            .build();
+        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(1, 3);
 
-        assertTrue(location1.compareTo(location2) < 0, context, TR -> "Method did not return value lower than zero when location1.y < location2.y");
-        assertTrue(location2.compareTo(location1) > 0, context, TR -> "Method did not return value higher than zero when location1.y > location2.y");
+        assertTrue(location1.compareTo(location2) < 0,
+                   context,
+                   TR -> "Method did not return value lower than zero when location1.y < " + "location2.y");
+        assertTrue(location2.compareTo(location1) > 0,
+                   context,
+                   TR -> "Method did not return value higher than zero when location1.y > " + "location2.y");
     }
 
     @ParameterizedTest
@@ -91,13 +99,15 @@ public class TutorTests_H1_LocationTest {
             hashes.add(location.hashCode());
         }
 
-        Context context = contextBuilder()
-            .subject("Location#hashCode()")
-            .add("seed", seed)
-            .add("generated locations", locations.size())
-            .build();
+        Context context = contextBuilder().subject("Location#hashCode()")
+                                          .add("seed", seed)
+                                          .add("generated locations", locations.size())
+                                          .build();
 
-        assertEquals(locations.size(), hashes.size(), context, TR -> "Method did not return unique hash codes for all locations");
+        assertEquals(locations.size(),
+                     hashes.size(),
+                     context,
+                     TR -> "Method did not return unique hash codes for all locations");
     }
 
     @Test
@@ -108,20 +118,29 @@ public class TutorTests_H1_LocationTest {
 
         testEquals(new Location(1, 2), new Location(1, 2), true, "Method did not return true for equal locations");
 
-        testEquals(new Location(1, 2), new Location(1, 3), false, "Method did not return false for different locations");
-        testEquals(new Location(2, 2), new Location(1, 2), false, "Method did not return false for different locations");
-        testEquals(new Location(2, 2), new Location(1, 1), false, "Method did not return false for different locations");
+        testEquals(new Location(1, 2),
+                   new Location(1, 3),
+                   false,
+                   "Method did not return false for different locations");
+        testEquals(new Location(2, 2),
+                   new Location(1, 2),
+                   false,
+                   "Method did not return false for different locations");
+        testEquals(new Location(2, 2),
+                   new Location(1, 1),
+                   false,
+                   "Method did not return false for different locations");
 
         testEquals(new Location(1, 2), new Object(), false, "Method did not return false for different types");
 
         testEquals(new Location(1, 2), null, false, "Method did not return false for null");
     }
+
     private void testEquals(Object a, Object b, boolean expected, String description) {
-        Context context = contextBuilder()
-            .subject("Location#equals(Object)")
-            .add("LocationA", Objects.toString(a))
-            .add("LocationB", Objects.toString(b))
-            .build();
+        Context context = contextBuilder().subject("Location#equals(Object)")
+                                          .add("LocationA", Objects.toString(a))
+                                          .add("LocationB", Objects.toString(b))
+                                          .build();
 
         assertEquals(expected, a.equals(b), context, TR -> description);
     }
@@ -129,15 +148,13 @@ public class TutorTests_H1_LocationTest {
     @ParameterizedTest
     @CsvSource("1, 2")
     public void testToString(int x, int y) {
-        Context context = contextBuilder()
-            .add("x", x)
-            .add("y", y)
-            .subject("Location#equals(Object)")
-            .build();
+        Context context = contextBuilder().add("x", x).add("y", y).subject("Location#equals(Object)").build();
 
         Location location = new Location(x, y);
 
-        assertEquals("(" + x + "," + y + ")", location.toString(), context, TR -> "Method did not return the correct string");
+        assertEquals("(" + x + "," + y + ")",
+                     location.toString(),
+                     context,
+                     TR -> "Method did not return the correct string");
     }
-
 }

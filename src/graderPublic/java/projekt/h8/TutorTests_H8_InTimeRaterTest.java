@@ -46,7 +46,6 @@ public class TutorTests_H8_InTimeRaterTest {
     private Vehicle vehicle;
     private VehicleManager.OccupiedRestaurant occupiedRestaurant;
 
-
     @BeforeEach
     public void setup() throws ReflectiveOperationException {
         neighborhoodLocation = new Location(1, 1);
@@ -67,91 +66,111 @@ public class TutorTests_H8_InTimeRaterTest {
     public void testAllOrdersInTime(long ignoredTicksOff, long maxTickOff, double expected) {
 
         Rater inTimeRate = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                              .setIgnoredTicksOff(ignoredTicksOff)
+                                              .setMaxTicksOff(maxTickOff)
+                                              .build()
+                                              .create();
 
-        Context context = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .add("ignoredTicksOff", ignoredTicksOff)
-            .add("maxTickOff", maxTickOff)
-            .build();
+        Context context = contextBuilder().subject("inTimeRater#getScore")
+                                          .add("ignoredTicksOff", ignoredTicksOff)
+                                          .add("maxTickOff", maxTickOff)
+                                          .build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(0, 5), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(1, 6), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(2, 7), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(3, 8), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(0, 5),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(1, 6),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(2, 7),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(3, 8),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2)
-        ), 0);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(0, order1), OrderReceivedEvent.of(0, order2)), 0);
 
         order1.setActualDeliveryTick(1);
         order2.setActualDeliveryTick(1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(1, order3),
-            OrderReceivedEvent.of(1, order4),
-            DeliverOrderEvent.of(1, vehicle, neighborhood, order1),
-            DeliverOrderEvent.of(1, vehicle, neighborhood, order2)
-        ), 1);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(1, order3),
+                                  OrderReceivedEvent.of(1, order4),
+                                  DeliverOrderEvent.of(1, vehicle, neighborhood, order1),
+                                  DeliverOrderEvent.of(1, vehicle, neighborhood, order2)), 1);
 
         order3.setActualDeliveryTick(4);
         order4.setActualDeliveryTick(4);
 
-        inTimeRate.onTick(List.of(
-            DeliverOrderEvent.of(4, vehicle, neighborhood, order3),
-            DeliverOrderEvent.of(4, vehicle, neighborhood, order4)
-        ), 4);
+        inTimeRate.onTick(List.of(DeliverOrderEvent.of(4, vehicle, neighborhood, order3),
+                                  DeliverOrderEvent.of(4, vehicle, neighborhood, order4)), 4);
 
-        assertEquals(expected, inTimeRate.getScore(), context,
-            TR -> "method did not return correct score");
+        assertEquals(expected, inTimeRate.getScore(), context, TR -> "method did not return correct score");
     }
 
     @ParameterizedTest
     @CsvSource({"10, 50, 0.0", "0, 1, 0.0", "100, 5000, 0.0"})
     public void testNoOrdersDelivered(long ignoredTicksOff, long maxTickOff, double expected) {
         Rater inTimeRate1 = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                               .setIgnoredTicksOff(ignoredTicksOff)
+                                               .setMaxTicksOff(maxTickOff)
+                                               .build()
+                                               .create();
 
-        Context context1 = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .add("ignoredTicksOff", ignoredTicksOff)
-            .add("maxTickOff", maxTickOff)
-            .build();
+        Context context1 = contextBuilder().subject("inTimeRater#getScore")
+                                           .add("ignoredTicksOff", ignoredTicksOff)
+                                           .add("maxTickOff", maxTickOff)
+                                           .build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(0, 5), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(1, 6), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(2, 7), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(3, 8), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(0, 5),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(1, 6),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(2, 7),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(3, 8),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate1.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2)
-        ), 0);
+        inTimeRate1.onTick(List.of(OrderReceivedEvent.of(0, order1), OrderReceivedEvent.of(0, order2)), 0);
 
-        inTimeRate1.onTick(List.of(
-            OrderReceivedEvent.of(1, order3),
-            OrderReceivedEvent.of(1, order4)
-        ), 1);
+        inTimeRate1.onTick(List.of(OrderReceivedEvent.of(1, order3), OrderReceivedEvent.of(1, order4)), 1);
 
-        assertEquals(expected, inTimeRate1.getScore(), context1,
-            TR -> "method did not return correct score when no orders were delivered but some were received");
+        assertEquals(expected,
+                     inTimeRate1.getScore(),
+                     context1,
+                     TR -> "method did not return correct score when no orders were delivered but" + " some " +
+                           "were received");
 
         Rater inTimeRate2 = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                               .setIgnoredTicksOff(ignoredTicksOff)
+                                               .setMaxTicksOff(maxTickOff)
+                                               .build()
+                                               .create();
 
-        assertEquals(expected, inTimeRate2.getScore(), context1,
-            TR -> "method did not return correct score when no orders were received or delivered");
-
+        assertEquals(expected,
+                     inTimeRate2.getScore(),
+                     context1,
+                     TR -> "method did not return correct score when no orders were received or " + "delivered");
     }
 
     @ParameterizedTest
@@ -159,47 +178,54 @@ public class TutorTests_H8_InTimeRaterTest {
     public void testAllOrdersInIgnoredTicksOff(long ignoredTicksOff, long maxTickOff, double expected) {
 
         Rater inTimeRate = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                              .setIgnoredTicksOff(ignoredTicksOff)
+                                              .setMaxTicksOff(maxTickOff)
+                                              .build()
+                                              .create();
 
-        Context context = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .add("ignoredTicksOff", ignoredTicksOff)
-            .add("maxTickOff", maxTickOff)
-            .build();
+        Context context = contextBuilder().subject("inTimeRater#getScore")
+                                          .add("ignoredTicksOff", ignoredTicksOff)
+                                          .add("maxTickOff", maxTickOff)
+                                          .build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(0, 5), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(1, 6), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(2, 7), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(3, 8), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(0, 5),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(1, 6),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(2, 7),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(3, 8),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2)
-        ), 0);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(0, order1), OrderReceivedEvent.of(0, order2)), 0);
 
         order1.setActualDeliveryTick(7);
         order2.setActualDeliveryTick(7);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(7, order3),
-            OrderReceivedEvent.of(7, order4),
-            DeliverOrderEvent.of(7, vehicle, neighborhood, order1),
-            DeliverOrderEvent.of(7, vehicle, neighborhood, order2)
-        ), 7);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(7, order3),
+                                  OrderReceivedEvent.of(7, order4),
+                                  DeliverOrderEvent.of(7, vehicle, neighborhood, order1),
+                                  DeliverOrderEvent.of(7, vehicle, neighborhood, order2)), 7);
 
         order3.setActualDeliveryTick(9);
         order4.setActualDeliveryTick(9);
 
-        inTimeRate.onTick(List.of(
-            DeliverOrderEvent.of(9, vehicle, neighborhood, order3),
-            DeliverOrderEvent.of(9, vehicle, neighborhood, order4)
-        ), 9);
+        inTimeRate.onTick(List.of(DeliverOrderEvent.of(9, vehicle, neighborhood, order3),
+                                  DeliverOrderEvent.of(9, vehicle, neighborhood, order4)), 9);
 
-        assertEquals(expected, inTimeRate.getScore(), context,
-            TR -> "method did not return correct score");
+        assertEquals(expected, inTimeRate.getScore(), context, TR -> "method did not return correct score");
     }
 
     @ParameterizedTest
@@ -207,47 +233,54 @@ public class TutorTests_H8_InTimeRaterTest {
     public void testAllOrdersAboveMaxTicksOff(long ignoredTicksOff, long maxTickOff, double expected) {
 
         Rater inTimeRate = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                              .setIgnoredTicksOff(ignoredTicksOff)
+                                              .setMaxTicksOff(maxTickOff)
+                                              .build()
+                                              .create();
 
-        Context context = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .add("ignoredTicksOff", ignoredTicksOff)
-            .add("maxTickOff", maxTickOff)
-            .build();
+        Context context = contextBuilder().subject("inTimeRater#getScore")
+                                          .add("ignoredTicksOff", ignoredTicksOff)
+                                          .add("maxTickOff", maxTickOff)
+                                          .build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(0, 5), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(1, 6), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(2, 7), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(3, 8), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(0, 5),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(1, 6),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(2, 7),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(3, 8),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2)
-        ), 0);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(0, order1), OrderReceivedEvent.of(0, order2)), 0);
 
         order1.setActualDeliveryTick(607);
         order2.setActualDeliveryTick(607);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(607, order3),
-            OrderReceivedEvent.of(607, order4),
-            DeliverOrderEvent.of(607, vehicle, neighborhood, order1),
-            DeliverOrderEvent.of(607, vehicle, neighborhood, order2)
-        ), 607);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(607, order3),
+                                  OrderReceivedEvent.of(607, order4),
+                                  DeliverOrderEvent.of(607, vehicle, neighborhood, order1),
+                                  DeliverOrderEvent.of(607, vehicle, neighborhood, order2)), 607);
 
         order3.setActualDeliveryTick(609);
         order4.setActualDeliveryTick(609);
 
-        inTimeRate.onTick(List.of(
-            DeliverOrderEvent.of(609, vehicle, neighborhood, order3),
-            DeliverOrderEvent.of(609, vehicle, neighborhood, order4)
-        ), 609);
+        inTimeRate.onTick(List.of(DeliverOrderEvent.of(609, vehicle, neighborhood, order3),
+                                  DeliverOrderEvent.of(609, vehicle, neighborhood, order4)), 609);
 
-        assertEquals(expected, inTimeRate.getScore(), context,
-            TR -> "method did not return correct score");
+        assertEquals(expected, inTimeRate.getScore(), context, TR -> "method did not return correct score");
     }
 
     @ParameterizedTest
@@ -255,47 +288,54 @@ public class TutorTests_H8_InTimeRaterTest {
     public void testAllOrdersTooEarly(long ignoredTicksOff, long maxTickOff, double expected) {
 
         Rater inTimeRate = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                              .setIgnoredTicksOff(ignoredTicksOff)
+                                              .setMaxTicksOff(maxTickOff)
+                                              .build()
+                                              .create();
 
-        Context context = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .add("ignoredTicksOff", ignoredTicksOff)
-            .add("maxTickOff", maxTickOff)
-            .build();
+        Context context = contextBuilder().subject("inTimeRater#getScore")
+                                          .add("ignoredTicksOff", ignoredTicksOff)
+                                          .add("maxTickOff", maxTickOff)
+                                          .build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(10, 15), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(11, 16), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(12, 17), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(13, 18), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(10, 15),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(11, 16),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(12, 17),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(13, 18),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2)
-        ), 0);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(0, order1), OrderReceivedEvent.of(0, order2)), 0);
 
         order1.setActualDeliveryTick(1);
         order2.setActualDeliveryTick(1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(1, order3),
-            OrderReceivedEvent.of(1, order4),
-            DeliverOrderEvent.of(1, vehicle, neighborhood, order1),
-            DeliverOrderEvent.of(1, vehicle, neighborhood, order2)
-        ), 1);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(1, order3),
+                                  OrderReceivedEvent.of(1, order4),
+                                  DeliverOrderEvent.of(1, vehicle, neighborhood, order1),
+                                  DeliverOrderEvent.of(1, vehicle, neighborhood, order2)), 1);
 
         order3.setActualDeliveryTick(10);
         order4.setActualDeliveryTick(10);
 
-        inTimeRate.onTick(List.of(
-            DeliverOrderEvent.of(10, vehicle, neighborhood, order3),
-            DeliverOrderEvent.of(10, vehicle, neighborhood, order4)
-        ), 10);
+        inTimeRate.onTick(List.of(DeliverOrderEvent.of(10, vehicle, neighborhood, order3),
+                                  DeliverOrderEvent.of(10, vehicle, neighborhood, order4)), 10);
 
-        assertEquals(expected, inTimeRate.getScore(), context,
-            TR -> "method did not return correct score");
+        assertEquals(expected, inTimeRate.getScore(), context, TR -> "method did not return correct score");
     }
 
     @ParameterizedTest
@@ -303,54 +343,70 @@ public class TutorTests_H8_InTimeRaterTest {
     public void testComplex(long ignoredTicksOff, long maxTickOff, double expected) {
 
         Rater inTimeRate = InTimeRater.Factory.builder()
-            .setIgnoredTicksOff(ignoredTicksOff)
-            .setMaxTicksOff(maxTickOff)
-            .build()
-            .create();
+                                              .setIgnoredTicksOff(ignoredTicksOff)
+                                              .setMaxTicksOff(maxTickOff)
+                                              .build()
+                                              .create();
 
-        Context context = contextBuilder()
-            .subject("inTimeRater#getScore")
-            .build();
+        Context context = contextBuilder().subject("inTimeRater#getScore").build();
 
-        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(0, 4), foodList, 1);
-        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(5, 10), foodList, 1);
-        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(10, 16), foodList, 1);
-        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(15, 20), foodList, 1);
-        ConfirmedOrder order5 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(20, 25), foodList, 1);
-        ConfirmedOrder order6 = new ConfirmedOrder(neighborhoodLocation, occupiedRestaurant, new TickInterval(25, 30), foodList, 1);
+        ConfirmedOrder order1 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(0, 4),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order2 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(5, 10),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order3 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(10, 16),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order4 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(15, 20),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order5 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(20, 25),
+                                                   foodList,
+                                                   1);
+        ConfirmedOrder order6 = new ConfirmedOrder(neighborhoodLocation,
+                                                   occupiedRestaurant,
+                                                   new TickInterval(25, 30),
+                                                   foodList,
+                                                   1);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(0, order1),
-            OrderReceivedEvent.of(0, order2),
-            OrderReceivedEvent.of(4, order3)
-        ), 0);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(0, order1),
+                                  OrderReceivedEvent.of(0, order2),
+                                  OrderReceivedEvent.of(0, order3)), 0);
 
         order3.setActualDeliveryTick(1);
 
-        inTimeRate.onTick(List.of(
-            DeliverOrderEvent.of(1, vehicle, neighborhood, order3)
-        ), 1);
+        inTimeRate.onTick(List.of(DeliverOrderEvent.of(1, vehicle, neighborhood, order3)), 1);
 
         order1.setActualDeliveryTick(4);
         order2.setActualDeliveryTick(4);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(4, order4),
-            OrderReceivedEvent.of(4, order5),
-            DeliverOrderEvent.of(4, vehicle, neighborhood, order1),
-            DeliverOrderEvent.of(4, vehicle, neighborhood, order2)
-        ), 4);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(4, order4),
+                                  OrderReceivedEvent.of(4, order5),
+                                  DeliverOrderEvent.of(4, vehicle, neighborhood, order1),
+                                  DeliverOrderEvent.of(4, vehicle, neighborhood, order2)), 4);
 
         order4.setActualDeliveryTick(27);
         order5.setActualDeliveryTick(27);
 
-        inTimeRate.onTick(List.of(
-            OrderReceivedEvent.of(27, order6),
-            DeliverOrderEvent.of(27, vehicle, neighborhood, order4),
-            DeliverOrderEvent.of(27, vehicle, neighborhood, order5)
-        ), 27);
+        inTimeRate.onTick(List.of(OrderReceivedEvent.of(27, order6),
+                                  DeliverOrderEvent.of(27, vehicle, neighborhood, order4),
+                                  DeliverOrderEvent.of(27, vehicle, neighborhood, order5)), 27);
 
-        assertTrue(Math.abs(expected - inTimeRate.getScore()) < 0.001, context,
-            TR -> "method did not return correct score. Expected %f but was %f".formatted(expected, inTimeRate.getScore()));
+        assertTrue(Math.abs(expected - inTimeRate.getScore()) < 0.001,
+                   context,
+                   TR -> "method did not return correct score. Expected %f but was %f".formatted(expected,
+                                                                                                 inTimeRate.getScore()));
     }
 }

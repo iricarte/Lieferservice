@@ -9,19 +9,17 @@ import projekt.delivery.routing.VehicleManager;
  */
 public interface ArrivedAtRestaurantEvent extends ArrivedAtNodeEvent {
 
-    static ArrivedAtRestaurantEvent of(
-        long tick,
-        Vehicle vehicle,
-        VehicleManager.OccupiedRestaurant restaurant,
-        Region.Edge lastEdge
-    ) {
+    static ArrivedAtRestaurantEvent of(long tick,
+                                       Vehicle vehicle,
+                                       VehicleManager.OccupiedRestaurant restaurant,
+                                       Region.Edge lastEdge) {
         return new ArrivedAtRestaurantEventImpl(tick, vehicle, restaurant, lastEdge);
     }
 
     /**
      * Returns the {@link Region.Restaurant} the {@link Vehicle} arrived at.
+     *
      * @return The {@link Region.Restaurant} the {@link Vehicle} arrived at.
      */
     VehicleManager.OccupiedRestaurant getRestaurant();
-
 }

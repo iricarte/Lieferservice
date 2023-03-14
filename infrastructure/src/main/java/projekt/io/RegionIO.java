@@ -20,10 +20,12 @@ import java.util.function.Supplier;
 public class RegionIO {
 
     private static final Map<String, Supplier<? extends DistanceCalculator>> DESERIALIZED_DISTANCE_CALCULATOR = Map.of(
-        ChessboardDistanceCalculator.class.getSimpleName(), ChessboardDistanceCalculator::new,
-        EuclideanDistanceCalculator.class.getSimpleName(), EuclideanDistanceCalculator::new,
-        ManhattanDistanceCalculator.class.getSimpleName(), ManhattanDistanceCalculator::new
-    );
+            ChessboardDistanceCalculator.class.getSimpleName(),
+            ChessboardDistanceCalculator::new,
+            EuclideanDistanceCalculator.class.getSimpleName(),
+            EuclideanDistanceCalculator::new,
+            ManhattanDistanceCalculator.class.getSimpleName(),
+            ManhattanDistanceCalculator::new);
 
     public static Region readRegion(BufferedReader reader) {
         Region.Builder builder = Region.builder();
@@ -47,15 +49,16 @@ public class RegionIO {
                 } else if (line.startsWith("R ")) {
                     String[] serializedNode = line.substring(2).split(",");
 
-                    List<String> availableFood = new ArrayList<>(Arrays.asList(serializedNode).subList(3, serializedNode.length));
+                    List<String> availableFood = new ArrayList<>(Arrays.asList(serializedNode)
+                                                                       .subList(3, serializedNode.length));
 
-                    builder.addRestaurant(parseLocation(serializedNode[1], serializedNode[2]), new Region.Restaurant.Preset(serializedNode[0], availableFood));
+                    builder.addRestaurant(parseLocation(serializedNode[1], serializedNode[2]),
+                                          new Region.Restaurant.Preset(serializedNode[0], availableFood));
                 } else if (line.startsWith("E ")) {
                     String[] serializedEdge = line.substring(2).split(",", 5);
                     builder.addEdge(serializedEdge[0],
-                        parseLocation(serializedEdge[1], serializedEdge[2]),
-                        parseLocation(serializedEdge[3], serializedEdge[4]));
-
+                                    parseLocation(serializedEdge[1], serializedEdge[2]),
+                                    parseLocation(serializedEdge[3], serializedEdge[4]));
                 } else if (line.startsWith("D ")) {
                     builder.distanceCalculator(parseDistanceCalculator(line.substring(2)));
                 } else {
@@ -67,6 +70,18 @@ public class RegionIO {
         }
 
         return builder.build();
+    }
+
+    private static Location parseLocation(String x, String y) {
+        return new Location(Integer.parseInt(x), Integer.parseInt(y));
+    }
+
+    private static DistanceCalculator parseDistanceCalculator(String serializedDistanceCalculator) {
+        try {
+            return DESERIALIZED_DISTANCE_CALCULATOR.get(serializedDistanceCalculator).get();
+        } catch (NullPointerException e) {
+            throw new RuntimeException("unknown name of distanceCalculator: %s".formatted(serializedDistanceCalculator));
+        }
     }
 
     public static void writeRegion(BufferedWriter writer, Region region) {
@@ -101,36 +116,23 @@ public class RegionIO {
     }
 
     private static String serializeNeighborhood(Region.Neighborhood neighborhood) {
-        return "%s,%d,%d".formatted(
-            neighborhood.getName(),
-            neighborhood.getLocation().getX(),
-            neighborhood.getLocation().getY());
+        return "%s,%d,%d".formatted(neighborhood.getName(),
+                                    neighborhood.getLocation().getX(),
+                                    neighborhood.getLocation().getY());
     }
 
     private static String serializeRestaurant(Region.Restaurant restaurant) {
-        return "%s,%d,%d,%s".formatted(
-            restaurant.getName(),
-            restaurant.getLocation().getX(),
-            restaurant.getLocation().getY(),
-            String.join(",", restaurant.getAvailableFood())
-        );
+        return "%s,%d,%d,%s".formatted(restaurant.getName(),
+                                       restaurant.getLocation().getX(),
+                                       restaurant.getLocation().getY(),
+                                       String.join(",", restaurant.getAvailableFood()));
     }
 
     private static String serializeEdge(Region.Edge edge) {
         return "%s,%d,%d,%d,%d".formatted(edge.getName(),
-            edge.getNodeA().getLocation().getX(), edge.getNodeA().getLocation().getY(),
-            edge.getNodeB().getLocation().getX(), edge.getNodeB().getLocation().getY());
-    }
-
-    private static Location parseLocation(String x, String y) {
-        return new Location(Integer.parseInt(x), Integer.parseInt(y));
-    }
-
-    private static DistanceCalculator parseDistanceCalculator(String serializedDistanceCalculator) {
-        try {
-            return DESERIALIZED_DISTANCE_CALCULATOR.get(serializedDistanceCalculator).get();
-        } catch (NullPointerException e) {
-            throw new RuntimeException("unknown name of distanceCalculator: %s".formatted(serializedDistanceCalculator));
-        }
+                                          edge.getNodeA().getLocation().getX(),
+                                          edge.getNodeA().getLocation().getY(),
+                                          edge.getNodeB().getLocation().getX(),
+                                          edge.getNodeB().getLocation().getY());
     }
 }

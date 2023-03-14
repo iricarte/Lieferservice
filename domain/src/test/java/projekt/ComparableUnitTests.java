@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Assertions;
 
-
 public class ComparableUnitTests<T extends Comparable<? super T>> {
 
     private final Function<Integer, T> testObjectFactory;

@@ -6,5 +6,4 @@ public class RaterSceneController extends MenuSceneController {
     public String getTitle() {
         return "Rater";
     }
-
 }

@@ -15,6 +15,12 @@ class LoadOrderEventImpl extends VehicleEventImpl implements LoadOrderEvent {
         this.restaurant = restaurant;
     }
 
+    @Override
+    public String toString() {
+        return "LoadOrderEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle() + ", order=" + getOrder() +
+               ", restaurant=" + getRestaurant() + ')';
+    }
+
     public ConfirmedOrder getOrder() {
         return order;
     }
@@ -22,15 +28,5 @@ class LoadOrderEventImpl extends VehicleEventImpl implements LoadOrderEvent {
     @Override
     public Region.Restaurant getRestaurant() {
         return restaurant;
-    }
-
-    @Override
-    public String toString() {
-        return "LoadOrderEvent("
-            + "time=" + getTick()
-            + ", vehicle=" + getVehicle()
-            + ", order=" + getOrder()
-            + ", restaurant=" + getRestaurant()
-            + ')';
     }
 }

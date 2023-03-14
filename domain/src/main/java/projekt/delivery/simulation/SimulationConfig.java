@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A config for a {@link Simulation}.<p>
- *
+ * <p>
  * It contains the length of a tick and whether the {@link Simulation} is paused.
  */
 public class SimulationConfig {
@@ -13,7 +13,7 @@ public class SimulationConfig {
 
     /**
      * Creates a new {@link Simulation} instance.<p>
-     *
+     * <p>
      * By default, the created {@link Simulation} is not paused.
      *
      * @param millisecondsPerTick The length of a tick in  milliseconds.
@@ -24,6 +24,7 @@ public class SimulationConfig {
 
     /**
      * Returns the length of a tick in milliseconds.
+     *
      * @return The length of a tick in milliseconds.
      */
     public int getMillisecondsPerTick() {
@@ -32,6 +33,7 @@ public class SimulationConfig {
 
     /**
      * Sets the length of a tick to the given value.
+     *
      * @param millisecondsPerTick The new length of a tick in milliseconds.
      */
     public void setMillisecondsPerTick(int millisecondsPerTick) {
@@ -40,6 +42,7 @@ public class SimulationConfig {
 
     /**
      * Returns True if the simulation is paused.
+     *
      * @return True if the simulation is paused.
      */
     public boolean isPaused() {
@@ -48,6 +51,7 @@ public class SimulationConfig {
 
     /**
      * Changes the paused status of this {@link SimulationConfig}.
+     *
      * @param paused The new paused status.
      */
     public void setPaused(boolean paused) {

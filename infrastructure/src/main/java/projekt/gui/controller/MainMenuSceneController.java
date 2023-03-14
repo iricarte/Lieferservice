@@ -6,5 +6,4 @@ public class MainMenuSceneController extends MenuSceneController {
     public String getTitle() {
         return "Lieferdienst Simulation - Main Menu";
     }
-
 }

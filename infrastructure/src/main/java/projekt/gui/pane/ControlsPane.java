@@ -25,7 +25,12 @@ public class ControlsPane extends BorderPane {
 
     private final long simulationLength;
 
-    public ControlsPane(Simulation simulation, ProblemArchetype problem, int run, int simulationRuns, long simulationLength, MapPane mapPane) {
+    public ControlsPane(Simulation simulation,
+                        ProblemArchetype problem,
+                        int run,
+                        int simulationRuns,
+                        long simulationLength,
+                        MapPane mapPane) {
         this.simulationLength = simulationLength;
         this.simulation = simulation;
         this.simulationConfig = simulation.getSimulationConfig();
@@ -70,20 +75,19 @@ public class ControlsPane extends BorderPane {
         setCenter(box);
     }
 
-    public void updateTickLabel(long tick) {
-        tickLabel.setText("Tick: %d/%d".formatted(tick, simulationLength));
-    }
-
-    private void updateText() {
-        tickIntervalSliderLabel.setText(
-            "   Tick interval: %d ms %s".formatted(
-                (int) tickIntervalSlider.getValue(),
-                simulationConfig.isPaused() ? "(paused)" : ""));
-    }
-
     private void togglePaused() {
         simulationConfig.setPaused(!simulationConfig.isPaused());
         singleStepButton.setDisable(!singleStepButton.isDisabled());
         updateText();
+    }
+
+    private void updateText() {
+        tickIntervalSliderLabel.setText("   Tick interval: %d ms %s".formatted((int) tickIntervalSlider.getValue(),
+                                                                               simulationConfig.isPaused() ?
+                                                                               "(paused)" : ""));
+    }
+
+    public void updateTickLabel(long tick) {
+        tickLabel.setText("Tick: %d/%d".formatted(tick, simulationLength));
     }
 }

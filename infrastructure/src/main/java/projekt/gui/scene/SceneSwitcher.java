@@ -45,6 +45,24 @@ public final class SceneSwitcher {
     // --Methods-- //
 
     /**
+     * Loads the given {@link SceneType} and initializes its Controller.
+     *
+     * @param sceneType The {@link SceneType} to load.
+     * @param stage     The {@link Stage} to show the {@link Scene} on.
+     * @return The {@link Scene} that was switched to.
+     * @see #loadScene(SceneAndController, Stage)
+     */
+    public static Scene loadScene(final SceneType sceneType, final Stage stage) {
+        final SceneAndController sac;
+        try {
+            sac = sceneType.getSacGenerator().call();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+        return loadScene(sac, stage);
+    }
+
+    /**
      * Switches to the given Scene and initializes its Controller.
      *
      * @param sac   The {@link SceneAndController} to switch to and initialize.
@@ -62,24 +80,6 @@ public final class SceneSwitcher {
         }
         stage.show();
         return scene;
-    }
-
-    /**
-     * Loads the given {@link SceneType} and initializes its Controller.
-     *
-     * @param sceneType The {@link SceneType} to load.
-     * @param stage     The {@link Stage} to show the {@link Scene} on.
-     * @return The {@link Scene} that was switched to.
-     * @see #loadScene(SceneAndController, Stage)
-     */
-    public static Scene loadScene(final SceneType sceneType, final Stage stage) {
-        final SceneAndController sac;
-        try {
-            sac = sceneType.getSacGenerator().call();
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
-        return loadScene(sac, stage);
     }
 
     /**
@@ -106,7 +106,8 @@ public final class SceneSwitcher {
         /**
          * Creates a new SceneType.
          *
-         * @param sacGenerator A Callable that creates a {@link SceneAndController} for this {@link SceneType}.
+         * @param sacGenerator A Callable that creates a {@link SceneAndController} for this
+         *                     {@link SceneType}.
          */
         SceneType(final Callable<SceneAndController> sacGenerator) {
             this.sacGenerator = sacGenerator;

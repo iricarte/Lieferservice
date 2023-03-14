@@ -25,10 +25,7 @@ class VehicleManagerBuilderImpl implements VehicleManager.Builder {
     }
 
     @Override
-    public VehicleManager.Builder addVehicle(
-        Location startingLocation,
-        double capacity
-    ) {
+    public VehicleManager.Builder addVehicle(Location startingLocation, double capacity) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity must be positive");
         }
@@ -53,5 +50,6 @@ class VehicleManagerBuilderImpl implements VehicleManager.Builder {
         return vehicleManager;
     }
 
-    private record VehicleBuilder(Location startingLocation, double capacity) { }
+    private record VehicleBuilder(Location startingLocation, double capacity) {
+    }
 }

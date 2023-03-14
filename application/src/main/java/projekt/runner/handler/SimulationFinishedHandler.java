@@ -15,7 +15,8 @@ public interface SimulationFinishedHandler {
      *
      * @param simulation The {@link Simulation} that got executed.
      * @param problem    The simulated {@link ProblemArchetype}.
-     * @return {@code true} if the {@link Runner} should be interrupted (e.q. because the gui got closed).
+     * @return {@code true} if the {@link Runner} should be interrupted (e.q. because the gui got
+     * closed).
      */
     boolean accept(Simulation simulation, ProblemArchetype problem);
 }

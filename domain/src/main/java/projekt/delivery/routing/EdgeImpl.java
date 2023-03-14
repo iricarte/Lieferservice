@@ -21,24 +21,21 @@ class EdgeImpl implements Region.Edge {
 
     /**
      * Creates a new {@link EdgeImpl} instance.
-     * @param region The {@link Region} this {@link EdgeImpl} belongs to.
-     * @param name The name of this {@link EdgeImpl}.
+     *
+     * @param region    The {@link Region} this {@link EdgeImpl} belongs to.
+     * @param name      The name of this {@link EdgeImpl}.
      * @param locationA The start of this {@link EdgeImpl}.
      * @param locationB The end of this {@link EdgeImpl}.
-     * @param duration The length of this {@link EdgeImpl}.
+     * @param duration  The length of this {@link EdgeImpl}.
      */
-    EdgeImpl(
-        Region region,
-        String name,
-        Location locationA,
-        Location locationB,
-        long duration
-    ) {
+    EdgeImpl(Region region, String name, Location locationA, Location locationB, long duration) {
         this.region = region;
         this.name = name;
         // locations must be in ascending order
         if (locationA.compareTo(locationB) > 0) {
-            throw new IllegalArgumentException(String.format("locationA %s must be <= locationB %s", locationA, locationB));
+            throw new IllegalArgumentException(String.format("locationA %s must be <= locationB %s",
+                                                             locationA,
+                                                             locationB));
         }
         this.locationA = locationA;
         this.locationB = locationB;
@@ -47,6 +44,7 @@ class EdgeImpl implements Region.Edge {
 
     /**
      * Returns the start of this {@link EdgeImpl}.
+     *
      * @return The start of this {@link EdgeImpl}.
      */
     public Location getLocationA() {
@@ -55,6 +53,7 @@ class EdgeImpl implements Region.Edge {
 
     /**
      * Returns the end of this {@link EdgeImpl}.
+     *
      * @return The end of this {@link EdgeImpl}.
      */
     public Location getLocationB() {
@@ -94,6 +93,11 @@ class EdgeImpl implements Region.Edge {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(name, locationA, locationB, duration);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -102,19 +106,13 @@ class EdgeImpl implements Region.Edge {
             return false;
         }
         EdgeImpl edge = (EdgeImpl) o;
-        return duration == edge.duration && name.equals(edge.name) && locationA.equals(edge.locationA) && locationB.equals(edge.locationB);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, locationA, locationB, duration);
+        return duration == edge.duration && name.equals(edge.name) && locationA.equals(edge.locationA) &&
+               locationB.equals(edge.locationB);
     }
 
     @Override
     public String toString() {
-        return "EdgeImpl(name='" + name + "', " +
-            "locationA='" + locationA + "', " +
-            "locationB='" + locationB + "', " +
-            "duration='" + duration + "')";
+        return "EdgeImpl(name='" + name + "', " + "locationA='" + locationA + "', " + "locationB='" + locationB +
+               "', " + "duration='" + duration + "')";
     }
 }

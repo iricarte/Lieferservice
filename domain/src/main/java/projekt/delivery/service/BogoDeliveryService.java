@@ -22,14 +22,10 @@ public class BogoDeliveryService extends AbstractDeliveryService {
     // List of orders that have not yet been loaded onto delivery vehicles
     private final Random random = new Random(42);
     private final List<? extends Region.Node> nodes;
-    private final List<Class<? extends Event>> skipInFirstStep = List.of(
-        ArrivedAtRestaurantEvent.class,
-        ArrivedAtNeighborhoodEvent.class
-    );
+    private final List<Class<? extends Event>> skipInFirstStep = List.of(ArrivedAtRestaurantEvent.class,
+                                                                         ArrivedAtNeighborhoodEvent.class);
 
-    public BogoDeliveryService(
-        VehicleManager vehicleManager
-    ) {
+    public BogoDeliveryService(VehicleManager vehicleManager) {
         super(vehicleManager);
         nodes = vehicleManager.getRegion().getNodes().stream().toList();
     }
@@ -45,41 +41,39 @@ public class BogoDeliveryService extends AbstractDeliveryService {
         scheduleRandomMove(events, ArrivedAtNodeEvent.class);
 
         events.stream()
-            .filter(ArrivedAtRestaurantEvent.class::isInstance)
-            .map(ArrivedAtRestaurantEvent.class::cast)
-            .forEach(e -> {
-                final Vehicle vehicle = e.getVehicle();
-                if (!pendingOrders.isEmpty()) {
-                    final ConfirmedOrder next = pendingOrders.remove(0);
-                    e.getRestaurant().loadOrder(vehicle, next, currentTick);
-                }
-                moveToRandomNode(vehicle);
-            });
+              .filter(ArrivedAtRestaurantEvent.class::isInstance)
+              .map(ArrivedAtRestaurantEvent.class::cast)
+              .forEach(e -> {
+                  final Vehicle vehicle = e.getVehicle();
+                  if (!pendingOrders.isEmpty()) {
+                      final ConfirmedOrder next = pendingOrders.remove(0);
+                      e.getRestaurant().loadOrder(vehicle, next, currentTick);
+                  }
+                  moveToRandomNode(vehicle);
+              });
 
         events.stream()
-            .filter(ArrivedAtNeighborhoodEvent.class::isInstance)
-            .map(ArrivedAtNeighborhoodEvent.class::cast)
-            .forEach(e -> {
-                final Vehicle vehicle = e.getVehicle();
-                final VehicleManager.OccupiedNeighborhood neighborhood = vehicleManager.getOccupiedNeighborhood(e.getNode());
-                for (ConfirmedOrder order : new ArrayList<>(vehicle.getOrders())) {
-                    neighborhood.deliverOrder(vehicle, order, currentTick);
-                }
-                moveToRandomNode(e.getVehicle());
-            });
+              .filter(ArrivedAtNeighborhoodEvent.class::isInstance)
+              .map(ArrivedAtNeighborhoodEvent.class::cast)
+              .forEach(e -> {
+                  final Vehicle vehicle = e.getVehicle();
+                  final VehicleManager.OccupiedNeighborhood neighborhood =
+                          vehicleManager.getOccupiedNeighborhood(e.getNode());
+                  for (ConfirmedOrder order : new ArrayList<>(vehicle.getOrders())) {
+                      neighborhood.deliverOrder(vehicle, order, currentTick);
+                  }
+                  moveToRandomNode(e.getVehicle());
+              });
 
         return events;
     }
 
-    private void scheduleRandomMove(
-        List<Event> events,
-        Class<? extends VehicleEvent> eventType
-    ) {
+    private void scheduleRandomMove(List<Event> events, Class<? extends VehicleEvent> eventType) {
         events.stream()
-            .filter(eventType::isInstance)
-            .filter(e -> !skipInFirstStep.contains(e.getClass()))
-            .map(eventType::cast)
-            .forEach(e -> moveToRandomNode(e.getVehicle()));
+              .filter(eventType::isInstance)
+              .filter(e -> !skipInFirstStep.contains(e.getClass()))
+              .map(eventType::cast)
+              .forEach(e -> moveToRandomNode(e.getVehicle()));
     }
 
     private void moveToRandomNode(Vehicle vehicle) {

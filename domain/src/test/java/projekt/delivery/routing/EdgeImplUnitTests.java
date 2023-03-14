@@ -26,7 +26,11 @@ public class EdgeImplUnitTests {
     @BeforeAll
     public static void initialize() {
         RegionImpl region = new RegionImpl();
-        Function<Integer, EdgeImpl> xToEdgeImpl = x -> new EdgeImpl(region, "Edge", new Location(x, x * 2), new Location(x, x * 2 + x), 10);
+        Function<Integer, EdgeImpl> xToEdgeImpl = x -> new EdgeImpl(region,
+                                                                    "Edge",
+                                                                    new Location(x, x * 2),
+                                                                    new Location(x, x * 2 + x),
+                                                                    10);
         comparableUnitTests = ComparableUnitTests.initialize100(xToEdgeImpl);
         objectUnitTests = ObjectUnitTests.initialize100(xToEdgeImpl, Object::toString);
         for (int x = 0; x < 100; x++) {

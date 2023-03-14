@@ -23,14 +23,18 @@ public interface Vehicle extends Comparable<Vehicle> {
 
     /**
      * Returns the previous component this Vehicle occupied.
+     *
      * @return the previous component or null if this vehicle has not moved yet.
      */
     @Nullable VehicleManager.Occupied<?> getPreviousOccupied();
 
     /**
-     * Returns a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
+     * Returns a {@link List} containing all {@link Path}s this {@link Vehicle} is currently
+     * following.
      * It starts with the first {@link Path}.
-     * @return a {@link List} containing all {@link Path}s this {@link Vehicle} is currently following.
+     *
+     * @return a {@link List} containing all {@link Path}s this {@link Vehicle} is currently
+     * following.
      */
     List<? extends Path> getPaths();
 
@@ -74,15 +78,10 @@ public interface Vehicle extends Comparable<Vehicle> {
 
     /**
      * Returns the {@link Region.Node} this {@link Vehicle} starts on.
+     *
      * @return The {@link Region.Node} this {@link Vehicle} starts on.
      */
     VehicleManager.Occupied<? extends Region.Node> getStartingNode();
-
-    /**
-     * Returns all {@link ConfirmedOrder}s that are loaded onto this {@link Vehicle}.
-     * @return All {@link ConfirmedOrder}s that are loaded onto this {@link Vehicle}.
-     */
-    Collection<ConfirmedOrder> getOrders();
 
     /**
      * Resets this {@link Vehicle} to its start state.
@@ -91,6 +90,7 @@ public interface Vehicle extends Comparable<Vehicle> {
 
     /**
      * Returns the total weight of all {@link ConfirmedOrder}s loaded onto this {@link Vehicle}.
+     *
      * @return The total weight of all {@link ConfirmedOrder}s loaded onto this {@link Vehicle}.
      */
     default double getCurrentWeight() {
@@ -98,25 +98,42 @@ public interface Vehicle extends Comparable<Vehicle> {
     }
 
     /**
-     * Represents a path from one {@link Region.Node} to another {@link Region.Node}.<p>
+     * Returns all {@link ConfirmedOrder}s that are loaded onto this {@link Vehicle}.
      *
-     * The path is represented as a {@link Deque<Region.Node>} that does not contain the start {@link Region.Node} of the path.
+     * @return All {@link ConfirmedOrder}s that are loaded onto this {@link Vehicle}.
+     */
+    Collection<ConfirmedOrder> getOrders();
+
+    /**
+     * Represents a path from one {@link Region.Node} to another {@link Region.Node}.<p>
+     * <p>
+     * The path is represented as a {@link Deque<Region.Node>} that does not contain the start
+     * {@link Region.Node} of the path.
      */
     interface Path {
 
         /**
-         * Returns a {@link Deque<Region.Node>} containing all {@link Region.Node}s of this {@link Path}.
-         * @return A {@link Deque<Region.Node>} containing all {@link Region.Node}s of this {@link Path}
-         * from to start node (excluded) to the end node (included). When the start and the end node are the same the
+         * Returns a {@link Deque<Region.Node>} containing all {@link Region.Node}s of this
+         * {@link Path}.
+         *
+         * @return A {@link Deque<Region.Node>} containing all {@link Region.Node}s of this
+         * {@link Path}
+         * from to start node (excluded) to the end node (included). When the start and the end
+         * node are the same the
          * {@link Deque} is empty.
          */
         Deque<Region.Node> nodes();
 
         /**
-         * Returns the {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
-         * <p>The first parameter of the {@link BiConsumer} is the {@link Vehicle} that reached the end this {@link Path}
-         * and the second parameter is the tick at which the {@link Vehicle} reached the end this {@link Path}.</p>
-         * @return The {@link Consumer} that is supposed to be executed when the end of this {@link Path} is reached.
+         * Returns the {@link Consumer} that is supposed to be executed when the end of this
+         * {@link Path} is reached.
+         * <p>The first parameter of the {@link BiConsumer} is the {@link Vehicle} that reached
+         * the end this {@link Path}
+         * and the second parameter is the tick at which the {@link Vehicle} reached the end this
+         * {@link Path}.</p>
+         *
+         * @return The {@link Consumer} that is supposed to be executed when the end of this
+         * {@link Path} is reached.
          */
         BiConsumer<? super Vehicle, Long> arrivalAction();
     }

@@ -10,11 +10,11 @@ import java.util.List;
 
 import static org.tudalgo.algoutils.student.Student.crash;
 
-
 /**
  * Rates the observed {@link Simulation} based on the distance traveled by all vehicles.<p>
- *
- * To create a new {@link TravelDistanceRater} use {@code TravelDistanceRater.Factory.builder()...build();}.
+ * <p>
+ * To create a new {@link TravelDistanceRater} use {@code TravelDistanceRater.Factory.builder()..
+ * .build();}.
  */
 public class TravelDistanceRater implements Rater {
 
@@ -58,11 +58,6 @@ public class TravelDistanceRater implements Rater {
             this.factor = factor;
         }
 
-        @Override
-        public TravelDistanceRater create() {
-            return new TravelDistanceRater(vehicleManager, factor);
-        }
-
         /**
          * Creates a new {@link TravelDistanceRater.FactoryBuilder}.
          *
@@ -72,7 +67,10 @@ public class TravelDistanceRater implements Rater {
             return new FactoryBuilder();
         }
 
-
+        @Override
+        public TravelDistanceRater create() {
+            return new TravelDistanceRater(vehicleManager, factor);
+        }
     }
 
     /**
@@ -83,7 +81,8 @@ public class TravelDistanceRater implements Rater {
         public VehicleManager vehicleManager;
         public double factor = 0.5;
 
-        private FactoryBuilder() {}
+        private FactoryBuilder() {
+        }
 
         @Override
         public Factory build() {
@@ -104,5 +103,4 @@ public class TravelDistanceRater implements Rater {
             return this;
         }
     }
-
 }

@@ -7,7 +7,8 @@ class OccupiedRestaurantImpl extends OccupiedNodeImpl<Region.Restaurant> impleme
 
     /**
      * Creates a new {@link OccupiedRestaurantImpl} instance.
-     * @param restaurant The represented {@link Region.Neighborhood}.
+     *
+     * @param restaurant     The represented {@link Region.Neighborhood}.
      * @param vehicleManager the corresponding {@link VehicleManager}.
      */
     OccupiedRestaurantImpl(Region.Restaurant restaurant, VehicleManager vehicleManager) {
@@ -21,23 +22,12 @@ class OccupiedRestaurantImpl extends OccupiedNodeImpl<Region.Restaurant> impleme
         }
 
         ((VehicleImpl) vehicle).loadOrder(order);
-        vehicleManager.getEventBus().queuePost(LoadOrderEvent.of(
-                currentTick,
-                vehicle,
-                order,
-                getComponent()
-            )
-        );
+        vehicleManager.getEventBus().queuePost(LoadOrderEvent.of(currentTick, vehicle, order, getComponent()));
     }
 
     @Override
     protected void emitArrivedEvent(VehicleImpl vehicle, OccupiedEdgeImpl previousEdge, long currentTick) {
-        vehicleManager.getEventBus().queuePost(ArrivedAtRestaurantEvent.of(
-                currentTick,
-                vehicle,
-                this,
-                previousEdge.getComponent()
-            )
-        );
+        vehicleManager.getEventBus()
+                      .queuePost(ArrivedAtRestaurantEvent.of(currentTick, vehicle, this, previousEdge.getComponent()));
     }
 }

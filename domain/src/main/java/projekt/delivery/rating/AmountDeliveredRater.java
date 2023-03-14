@@ -9,8 +9,9 @@ import static org.tudalgo.algoutils.student.Student.crash;
 
 /**
  * Rates the observed {@link Simulation} based on the amount of delivered orders.<p>
- *
- * To create a new {@link AmountDeliveredRater} use {@code AmountDeliveredRater.Factory.builder()...build();}.
+ * <p>
+ * To create a new {@link AmountDeliveredRater} use {@code AmountDeliveredRater.Factory.builder()
+ * ...build();}.
  */
 public class AmountDeliveredRater implements Rater {
 
@@ -48,11 +49,6 @@ public class AmountDeliveredRater implements Rater {
             this.factor = factor;
         }
 
-        @Override
-        public AmountDeliveredRater create() {
-            return new AmountDeliveredRater(factor);
-        }
-
         /**
          * Creates a new {@link AmountDeliveredRater.FactoryBuilder}.
          *
@@ -60,6 +56,11 @@ public class AmountDeliveredRater implements Rater {
          */
         public static FactoryBuilder builder() {
             return new FactoryBuilder();
+        }
+
+        @Override
+        public AmountDeliveredRater create() {
+            return new AmountDeliveredRater(factor);
         }
     }
 
@@ -70,7 +71,8 @@ public class AmountDeliveredRater implements Rater {
 
         public double factor = 0.99;
 
-        private FactoryBuilder() {}
+        private FactoryBuilder() {
+        }
 
         @Override
         public Factory build() {

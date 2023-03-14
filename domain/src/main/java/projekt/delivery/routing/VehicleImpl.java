@@ -19,11 +19,10 @@ class VehicleImpl implements Vehicle {
     private final VehicleManager.OccupiedRestaurant startingNode;
     private AbstractOccupied<?> occupied;
 
-    public VehicleImpl(
-        int id,
-        double capacity,
-        VehicleManagerImpl vehicleManager,
-        VehicleManager.OccupiedRestaurant startingNode) {
+    public VehicleImpl(int id,
+                       double capacity,
+                       VehicleManagerImpl vehicleManager,
+                       VehicleManager.OccupiedRestaurant startingNode) {
         this.id = id;
         this.capacity = capacity;
         this.occupied = (AbstractOccupied<?>) startingNode;
@@ -36,19 +35,13 @@ class VehicleImpl implements Vehicle {
         return occupied;
     }
 
-    @Override
-    public @Nullable VehicleManager.Occupied<?> getPreviousOccupied() {
-        AbstractOccupied.VehicleStats stats = occupied.vehicles.get(this);
-        return stats == null ? null : stats.previous;
+    void setOccupied(AbstractOccupied<?> occupied) {
+        this.occupied = occupied;
     }
 
     @Override
     public List<? extends Path> getPaths() {
         return new LinkedList<>(moveQueue);
-    }
-
-    void setOccupied(AbstractOccupied<?> occupied) {
-        this.occupied = occupied;
     }
 
     @Override
@@ -60,10 +53,17 @@ class VehicleImpl implements Vehicle {
     }
 
     private void moveFromEdge(BiConsumer<? super Vehicle, Long> arrivalAction) {
-        if (occupied instanceof OccupiedEdgeImpl currentEdge && this.getPreviousOccupied().getComponent() instanceof Region.Node previousNode) {
+        if (occupied instanceof OccupiedEdgeImpl currentEdge &&
+            this.getPreviousOccupied().getComponent() instanceof Region.Node previousNode) {
             Deque<Region.Node> path = this.getPathToNextNode(currentEdge, previousNode);
             moveQueue.add(new PathImpl(path, arrivalAction));
         }
+    }
+
+    @Override
+    public @Nullable VehicleManager.Occupied<?> getPreviousOccupied() {
+        AbstractOccupied.VehicleStats stats = occupied.vehicles.get(this);
+        return stats == null ? null : stats.previous;
     }
 
     private Deque<Region.Node> getPathToNextNode(OccupiedEdgeImpl currentEdge, Region.Node previousNode) {
@@ -88,6 +88,12 @@ class VehicleImpl implements Vehicle {
 
     private Region.Node calculateStartingNode() {
         return moveQueue.isEmpty() ? this.startingNode.getComponent() : moveQueue.getLast().nodes.getLast();
+    }
+
+    private void checkMoveToNode(Region.Node node) {
+        if (occupied.component.equals(node) && moveQueue.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle " + getId() + " cannot move to own node " + node);
+        }
     }
 
     @Override
@@ -122,12 +128,6 @@ class VehicleImpl implements Vehicle {
         orders.clear();
     }
 
-    private void checkMoveToNode(Region.Node node) {
-        if (occupied.component.equals(node) && moveQueue.isEmpty()) {
-            throw new IllegalArgumentException("Vehicle " + getId() + " cannot move to own node " + node);
-        }
-    }
-
     void move(long currentTick) {
         final Region region = vehicleManager.getRegion();
         if (moveQueue.isEmpty()) {
@@ -145,7 +145,8 @@ class VehicleImpl implements Vehicle {
         } else {
             Region.Node next = path.nodes().peek();
             if (occupied instanceof OccupiedNodeImpl<?> occupiedNode) {
-                vehicleManager.getOccupied(region.getEdge(occupiedNode.getComponent(), next)).addVehicle(this, currentTick);
+                vehicleManager.getOccupied(region.getEdge(occupiedNode.getComponent(), next))
+                              .addVehicle(this, currentTick);
             } else if (occupied instanceof OccupiedEdgeImpl) {
                 vehicleManager.getOccupied(next).addVehicle(this, currentTick);
                 path.nodes().pop();
@@ -174,12 +175,8 @@ class VehicleImpl implements Vehicle {
 
     @Override
     public String toString() {
-        return "VehicleImpl("
-            + "id=" + id
-            + ", capacity=" + capacity
-            + ", orders=" + orders
-            + ", component=" + occupied.component
-            + ')';
+        return "VehicleImpl(" + "id=" + id + ", capacity=" + capacity + ", orders=" + orders + ", component=" +
+               occupied.component + ')';
     }
 
     private record PathImpl(Deque<Region.Node> nodes, BiConsumer<? super Vehicle, Long> arrivalAction) implements Path {

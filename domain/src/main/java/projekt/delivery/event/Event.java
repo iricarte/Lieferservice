@@ -5,9 +5,9 @@ package projekt.delivery.event;
  */
 public interface Event {
 
-
     /**
      * Constructs a new {@link Event} for the given tick.
+     *
      * @param tick The tick of the created {@link Event}.
      * @return The created {@link Event}.
      */
@@ -17,8 +17,8 @@ public interface Event {
 
     /**
      * Returns the tick at which the {@link Event} occurred.
+     *
      * @return The tick at which the {@link Event} occurred.
      */
     long getTick();
-
 }

@@ -74,6 +74,7 @@ class RegionImpl implements Region {
 
     /**
      * Adds the given {@link NodeImpl} to this {@link RegionImpl}.
+     *
      * @param node the {@link NodeImpl} to add.
      */
     void putNode(NodeImpl node) {
@@ -84,8 +85,21 @@ class RegionImpl implements Region {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RegionImpl region = (RegionImpl) o;
+        return Objects.equals(nodes, region.nodes) && Objects.equals(edges, region.edges);
+    }
+
     /**
      * Adds the given {@link EdgeImpl} to this {@link RegionImpl}.
+     *
      * @param edge the {@link EdgeImpl} to add.
      */
     void putEdge(EdgeImpl edge) {
@@ -105,18 +119,6 @@ class RegionImpl implements Region {
         existingEdge.put(edge.getLocationB(), edge);
         this.edges.put(edge.getNodeA().getLocation(), existingEdge);
         this.allEdges.add(edge);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        RegionImpl region = (RegionImpl) o;
-        return Objects.equals(nodes, region.nodes) && Objects.equals(edges, region.edges);
     }
 
     @Override

@@ -7,9 +7,6 @@ package projekt.base;
 public class ChessboardDistanceCalculator implements DistanceCalculator {
     @Override
     public double calculateDistance(Location a, Location b) {
-        return Math.max(
-            Math.abs(a.getX() - b.getX()),
-            Math.abs(a.getY() - b.getY())
-        );
+        return Math.max(Math.abs(a.getX() - b.getX()), Math.abs(a.getY() - b.getY()));
     }
 }

@@ -21,8 +21,10 @@ import java.util.function.Consumer;
 /**
  * An abstract class for representing a controllable menu scene.<p>
  * The root Element of each menu scene is a {@link BorderPane}.
- * At the top of the menu scene is the title of this scene set in the constructor and at the bottom are the return
- * and quit buttons. The return button will get initialized by the abstract method {@link #initReturnButton()};
+ * At the top of the menu scene is the title of this scene set in the constructor and at the
+ * bottom are the return
+ * and quit buttons. The return button will get initialized by the abstract method
+ * {@link #initReturnButton()};
  *
  * @param <SC> The type of the {@link MenuSceneController} of this {@link MainMenuScene}.
  */
@@ -86,6 +88,159 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         root.getStylesheets().add("projekt/gui/darkMode.css");
     }
 
+    @Override
+    public SC getController() {
+        return controller;
+    }
+
+    /**
+     * Creates a {@link TextField} that only accepts long values.
+     *
+     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value
+     *                            changes.
+     *                            It will be invoked with the new value.
+     * @param initialValue        The intial value of the {@link TextField}.
+     * @return The created {@link TextField}
+     */
+    public static TextField createLongTextField(Consumer<Long> valueChangeConsumer, Long initialValue) {
+        TextField longTextField = new TextField();
+        longTextField.setText(initialValue.toString());
+        longTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                longTextField.setText(oldValue);
+                return;
+            }
+
+            if (newValue.equals("")) {
+                return;
+            }
+
+            try {
+                valueChangeConsumer.accept(Long.parseLong(longTextField.getText()));
+            } catch (NumberFormatException exc) {
+                longTextField.setText(oldValue);
+            }
+        });
+
+        return longTextField;
+    }
+
+    /**
+     * Creates a {@link TextField} that only accepts positive integer values.
+     *
+     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value
+     *                            changes.
+     *                            It will be invoked with the new value.
+     * @param initialValue        The intial value of the {@link TextField}.
+     * @return The created {@link TextField}
+     */
+    public static TextField createPositiveIntegerTextField(Consumer<Integer> valueChangeConsumer,
+                                                           Integer initialValue) {
+        TextField positiveIntegerTextField = new TextField();
+        positiveIntegerTextField.setText(initialValue.toString());
+        positiveIntegerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                positiveIntegerTextField.setText(oldValue);
+                return;
+            }
+
+            if (newValue.equals("")) {
+                return;
+            }
+
+            try {
+                valueChangeConsumer.accept(Integer.parseInt(positiveIntegerTextField.getText()));
+            } catch (NumberFormatException exc) {
+                positiveIntegerTextField.setText(oldValue);
+            }
+        });
+
+        return positiveIntegerTextField;
+    }
+
+    /**
+     * Creates a {@link TextField} that only accepts integer values.
+     *
+     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value
+     *                            changes.
+     *                            It will be invoked with the new value.
+     * @param initialValue        The initial value of the {@link TextField}.
+     * @return The created {@link TextField}
+     */
+    public static TextField createIntegerTextField(Consumer<Integer> valueChangeConsumer, Integer initialValue) {
+        TextField negativeIntegerTextField = new TextField();
+        negativeIntegerTextField.setText(initialValue.toString());
+        negativeIntegerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("-?\\d*")) {
+                negativeIntegerTextField.setText(oldValue);
+                return;
+            }
+
+            if (newValue.equals("") || newValue.equals("-")) {
+                return;
+            }
+
+            try {
+                valueChangeConsumer.accept(Integer.parseInt(negativeIntegerTextField.getText()));
+            } catch (NumberFormatException exc) {
+                negativeIntegerTextField.setText(oldValue);
+            }
+        });
+
+        return negativeIntegerTextField;
+    }
+
+    // --- common util --- //
+
+    /**
+     * Creates a {@link TextField} that only accepts positive double values.
+     *
+     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value
+     *                            changes.
+     *                            It will be invoked with the new value.
+     * @param initialValue        The initial value of the {@link TextField}.
+     * @return The created {@link TextField}
+     */
+    public static TextField createPositiveDoubleTextField(Consumer<Double> valueChangeConsumer, Double initialValue) {
+        TextField doubleTextField = new TextField();
+        doubleTextField.setText(initialValue.toString());
+        doubleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*\\.?\\d*")) {
+                doubleTextField.setText(oldValue);
+                return;
+            }
+
+            if (newValue.equals("")) {
+                return;
+            }
+
+            try {
+                valueChangeConsumer.accept(Double.parseDouble(doubleTextField.getText()));
+            } catch (NumberFormatException exc) {
+                doubleTextField.setText(oldValue);
+            }
+        });
+
+        return doubleTextField;
+    }
+
+    /**
+     * Creates an empty {@link Region} that always grows inside a {@link HBox}.<p>
+     * It can be used for evenly space the components inside a {@link HBox} by putting an
+     * intermediate region between each Node.
+     *
+     * @param minWidth The minimum width of the created {@link Region}.
+     * @return The created {@link Region}.
+     * @see HBox#setHgrow(Node, Priority)
+     */
+    public static Region createIntermediateRegion(int minWidth) {
+        Region intermediateRegion = new Region();
+        intermediateRegion.setMinWidth(minWidth);
+        HBox.setHgrow(intermediateRegion, Priority.ALWAYS);
+
+        return intermediateRegion;
+    }
+
     /**
      * Initializes this {@link MainMenuScene} with the given {@link ProblemArchetype}s.
      *
@@ -106,143 +261,4 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
      * Initializes the return button of this {@link MainMenuScene}.
      */
     public abstract void initReturnButton();
-
-    @Override
-    public SC getController() {
-        return controller;
-    }
-
-    // --- common util --- //
-
-    /**
-     * Creates a {@link TextField} that only accepts long values.
-     *
-     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value changes.
-     *                            It will be invoked with the new value.
-     * @param initialValue        The intial value of the {@link TextField}.
-     * @return The created {@link TextField}
-     */
-    public static TextField createLongTextField(Consumer<Long> valueChangeConsumer, Long initialValue) {
-        TextField longTextField = new TextField();
-        longTextField.setText(initialValue.toString());
-        longTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                longTextField.setText(oldValue);
-                return;
-            }
-
-            if (newValue.equals("")) return;
-
-            try {
-                valueChangeConsumer.accept(Long.parseLong(longTextField.getText()));
-            } catch (NumberFormatException exc) {
-                longTextField.setText(oldValue);
-            }
-        });
-
-        return longTextField;
-    }
-
-    /**
-     * Creates a {@link TextField} that only accepts positive integer values.
-     *
-     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value changes.
-     *                            It will be invoked with the new value.
-     * @param initialValue        The intial value of the {@link TextField}.
-     * @return The created {@link TextField}
-     */
-    public static TextField createPositiveIntegerTextField(Consumer<Integer> valueChangeConsumer, Integer initialValue) {
-        TextField positiveIntegerTextField = new TextField();
-        positiveIntegerTextField.setText(initialValue.toString());
-        positiveIntegerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                positiveIntegerTextField.setText(oldValue);
-                return;
-            }
-
-            if (newValue.equals("")) return;
-
-            try {
-                valueChangeConsumer.accept(Integer.parseInt(positiveIntegerTextField.getText()));
-            } catch (NumberFormatException exc) {
-                positiveIntegerTextField.setText(oldValue);
-            }
-        });
-
-        return positiveIntegerTextField;
-    }
-
-    /**
-     * Creates a {@link TextField} that only accepts integer values.
-     *
-     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value changes.
-     *                            It will be invoked with the new value.
-     * @param initialValue        The initial value of the {@link TextField}.
-     * @return The created {@link TextField}
-     */
-    public static TextField createIntegerTextField(Consumer<Integer> valueChangeConsumer, Integer initialValue) {
-        TextField negativeIntegerTextField = new TextField();
-        negativeIntegerTextField.setText(initialValue.toString());
-        negativeIntegerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("-?\\d*")) {
-                negativeIntegerTextField.setText(oldValue);
-                return;
-            }
-
-            if (newValue.equals("") || newValue.equals("-")) return;
-
-            try {
-                valueChangeConsumer.accept(Integer.parseInt(negativeIntegerTextField.getText()));
-            } catch (NumberFormatException exc) {
-                negativeIntegerTextField.setText(oldValue);
-            }
-        });
-
-        return negativeIntegerTextField;
-    }
-
-    /**
-     * Creates a {@link TextField} that only accepts positive double values.
-     *
-     * @param valueChangeConsumer A {@link Consumer} that will be called when the entered value changes.
-     *                            It will be invoked with the new value.
-     * @param initialValue        The initial value of the {@link TextField}.
-     * @return The created {@link TextField}
-     */
-    public static TextField createPositiveDoubleTextField(Consumer<Double> valueChangeConsumer, Double initialValue) {
-        TextField doubleTextField = new TextField();
-        doubleTextField.setText(initialValue.toString());
-        doubleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*\\.?\\d*")) {
-                doubleTextField.setText(oldValue);
-                return;
-            }
-
-            if (newValue.equals("")) return;
-
-            try {
-                valueChangeConsumer.accept(Double.parseDouble(doubleTextField.getText()));
-            } catch (NumberFormatException exc) {
-                doubleTextField.setText(oldValue);
-            }
-        });
-
-        return doubleTextField;
-    }
-
-    /**
-     * Creates an empty {@link Region} that always grows inside a {@link HBox}.<p>
-     * It can be used for evenly space the components inside a {@link HBox} by putting an intermediate region between each Node.
-     *
-     * @param minWidth The minimum width of the created {@link Region}.
-     * @return The created {@link Region}.
-     * @see HBox#setHgrow(Node, Priority)
-     */
-    public static Region createIntermediateRegion(int minWidth) {
-        Region intermediateRegion = new Region();
-        intermediateRegion.setMinWidth(minWidth);
-        HBox.setHgrow(intermediateRegion, Priority.ALWAYS);
-
-        return intermediateRegion;
-    }
 }

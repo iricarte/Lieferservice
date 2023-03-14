@@ -17,9 +17,7 @@ public class BasicDeliveryService extends AbstractDeliveryService {
     // List of orders that have not yet been loaded onto delivery vehicles
     protected final List<ConfirmedOrder> pendingOrders = new ArrayList<>();
 
-    public BasicDeliveryService(
-        VehicleManager vehicleManager
-    ) {
+    public BasicDeliveryService(VehicleManager vehicleManager) {
         super(vehicleManager);
     }
 

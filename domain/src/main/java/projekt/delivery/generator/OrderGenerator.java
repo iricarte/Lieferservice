@@ -5,17 +5,22 @@ import projekt.delivery.routing.ConfirmedOrder;
 import java.util.List;
 
 /**
- * A generator that creates a {@link List} of {@linkplain ConfirmedOrder confirmed orders} for any given tick.<p>
+ * A generator that creates a {@link List} of {@linkplain ConfirmedOrder confirmed orders} for
+ * any given tick.<p>
  * <p>
- * Every Implementation ensures that a call to the method {@link #generateOrders(long)} will always return the same orders
+ * Every Implementation ensures that a call to the method {@link #generateOrders(long)} will
+ * always return the same orders
  * when given the same tick.
  */
 public interface OrderGenerator {
 
     /**
-     * Generates a {@link List<ConfirmedOrder>} for the given tick. Calling this method with the same parameter will always result in the same result.<p>
+     * Generates a {@link List<ConfirmedOrder>} for the given tick. Calling this method with the
+     * same parameter will always result in the same
+     * result.<p>
      * <p>
-     * Implementations of this method might throw an {@link IndexOutOfBoundsException} when given a negative tick.
+     * Implementations of this method might throw an {@link IndexOutOfBoundsException} when given
+     * a negative tick.
      *
      * @param tick the tick to generate orders for
      * @return the generated orders

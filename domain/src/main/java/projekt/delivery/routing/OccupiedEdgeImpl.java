@@ -9,7 +9,8 @@ class OccupiedEdgeImpl extends AbstractOccupied<Region.Edge> {
 
     /**
      * Creates a new {@link OccupiedEdgeImpl} instance.
-     * @param edge The represented {@link Region.Edge}.
+     *
+     * @param edge           The represented {@link Region.Edge}.
      * @param vehicleManager the corresponding {@link VehicleManager}.
      */
     OccupiedEdgeImpl(Region.Edge edge, VehicleManager vehicleManager) {
@@ -18,7 +19,8 @@ class OccupiedEdgeImpl extends AbstractOccupied<Region.Edge> {
 
     @Override
     public void tick(long currentTick) {
-        // it is important to create a copy here. The move method in vehicle will probably modify this map
+        // it is important to create a copy here. The move method in vehicle will probably modify
+        // this map
         for (Map.Entry<VehicleImpl, VehicleStats> entry : List.copyOf(vehicles.entrySet())) {
             if (currentTick >= entry.getValue().arrived + component.getDuration()) {
                 entry.getKey().move(currentTick);
@@ -41,12 +43,7 @@ class OccupiedEdgeImpl extends AbstractOccupied<Region.Edge> {
         }
         vehicles.put(vehicle, new VehicleStats(currentTick, previous));
         vehicle.setOccupied(this);
-        vehicleManager.getEventBus().queuePost(ArrivedAtEdgeEvent.of(
-                currentTick,
-                vehicle,
-                component,
-                previousNode.getComponent()
-            )
-        );
+        vehicleManager.getEventBus()
+                      .queuePost(ArrivedAtEdgeEvent.of(currentTick, vehicle, component, previousNode.getComponent()));
     }
 }

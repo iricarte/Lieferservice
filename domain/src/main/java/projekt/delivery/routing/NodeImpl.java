@@ -17,17 +17,14 @@ class NodeImpl implements Region.Node {
 
     /**
      * Creates a new {@link NodeImpl} instance.
-     * @param region The {@link Region} this {@link NodeImpl} belongs to.
-     * @param name The name of this {@link NodeImpl}.
-     * @param location The {@link Location} of this {@link EdgeImpl}.
-     * @param connections All {@link Location}s this {@link NeighborhoodImpl} has an {@link Region.Edge} to.
+     *
+     * @param region      The {@link Region} this {@link NodeImpl} belongs to.
+     * @param name        The name of this {@link NodeImpl}.
+     * @param location    The {@link Location} of this {@link EdgeImpl}.
+     * @param connections All {@link Location}s this {@link NeighborhoodImpl} has an
+     *                    {@link Region.Edge} to.
      */
-    NodeImpl(
-        Region region,
-        String name,
-        Location location,
-        Set<Location> connections
-    ) {
+    NodeImpl(Region region, String name, Location location, Set<Location> connections) {
         this.region = region;
         this.name = name;
         this.location = location;
@@ -74,6 +71,11 @@ class NodeImpl implements Region.Node {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(name, location, connections);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -82,18 +84,13 @@ class NodeImpl implements Region.Node {
             return false;
         }
         NodeImpl node = (NodeImpl) o;
-        return Objects.equals(name, node.name) && Objects.equals(location, node.location) && Objects.equals(connections, node.connections);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, location, connections);
+        return Objects.equals(name, node.name) && Objects.equals(location, node.location) &&
+               Objects.equals(connections, node.connections);
     }
 
     @Override
     public String toString() {
-        return "NodeImpl(name='" + name + "', " +
-            "location='" + location + "', " +
-            "connections='" + connections + "')";
+        return "NodeImpl(name='" + name + "', " + "location='" + location + "', " + "connections='" + connections +
+               "')";
     }
 }

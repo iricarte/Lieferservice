@@ -7,9 +7,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A class representing an order that contains a {@link List} of foods, was placed at an {@link VehicleManager.OccupiedRestaurant} and should be delivered to a {@link Location} during a given {@link TickInterval}.
+ * A class representing an order that contains a {@link List} of foods, was placed at an
+ * {@link VehicleManager.OccupiedRestaurant} and should be
+ * delivered to a {@link Location} during a given {@link TickInterval}.
  */
 public class ConfirmedOrder implements Serializable {
+    private static int nextOrderID;
     private final Location location;
     private final int orderID;
     private final TickInterval deliveryInterval;
@@ -18,22 +21,52 @@ public class ConfirmedOrder implements Serializable {
     private final VehicleManager.OccupiedRestaurant restaurant;
     private long actualDeliveryTick;
 
-    private static int nextOrderID;
+    /**
+     * Creates a new {@link ConfirmedOrder} instance.
+     *
+     * @param x                The x-coordinate to deliver the {@link ConfirmedOrder} to.
+     * @param y                The y-coordinate to deliver the {@link ConfirmedOrder} to.
+     * @param restaurant       The {@link VehicleManager.OccupiedRestaurant} the
+     *                         {@link ConfirmedOrder} was placed at.
+     * @param deliveryInterval The {@link TickInterval} in which the {@link ConfirmedOrder}
+     *                         should be delivered.
+     * @param foodList         A {@link List} containing the ordered food.
+     * @param weight           The weight of the {@link ConfirmedOrder}.
+     */
+    public ConfirmedOrder(int x,
+                          int y,
+                          VehicleManager.OccupiedRestaurant restaurant,
+                          TickInterval deliveryInterval,
+                          List<String> foodList,
+                          double weight) {
+        this(new Location(x, y), restaurant, deliveryInterval, foodList, weight);
+    }
 
     /**
      * Creates a new {@link ConfirmedOrder} instance.
-     * @param location The {@link Location} to deliver the {@link ConfirmedOrder} to.
-     * @param restaurant The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was placed at.
-     * @param deliveryInterval The {@link TickInterval} in which the {@link ConfirmedOrder} should be delivered.
-     * @param foodList A {@link List} containing the ordered food.
-     * @param weight The weight of the {@link ConfirmedOrder}.
+     *
+     * @param location         The {@link Location} to deliver the {@link ConfirmedOrder} to.
+     * @param restaurant       The {@link VehicleManager.OccupiedRestaurant} the
+     *                         {@link ConfirmedOrder} was placed at.
+     * @param deliveryInterval The {@link TickInterval} in which the {@link ConfirmedOrder}
+     *                         should be delivered.
+     * @param foodList         A {@link List} containing the ordered food.
+     * @param weight           The weight of the {@link ConfirmedOrder}.
      */
-    public ConfirmedOrder(Location location, VehicleManager.OccupiedRestaurant restaurant, TickInterval deliveryInterval, List<String> foodList, double weight) {
+    public ConfirmedOrder(Location location,
+                          VehicleManager.OccupiedRestaurant restaurant,
+                          TickInterval deliveryInterval,
+                          List<String> foodList,
+                          double weight) {
 
-        String invalidFood = foodList.stream().filter(food -> !restaurant.getComponent().getAvailableFood().contains(food)).findFirst().orElse(null);
+        String invalidFood = foodList.stream()
+                                     .filter(food -> !restaurant.getComponent().getAvailableFood().contains(food))
+                                     .findFirst()
+                                     .orElse(null);
 
         if (invalidFood != null) {
-            throw new IllegalArgumentException("The given restaurant does not support the ordered food: %s".formatted(invalidFood));
+            throw new IllegalArgumentException("The given restaurant does not support the ordered food: %s".formatted(
+                    invalidFood));
         }
 
         this.location = location;
@@ -45,20 +78,8 @@ public class ConfirmedOrder implements Serializable {
     }
 
     /**
-     * Creates a new {@link ConfirmedOrder} instance.
-     * @param x The x-coordinate to deliver the {@link ConfirmedOrder} to.
-     * @param y The y-coordinate to deliver the {@link ConfirmedOrder} to.
-     * @param restaurant The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was placed at.
-     * @param deliveryInterval The {@link TickInterval} in which the {@link ConfirmedOrder} should be delivered.
-     * @param foodList A {@link List} containing the ordered food.
-     * @param weight The weight of the {@link ConfirmedOrder}.
-     */
-    public ConfirmedOrder(int x, int y, VehicleManager.OccupiedRestaurant restaurant, TickInterval deliveryInterval, List<String> foodList, double weight) {
-        this(new Location(x,y), restaurant, deliveryInterval, foodList, weight);
-    }
-
-    /**
      * Returns the {@link Location} to deliver the {@link ConfirmedOrder} to.
+     *
      * @return The {@link Location} to deliver the {@link ConfirmedOrder} to.
      */
     public Location getLocation() {
@@ -67,6 +88,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the x-coordinate to deliver the {@link ConfirmedOrder} to.
+     *
      * @return The x-coordinate to deliver the {@link ConfirmedOrder} to.
      */
     public int getX() {
@@ -75,6 +97,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the y-coordinate to deliver the {@link ConfirmedOrder} to.
+     *
      * @return The y-coordinate to deliver the {@link ConfirmedOrder} to.
      */
     public int getY() {
@@ -83,6 +106,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the ID of this {@link ConfirmedOrder}.
+     *
      * @return The ID of this {@link ConfirmedOrder}.
      */
     public int getOrderID() {
@@ -90,8 +114,11 @@ public class ConfirmedOrder implements Serializable {
     }
 
     /**
-     * Returns the The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was placed at.
-     * @return The The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was placed at.
+     * Returns the The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was
+     * placed at.
+     *
+     * @return The The {@link VehicleManager.OccupiedRestaurant} the {@link ConfirmedOrder} was
+     * placed at.
      */
     public VehicleManager.OccupiedRestaurant getRestaurant() {
         return restaurant;
@@ -99,6 +126,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the {@link TickInterval} in which the {@link ConfirmedOrder} should be delivered.
+     *
      * @return The {@link TickInterval} in which the {@link ConfirmedOrder} should be delivered.
      */
     public TickInterval getDeliveryInterval() {
@@ -107,6 +135,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns a {@link List} containing the ordered food.
+     *
      * @return A {@link List} containing the ordered food.
      */
     public List<String> getFoodList() {
@@ -115,6 +144,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the weight of this {@link ConfirmedOrder}.
+     *
      * @return The weight of this {@link ConfirmedOrder}.
      */
     public double getWeight() {
@@ -123,6 +153,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Returns the tick this {@link ConfirmedOrder} was actually delivered at.
+     *
      * @return The tick this {@link ConfirmedOrder} was actually delivered at.
      */
     public long getActualDeliveryTick() {
@@ -131,6 +162,7 @@ public class ConfirmedOrder implements Serializable {
 
     /**
      * Sets the tick this {@link ConfirmedOrder} was actually delivered at.
+     *
      * @param actualDeliveryTick the new tick the {@link ConfirmedOrder} was delivered at.
      */
     public void setActualDeliveryTick(long actualDeliveryTick) {
@@ -139,14 +171,8 @@ public class ConfirmedOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "ConfirmedOrder{" +
-            "location=" + location +
-            ", orderID=" + orderID +
-            ", deliveryInterval=" + deliveryInterval +
-            ", foodList=" + foodList +
-            ", weight=" + weight +
-            ", restaurant=" + restaurant +
-            ", actualDeliveryTick=" + actualDeliveryTick +
-            '}';
+        return "ConfirmedOrder{" + "location=" + location + ", orderID=" + orderID + ", deliveryInterval=" +
+               deliveryInterval + ", foodList=" + foodList + ", weight=" + weight + ", restaurant=" + restaurant +
+               ", actualDeliveryTick=" + actualDeliveryTick + '}';
     }
 }

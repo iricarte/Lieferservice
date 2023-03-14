@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class Location implements Comparable<Location> {
 
-    private final static Comparator<Location> COMPARATOR =
-        Comparator.comparing(Location::getX).thenComparing(Location::getY);
+    private final static Comparator<Location> COMPARATOR = Comparator.comparing(Location::getX)
+                                                                     .thenComparing(Location::getY);
 
     private final int x;
     private final int y;
@@ -78,18 +78,6 @@ public final class Location implements Comparable<Location> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Location location = (Location) o;
-        return x == location.x && y == location.y;
-    }
-
-    @Override
     public int hashCode() {
         int hashCode = 0;
         if (Math.signum(x) == -1) {
@@ -104,7 +92,19 @@ public final class Location implements Comparable<Location> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Location location = (Location) o;
+        return x == location.x && y == location.y;
+    }
+
+    @Override
     public String toString() {
-        return "("+this.x+","+this.y+")";
+        return "(" + this.x + "," + this.y + ")";
     }
 }

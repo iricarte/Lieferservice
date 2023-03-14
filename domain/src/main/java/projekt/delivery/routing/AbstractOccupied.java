@@ -8,7 +8,9 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * An abstract class combining basic functionality of all {@link VehicleManager.Occupied} implementations.
+ * An abstract class combining basic functionality of all {@link VehicleManager.Occupied}
+ * implementations.
+ *
  * @param <C> The type of the occupied {@link Region.Component}.
  */
 abstract class AbstractOccupied<C extends Region.Component<? super C>> implements VehicleManager.Occupied<C> {
@@ -16,8 +18,7 @@ abstract class AbstractOccupied<C extends Region.Component<? super C>> implement
     protected final C component;
     protected final VehicleManager vehicleManager;
     protected final Map<VehicleImpl, VehicleStats> vehicles = new HashMap<>();
-    private final Collection<Vehicle> unmodifiableVehicles =
-        Collections.unmodifiableCollection(vehicles.keySet());
+    private final Collection<Vehicle> unmodifiableVehicles = Collections.unmodifiableCollection(vehicles.keySet());
 
     AbstractOccupied(C component, VehicleManager vehicleManager) {
         this.component = component;

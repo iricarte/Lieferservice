@@ -13,7 +13,8 @@ public interface PathCalculator {
      *
      * @param start The start {@link Region.Node}
      * @param end   The end {@link Region.Node}
-     * @return A list of nodes (excluding start and including end) that represent a path from start to end
+     * @return A list of nodes (excluding start and including end) that represent a path from
+     * start to end
      */
     Deque<Region.Node> getPath(Region.Node start, Region.Node end);
 

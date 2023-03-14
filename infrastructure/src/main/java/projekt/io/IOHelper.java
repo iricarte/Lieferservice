@@ -23,27 +23,57 @@ import java.util.Set;
  */
 public class IOHelper {
 
-    public static final File PROBLEMS_DIR = Path.of(System.getProperty("user.dir"), "projekt", "gui", "problems").toFile();
+    public static final File PROBLEMS_DIR = Path.of(System.getProperty("user.dir"), "projekt", "gui", "problems")
+                                                .toFile();
 
     /**
-     * Copies the {@link ProblemArchetype} presets from the resource directory into the build directory.
+     * Copies the {@link ProblemArchetype} presets from the resource directory into the build
+     * directory.
      */
     public static void initProblemPresets() {
         copyProblemFiles("problem1", "problem2", "problem3", "problem4");
     }
 
     /**
-     * Copies the {@link ProblemArchetype} preset with the given names from the resource directory into the build directory.
+     * Copies the {@link ProblemArchetype} preset with the given names from the resource
+     * directory into the build directory.
      */
     private static void copyProblemFiles(String... fileNames) {
         for (String fileName : fileNames) {
             try (InputStream problem = IOHelper.class.getResourceAsStream("presets/" + fileName + ".txt");
                  BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(problem)))) {
                 writeProblem(ProblemArchetypeIO.readProblemArchetype(reader));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    /**
+     * Writes the given {@link ProblemArchetype} into a text file in the build directory
+     * (build/run/projekt/gui/problems).<p>
+     * <p>
+     * The name of the file will be the name of the {@link ProblemArchetype}. The content of the
+     * file will be
+     * produced by the
+     * {@link ProblemArchetypeIO#writeProblemArchetype(BufferedWriter, ProblemArchetype) method.
+     * <p>
+     *
+     * @param problem The {@link ProblemArchetype} to write into the file.
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void writeProblem(ProblemArchetype problem) {
+        if (!PROBLEMS_DIR.exists()) {
+            PROBLEMS_DIR.mkdirs();
+        }
+
+        File file = Path.of(PROBLEMS_DIR.getPath(), problem.name() + ".txt").toFile();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            file.createNewFile();
+            ProblemArchetypeIO.writeProblemArchetype(writer, problem);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -58,9 +88,11 @@ public class IOHelper {
     }
 
     /**
-     * Returns a {@link Set} of {@link File}s containing all {@link ProblemArchetype}s stored in the build dir (build/run/projekt/gui/problems).
+     * Returns a {@link Set} of {@link File}s containing all {@link ProblemArchetype}s stored in
+     * the build dir (build/run/projekt/gui/problems).
      *
-     * @return A {@link Set} of {@link File}s containing all {@link ProblemArchetype}s stored in the build dir.
+     * @return A {@link Set} of {@link File}s containing all {@link ProblemArchetype}s stored in
+     * the build dir.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static Set<File> getAllProblemsInBuildDir() {
@@ -85,30 +117,5 @@ public class IOHelper {
         }
 
         return problems;
-    }
-
-    /**
-     * Writes the given {@link ProblemArchetype} into a text file in the build directory (build/run/projekt/gui/problems).<p>
-     * <p>
-     * The name of the file will be the name of the {@link ProblemArchetype}. The content of the file will be
-     * produced by the {@link ProblemArchetypeIO#writeProblemArchetype(BufferedWriter, ProblemArchetype) method.
-     * <p>
-     *
-     * @param problem The {@link ProblemArchetype} to write into the file.
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void writeProblem(ProblemArchetype problem) {
-        if (!PROBLEMS_DIR.exists()) {
-            PROBLEMS_DIR.mkdirs();
-        }
-
-        File file = Path.of(PROBLEMS_DIR.getPath(), problem.name() + ".txt").toFile();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            file.createNewFile();
-            ProblemArchetypeIO.writeProblemArchetype(writer, problem);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

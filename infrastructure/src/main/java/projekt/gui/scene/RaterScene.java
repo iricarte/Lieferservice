@@ -28,7 +28,8 @@ public class RaterScene extends MenuScene<RaterSceneController> {
     @Override
     public void initReturnButton() {
         returnButton.setOnAction(e -> {
-            MainMenuScene scene = (MainMenuScene) SceneSwitcher.loadScene(SceneSwitcher.SceneType.MAIN_MENU, getController().getStage());
+            MainMenuScene scene = (MainMenuScene) SceneSwitcher.loadScene(SceneSwitcher.SceneType.MAIN_MENU,
+                                                                          getController().getStage());
             scene.init(new ArrayList<>(problems));
         });
     }

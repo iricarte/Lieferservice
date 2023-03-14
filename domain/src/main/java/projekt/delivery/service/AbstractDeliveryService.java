@@ -16,7 +16,6 @@ public abstract class AbstractDeliveryService implements DeliveryService {
 
     private List<ConfirmedOrder> unprocessedOrders = new ArrayList<>();
 
-
     protected AbstractDeliveryService(VehicleManager vehicleManager) {
         this.vehicleManager = vehicleManager;
     }
@@ -41,11 +40,21 @@ public abstract class AbstractDeliveryService implements DeliveryService {
 
         //add a OrderReceivedEvent for each order
         newOrders.stream()
-            .map(order -> OrderReceivedEvent.of(currentTick, order))
-            .forEach(vehicleManager.getEventBus()::queuePost);
+                 .map(order -> OrderReceivedEvent.of(currentTick, order))
+                 .forEach(vehicleManager.getEventBus()::queuePost);
 
         return tick(currentTick, newOrders);
     }
+
+    /**
+     * Executes the current tick.
+     *
+     * @param currentTick The tick to execute.
+     * @param newOrders   All new {@link ConfirmedOrder}s that have been ordered during the last
+     *                    tick.
+     * @return A {@link List} containing all {@link Event}s that occurred during the tick.
+     */
+    protected abstract List<Event> tick(long currentTick, List<ConfirmedOrder> newOrders);
 
     @Override
     public VehicleManager getVehicleManager() {
@@ -57,12 +66,4 @@ public abstract class AbstractDeliveryService implements DeliveryService {
         unprocessedOrders.clear();
         vehicleManager.reset();
     }
-
-    /**
-     * Executes the current tick.
-     * @param currentTick The tick to execute.
-     * @param newOrders All new {@link ConfirmedOrder}s that have been ordered during the last tick.
-     * @return A {@link List} containing all {@link Event}s that occurred during the tick.
-     */
-   protected abstract List<Event> tick(long currentTick, List<ConfirmedOrder> newOrders);
 }

@@ -7,7 +7,8 @@ class OccupiedNeighborhoodImpl extends OccupiedNodeImpl<Region.Neighborhood> imp
 
     /**
      * Creates a new {@link OccupiedNeighborhoodImpl} instance.
-     * @param neighborhood The represented {@link Region.Neighborhood}.
+     *
+     * @param neighborhood   The represented {@link Region.Neighborhood}.
      * @param vehicleManager the corresponding {@link VehicleManager}.
      */
     OccupiedNeighborhoodImpl(Region.Neighborhood neighborhood, VehicleManager vehicleManager) {
@@ -22,23 +23,12 @@ class OccupiedNeighborhoodImpl extends OccupiedNodeImpl<Region.Neighborhood> imp
 
         order.setActualDeliveryTick(tick);
         ((VehicleImpl) vehicle).unloadOrder(order);
-        vehicleManager.getEventBus().queuePost(DeliverOrderEvent.of(
-                tick,
-                vehicle,
-                component,
-                order
-            )
-        );
+        vehicleManager.getEventBus().queuePost(DeliverOrderEvent.of(tick, vehicle, component, order));
     }
 
     @Override
     protected void emitArrivedEvent(VehicleImpl vehicle, OccupiedEdgeImpl previousEdge, long tick) {
-        vehicleManager.getEventBus().queuePost(ArrivedAtNeighborhoodEvent.of(
-                tick,
-                vehicle,
-                component,
-                previousEdge.getComponent()
-            )
-        );
+        vehicleManager.getEventBus()
+                      .queuePost(ArrivedAtNeighborhoodEvent.of(tick, vehicle, component, previousEdge.getComponent()));
     }
 }

@@ -7,7 +7,6 @@ package projekt.base;
 public class ManhattanDistanceCalculator implements DistanceCalculator {
     @Override
     public double calculateDistance(Location a, Location b) {
-        return Math.abs(a.getX() - b.getX())
-            + Math.abs(a.getY() - b.getY());
+        return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 }

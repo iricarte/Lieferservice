@@ -18,7 +18,8 @@ public class ObjectUnitTests<T> {
         this.toString = toString;
     }
 
-    public static <T> ObjectUnitTests<T> initialize100(Function<Integer, T> testObjectFactory, Function<T, String> toString) {
+    public static <T> ObjectUnitTests<T> initialize100(Function<Integer, T> testObjectFactory,
+                                                       Function<T, String> toString) {
         ObjectUnitTests<T> retVal = new ObjectUnitTests<>(testObjectFactory, toString);
         retVal.initialize100(100);
         return retVal;
@@ -56,8 +57,10 @@ public class ObjectUnitTests<T> {
             for (int j = 0; j < this.testObjects.length; j++) {
                 if (i == j) {
                     Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjects[i].hashCode());
-                    Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjectsContentEquality[i].hashCode());
-                    Assertions.assertEquals(this.testObjects[i].hashCode(), this.testObjectsReferenceEquality[i].hashCode());
+                    Assertions.assertEquals(this.testObjects[i].hashCode(),
+                                            this.testObjectsContentEquality[i].hashCode());
+                    Assertions.assertEquals(this.testObjects[i].hashCode(),
+                                            this.testObjectsReferenceEquality[i].hashCode());
                 } else {
                     Assertions.assertNotEquals(this.testObjects[i].hashCode(), this.testObjects[j].hashCode());
                 }

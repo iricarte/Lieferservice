@@ -9,12 +9,11 @@ import projekt.delivery.routing.VehicleManager;
 import java.util.Map;
 import java.util.Objects;
 
-public record ProblemArchetypeImpl(
-    OrderGenerator.Factory orderGeneratorFactory,
-    VehicleManager vehicleManager,
-    Map<RatingCriteria, Rater.Factory> raterFactoryMap,
-    long simulationLength,
-    String name) implements ProblemArchetype {
+public record ProblemArchetypeImpl(OrderGenerator.Factory orderGeneratorFactory,
+                                   VehicleManager vehicleManager,
+                                   Map<RatingCriteria, Rater.Factory> raterFactoryMap,
+                                   long simulationLength,
+                                   String name) implements ProblemArchetype {
 
     public ProblemArchetypeImpl {
         Objects.requireNonNull(orderGeneratorFactory);
@@ -34,11 +33,11 @@ public record ProblemArchetypeImpl(
             if (raterFactory instanceof TravelDistanceRater.Factory travelDistanceFactory) {
                 if (!travelDistanceFactory.vehicleManager.equals(vehicleManager)) {
                     throw new IllegalArgumentException(
-                        "The vehicle manager of the travel distance rater does not match the given vehicle manager");
+                            "The vehicle manager of the travel distance rater does not match the " +
+                            "given vehicle manager");
                 }
             }
         }
-
     }
 
     @Override

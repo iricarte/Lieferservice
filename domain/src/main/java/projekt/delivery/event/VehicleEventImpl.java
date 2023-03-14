@@ -12,15 +12,12 @@ class VehicleEventImpl extends EventImpl implements VehicleEvent {
     }
 
     @Override
-    public Vehicle getVehicle() {
-        return vehicle;
+    public String toString() {
+        return "VehicleEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ')';
     }
 
     @Override
-    public String toString() {
-        return "VehicleEvent("
-            + "time=" + getTick()
-            + ", vehicle=" + getVehicle().getId()
-            + ')';
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 }

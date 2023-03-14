@@ -8,12 +8,10 @@ class ArrivedAtRestaurantEventImpl extends ArrivedAtNodeEventImpl implements Arr
 
     private final VehicleManager.OccupiedRestaurant restaurant;
 
-    ArrivedAtRestaurantEventImpl(
-        long tick,
-        Vehicle vehicle,
-        VehicleManager.OccupiedRestaurant restaurant,
-        Region.Edge lastEdge
-    ) {
+    ArrivedAtRestaurantEventImpl(long tick,
+                                 Vehicle vehicle,
+                                 VehicleManager.OccupiedRestaurant restaurant,
+                                 Region.Edge lastEdge) {
         super(tick, vehicle, restaurant.getComponent(), lastEdge);
         this.restaurant = restaurant;
     }
@@ -25,11 +23,7 @@ class ArrivedAtRestaurantEventImpl extends ArrivedAtNodeEventImpl implements Arr
 
     @Override
     public String toString() {
-        return "ArrivedAtWarehouseEvent("
-            + "time=" + getTick()
-            + ", vehicle=" + getVehicle().getId()
-            + ", node=" + getNode()
-            + ", lastEdge=" + getLastEdge()
-            + ')';
+        return "ArrivedAtWarehouseEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" +
+               getNode() + ", lastEdge=" + getLastEdge() + ')';
     }
 }

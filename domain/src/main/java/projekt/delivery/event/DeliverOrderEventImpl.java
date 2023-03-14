@@ -9,20 +9,21 @@ class DeliverOrderEventImpl extends VehicleEventImpl implements DeliverOrderEven
     private final Region.Neighborhood node;
     private final ConfirmedOrder order;
 
-    DeliverOrderEventImpl(
-        long tick,
-        Vehicle vehicle,
-        Region.Neighborhood node,
-        ConfirmedOrder order
-    ) {
+    DeliverOrderEventImpl(long tick, Vehicle vehicle, Region.Neighborhood node, ConfirmedOrder order) {
         super(tick, vehicle);
         this.node = node;
         this.order = order;
 
         if (getTick() != order.getActualDeliveryTick()) {
-            throw new AssertionError("Tick of DeliverOrderEvent and actualDeliveryTick of order do not match!: %d vs %d"
-                .formatted(getTick(), order.getActualDeliveryTick()));
+            throw new AssertionError(("Tick of DeliverOrderEvent and actualDeliveryTick of order do not match!: %d " +
+                                      "vs %d").formatted(getTick(), order.getActualDeliveryTick()));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DeliverOrderEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" +
+               getNode() + ", order=" + getOrder() + ')';
     }
 
     @Override
@@ -33,15 +34,5 @@ class DeliverOrderEventImpl extends VehicleEventImpl implements DeliverOrderEven
     @Override
     public Region.Neighborhood getNode() {
         return node;
-    }
-
-    @Override
-    public String toString() {
-        return "DeliverOrderEvent("
-            + "time=" + getTick()
-            + ", vehicle=" + getVehicle().getId()
-            + ", node=" + getNode()
-            + ", order=" + getOrder()
-            + ')';
     }
 }

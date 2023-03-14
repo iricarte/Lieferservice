@@ -61,20 +61,6 @@ class VehicleManagerImpl implements VehicleManager {
         return Collections.unmodifiableMap(retVal);
     }
 
-    private Set<AbstractOccupied<?>> getAllOccupied() {
-        Set<AbstractOccupied<?>> retVal = new HashSet<>();
-        retVal.addAll(this.occupiedNodes.values());
-        retVal.addAll(this.occupiedEdges.values());
-        return Collections.unmodifiableSet(retVal);
-    }
-
-    private OccupiedNodeImpl<? extends Region.Node> getOccupiedNode(Location location) {
-        return occupiedNodes.values().stream()
-            .filter(node -> node.getComponent().getLocation().equals(location))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Could not find node with given predicate"));
-    }
-
     @Override
     public Region getRegion() {
         return region;
@@ -86,20 +72,12 @@ class VehicleManagerImpl implements VehicleManager {
     }
 
     @Override
-    public Collection<Vehicle> getVehicles() {
-        return unmodifiableVehicles;
-    }
-
-    @Override
-    public Collection<Vehicle> getAllVehicles() {
-        Collection<Vehicle> allVehicles = new ArrayList<>(getVehicles());
-        allVehicles.addAll(vehiclesToSpawn);
-        return allVehicles;
-    }
-
-    @Override
     public List<OccupiedRestaurant> getOccupiedRestaurants() {
-        return occupiedNodes.values().stream().filter(OccupiedRestaurant.class::isInstance).map(OccupiedRestaurant.class::cast).toList();
+        return occupiedNodes.values()
+                            .stream()
+                            .filter(OccupiedRestaurant.class::isInstance)
+                            .map(OccupiedRestaurant.class::cast)
+                            .toList();
     }
 
     @Override
@@ -124,7 +102,8 @@ class VehicleManagerImpl implements VehicleManager {
         } else if (component instanceof Region.Edge edge) {
             return this.getAbstractOccupiedEdge(edge);
         } else {
-            throw new IllegalArgumentException("Component is not of recognized subtype: " + component.getClass().getName());
+            throw new IllegalArgumentException(
+                    "Component is not of recognized subtype: " + component.getClass().getName());
         }
     }
 
@@ -150,7 +129,11 @@ class VehicleManagerImpl implements VehicleManager {
 
     @Override
     public Collection<OccupiedNeighborhood> getOccupiedNeighborhoods() {
-        return occupiedNodes.values().stream().filter(OccupiedNeighborhood.class::isInstance).map(OccupiedNeighborhood.class::cast).toList();
+        return occupiedNodes.values()
+                            .stream()
+                            .filter(OccupiedNeighborhood.class::isInstance)
+                            .map(OccupiedNeighborhood.class::cast)
+                            .toList();
     }
 
     @Override
@@ -176,11 +159,6 @@ class VehicleManagerImpl implements VehicleManager {
     }
 
     @Override
-    public EventBus getEventBus() {
-        return eventBus;
-    }
-
-    @Override
     public List<Event> tick(long currentTick) {
         for (VehicleImpl vehicle : vehiclesToSpawn) {
             spawnVehicle(vehicle, currentTick);
@@ -197,6 +175,18 @@ class VehicleManagerImpl implements VehicleManager {
         return eventBus.popEvents(currentTick);
     }
 
+    private void spawnVehicle(VehicleImpl vehicle, long currentTick) {
+        vehicles.add(vehicle);
+        OccupiedRestaurantImpl warehouse = (OccupiedRestaurantImpl) vehicle.getOccupied();
+        warehouse.vehicles.put(vehicle, new AbstractOccupied.VehicleStats(currentTick, null));
+        getEventBus().queuePost(SpawnEvent.of(currentTick, vehicle, warehouse.getComponent()));
+    }
+
+    @Override
+    public EventBus getEventBus() {
+        return eventBus;
+    }
+
     public void reset() {
         for (AbstractOccupied<?> occupied : getAllOccupied()) {
             occupied.reset();
@@ -206,38 +196,52 @@ class VehicleManagerImpl implements VehicleManager {
             vehicle.reset();
         }
 
-        vehiclesToSpawn.addAll(getVehicles().stream()
-            .map(VehicleImpl.class::cast)
-            .toList());
+        vehiclesToSpawn.addAll(getVehicles().stream().map(VehicleImpl.class::cast).toList());
 
         vehicles.clear();
     }
 
+    private Set<AbstractOccupied<?>> getAllOccupied() {
+        Set<AbstractOccupied<?>> retVal = new HashSet<>();
+        retVal.addAll(this.occupiedNodes.values());
+        retVal.addAll(this.occupiedEdges.values());
+        return Collections.unmodifiableSet(retVal);
+    }
+
+    @Override
+    public Collection<Vehicle> getAllVehicles() {
+        Collection<Vehicle> allVehicles = new ArrayList<>(getVehicles());
+        allVehicles.addAll(vehiclesToSpawn);
+        return allVehicles;
+    }
+
+    @Override
+    public Collection<Vehicle> getVehicles() {
+        return unmodifiableVehicles;
+    }
+
     @SuppressWarnings("UnusedReturnValue")
-    Vehicle addVehicle(
-        Location startingLocation,
-        double capacity
-    ) {
+    Vehicle addVehicle(Location startingLocation, double capacity) {
         OccupiedNodeImpl<? extends Region.Node> occupied = getOccupiedNode(startingLocation);
 
         if (!(occupied instanceof OccupiedRestaurant)) {
             throw new IllegalArgumentException("Vehicles can only spawn at restaurants!");
         }
 
-        final VehicleImpl vehicle = new VehicleImpl(
-            vehicles.size() + vehiclesToSpawn.size(),
-            capacity,
-            this,
-            (OccupiedRestaurant) occupied);
+        final VehicleImpl vehicle = new VehicleImpl(vehicles.size() + vehiclesToSpawn.size(),
+                                                    capacity,
+                                                    this,
+                                                    (OccupiedRestaurant) occupied);
         vehiclesToSpawn.add(vehicle);
         vehicle.setOccupied(occupied);
         return vehicle;
     }
 
-    private void spawnVehicle(VehicleImpl vehicle, long currentTick) {
-        vehicles.add(vehicle);
-        OccupiedRestaurantImpl warehouse = (OccupiedRestaurantImpl) vehicle.getOccupied();
-        warehouse.vehicles.put(vehicle, new AbstractOccupied.VehicleStats(currentTick, null));
-        getEventBus().queuePost(SpawnEvent.of(currentTick, vehicle, warehouse.getComponent()));
+    private OccupiedNodeImpl<? extends Region.Node> getOccupiedNode(Location location) {
+        return occupiedNodes.values()
+                            .stream()
+                            .filter(node -> node.getComponent().getLocation().equals(location))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalArgumentException("Could not find node with given predicate"));
     }
 }

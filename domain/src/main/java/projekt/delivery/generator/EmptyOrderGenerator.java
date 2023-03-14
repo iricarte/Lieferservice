@@ -25,7 +25,8 @@ public class EmptyOrderGenerator implements OrderGenerator {
     }
 
     /**
-     * A {@link OrderGenerator.FactoryBuilder} form constructing a new {@link EmptyOrderGenerator.Factory}.
+     * A {@link OrderGenerator.FactoryBuilder} form constructing a new
+     * {@link EmptyOrderGenerator.Factory}.
      */
     public static class FactoryBuilder implements OrderGenerator.FactoryBuilder {
         @Override

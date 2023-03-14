@@ -22,7 +22,17 @@ public interface TUColors {
     Color COLOR_10A = Color.rgb(201, 48, 142, 1);
     Color COLOR_11A = Color.rgb(128, 69, 151, 1);
 
-    Color[] COLOR_A = new Color[]{COLOR_1A, COLOR_2A, COLOR_3A, COLOR_4A, COLOR_5A, COLOR_6A, COLOR_7A, COLOR_8A, COLOR_9A, COLOR_10A, COLOR_11A};
+    Color[] COLOR_A = new Color[] {COLOR_1A,
+                                   COLOR_2A,
+                                   COLOR_3A,
+                                   COLOR_4A,
+                                   COLOR_5A,
+                                   COLOR_6A,
+                                   COLOR_7A,
+                                   COLOR_8A,
+                                   COLOR_9A,
+                                   COLOR_10A,
+                                   COLOR_11A};
 
     Color COLOR_1B = Color.rgb(0, 90, 169, 1);
     Color COLOR_2B = Color.rgb(0, 131, 204, 1);
@@ -48,5 +58,15 @@ public interface TUColors {
     Color COLOR_10C = Color.rgb(149, 17, 105, 1);
     Color COLOR_11C = Color.rgb(97, 28, 115, 1);
 
-    Color[] COLOR_C = new Color[]{COLOR_1C, COLOR_2C, COLOR_3C, COLOR_4C, COLOR_5C, COLOR_6C, COLOR_7C, COLOR_8C, COLOR_9C, COLOR_10C, COLOR_11C};
+    Color[] COLOR_C = new Color[] {COLOR_1C,
+                                   COLOR_2C,
+                                   COLOR_3C,
+                                   COLOR_4C,
+                                   COLOR_5C,
+                                   COLOR_6C,
+                                   COLOR_7C,
+                                   COLOR_8C,
+                                   COLOR_9C,
+                                   COLOR_10C,
+                                   COLOR_11C};
 }

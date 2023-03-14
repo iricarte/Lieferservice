@@ -17,15 +17,12 @@ class OrderReceivedEventImpl extends EventImpl implements OrderReceivedEvent {
     }
 
     @Override
-    public ConfirmedOrder getOrder() {
-        return order;
+    public String toString() {
+        return "OrderReceivedEventImpl{" + "time=" + getTick() + ", order=" + this.getOrder() + '}';
     }
 
     @Override
-    public String toString() {
-        return "OrderReceivedEventImpl{" +
-            "time=" + getTick() +
-            ", order=" + this.getOrder() +
-            '}';
+    public ConfirmedOrder getOrder() {
+        return order;
     }
 }

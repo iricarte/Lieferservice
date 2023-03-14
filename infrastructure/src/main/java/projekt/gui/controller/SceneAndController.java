@@ -16,7 +16,8 @@ public record SceneAndController(Scene scene, @Nullable SceneController controll
 
     /**
      * Creates a new {@link SceneAndController} with the given {@link Scene}.
-     * If the {@link Scene} is a {@link ControlledScene}, the {@link SceneController} is retrieved from it.
+     * If the {@link Scene} is a {@link ControlledScene}, the {@link SceneController} is
+     * retrieved from it.
      * Otherwise, the {@link SceneController} will be null.
      *
      * @param scene The {@link Scene}.

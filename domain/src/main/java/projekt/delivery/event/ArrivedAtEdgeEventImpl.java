@@ -8,15 +8,16 @@ class ArrivedAtEdgeEventImpl extends VehicleEventImpl implements ArrivedAtEdgeEv
     private final Region.Edge edge;
     private final Region.Node lastNode;
 
-    ArrivedAtEdgeEventImpl(
-        long tick,
-        Vehicle vehicle,
-        Region.Edge edge,
-        Region.Node lastNode
-    ) {
+    ArrivedAtEdgeEventImpl(long tick, Vehicle vehicle, Region.Edge edge, Region.Node lastNode) {
         super(tick, vehicle);
         this.edge = edge;
         this.lastNode = lastNode;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrivedAtEdgeEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", edge=" +
+               getEdge() + ", lastNode=" + getLastNode() + ')';
     }
 
     @Override
@@ -27,15 +28,5 @@ class ArrivedAtEdgeEventImpl extends VehicleEventImpl implements ArrivedAtEdgeEv
     @Override
     public Region.Node getLastNode() {
         return lastNode;
-    }
-
-    @Override
-    public String toString() {
-        return "ArrivedAtEdgeEvent("
-            + "time=" + getTick()
-            + ", vehicle=" + getVehicle().getId()
-            + ", edge=" + getEdge()
-            + ", lastNode=" + getLastNode()
-            + ')';
     }
 }

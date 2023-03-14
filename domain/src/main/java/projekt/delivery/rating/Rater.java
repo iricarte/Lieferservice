@@ -5,8 +5,9 @@ import projekt.delivery.simulation.Simulation;
 import projekt.delivery.simulation.SimulationListener;
 
 /**
- * A {@link SimulationListener} that calculates a score in the range [0,1] for the observed {@link Simulation}.<p>
- *
+ * A {@link SimulationListener} that calculates a score in the range [0,1] for the observed
+ * {@link Simulation}.<p>
+ * <p>
  * A rating is always based on a {@link RatingCriteria}.
  */
 public interface Rater extends SimulationListener {
@@ -14,12 +15,14 @@ public interface Rater extends SimulationListener {
     /**
      * Returns the score of the observed simulation up to the current tick.
      * This method has no side effects
+     *
      * @return the rating
      */
     double getScore();
 
     /**
      * Returns the {@link RatingCriteria} this {@link Rater} is designed for.
+     *
      * @return The {@link RatingCriteria} this {@link Rater} is designed for.
      */
     RatingCriteria getRatingCriteria();
@@ -31,6 +34,7 @@ public interface Rater extends SimulationListener {
 
         /**
          * Creates a new {@link Rater} instance.
+         *
          * @return The new {@link Rater}.
          */
         Rater create();
@@ -43,6 +47,7 @@ public interface Rater extends SimulationListener {
 
         /**
          * Constructs a new {@link OrderGenerator.Factory}.
+         *
          * @return The constructed {@link OrderGenerator.Factory}.
          */
         Factory build();

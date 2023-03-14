@@ -15,26 +15,29 @@ import java.util.Map;
 public class BasicDeliverySimulation implements Simulation {
 
     protected final List<SimulationListener> listeners = new ArrayList<>();
-    private final DeliveryService deliveryService;
     protected final SimulationConfig simulationConfig;
     protected final Map<RatingCriteria, Rater.Factory> raterFactoryMap;
     protected final Map<RatingCriteria, Rater> currentRaterMap = new HashMap<>();
+    private final DeliveryService deliveryService;
     private final OrderGenerator.Factory orderGeneratorFactory;
-    private OrderGenerator currentOrderGenerator;
-    private volatile boolean terminationRequested = false;
     protected long currentTick = 0;
     protected long simulationLength = -1;
     protected List<Event> lastEvents;
     protected boolean isRunning = false;
+    private OrderGenerator currentOrderGenerator;
+    private volatile boolean terminationRequested = false;
     private SimulationListener endSimulationListener;
 
     /**
      * Creates a new {@link BasicDeliverySimulation} instance.
      *
-     * @param simulationConfig The used {@link SimulationConfig}.
-     * @param raterFactoryMap The {@link Rater.Factory}s that are used to rate this {@link BasicDeliverySimulation} based on the corresponding {@link RatingCriteria}.
-     * @param deliveryService The simulated {@link DeliveryService}.
-     * @param orderGeneratorFactory The {@link OrderGenerator.Factory} used to generate orders during this {@link BasicDeliverySimulation}.
+     * @param simulationConfig      The used {@link SimulationConfig}.
+     * @param raterFactoryMap       The {@link Rater.Factory}s that are used to rate this
+     *                              {@link BasicDeliverySimulation} based on the
+     *                              corresponding {@link RatingCriteria}.
+     * @param deliveryService       The simulated {@link DeliveryService}.
+     * @param orderGeneratorFactory The {@link OrderGenerator.Factory} used to generate orders
+     *                              during this {@link BasicDeliverySimulation}.
      */
     public BasicDeliverySimulation(SimulationConfig simulationConfig,
                                    Map<RatingCriteria, Rater.Factory> raterFactoryMap,
@@ -47,6 +50,12 @@ public class BasicDeliverySimulation implements Simulation {
     }
 
     @Override
+    public void runSimulation(long simulationLength) {
+        this.simulationLength = simulationLength;
+        runSimulation();
+    }
+
+    @Override
     public void runSimulation() {
         setupNewSimulation();
         isRunning = true;
@@ -56,8 +65,7 @@ public class BasicDeliverySimulation implements Simulation {
                 try {
                     //noinspection BusyWait
                     Thread.sleep(50);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 continue;
@@ -71,7 +79,8 @@ public class BasicDeliverySimulation implements Simulation {
             long millisTillNextTick = simulationConfig.getMillisecondsPerTick() - executionTime;
             if (millisTillNextTick < 0) {
                 System.out.println("\033[0;33m"); //make text yellow
-                System.out.println("WARNING: Can't keep up! Did the system time change, or is the server overloaded?");
+                System.out.println(
+                        "WARNING: Can't keep up! Did the system time change, or is the server " + "overloaded?");
                 System.out.println("\033[0m"); // reset text color
             } else {
                 try {
@@ -88,47 +97,6 @@ public class BasicDeliverySimulation implements Simulation {
     }
 
     @Override
-    public void runSimulation(long simulationLength) {
-        this.simulationLength = simulationLength;
-        runSimulation();
-    }
-
-    @Override
-    public void endSimulation() {
-        terminationRequested = true;
-    }
-
-    @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    @Override
-    public boolean toggleRunning() {
-        isRunning = !isRunning();
-        return isRunning;
-    }
-
-    @Override
-    public double getRatingForCriterion(RatingCriteria criterion) {
-        if (!currentRaterMap.containsKey(criterion)) {
-            throw new IllegalArgumentException("No rater for criterion " + criterion);
-        }
-
-        return currentRaterMap.get(criterion).getScore();
-    }
-
-    @Override
-    public SimulationConfig getSimulationConfig() {
-        return simulationConfig;
-    }
-
-    @Override
-    public long getCurrentTick() {
-        return currentTick;
-    }
-
-    @Override
     public void runCurrentTick() {
         getDeliveryService().deliver(currentOrderGenerator.generateOrders(getCurrentTick()));
         lastEvents = Collections.unmodifiableList(deliveryService.tick(getCurrentTick()));
@@ -141,18 +109,8 @@ public class BasicDeliverySimulation implements Simulation {
     }
 
     @Override
-    public void addListener(SimulationListener listener) {
-        listeners.add(listener);
-    }
-
-    @Override
-    public boolean removeListener(SimulationListener listener) {
-        return listeners.remove(listener);
-    }
-
-    @Override
-    public DeliveryService getDeliveryService() {
-        return deliveryService;
+    public long getCurrentTick() {
+        return currentTick;
     }
 
     private void setupNewSimulation() {
@@ -163,6 +121,16 @@ public class BasicDeliverySimulation implements Simulation {
         getDeliveryService().reset();
         setupRaters();
         setupOrderGenerator();
+    }
+
+    @Override
+    public boolean removeListener(SimulationListener listener) {
+        return listeners.remove(listener);
+    }
+
+    @Override
+    public DeliveryService getDeliveryService() {
+        return deliveryService;
     }
 
     private void setupRaters() {
@@ -179,7 +147,42 @@ public class BasicDeliverySimulation implements Simulation {
         }
     }
 
+    @Override
+    public void addListener(SimulationListener listener) {
+        listeners.add(listener);
+    }
+
     private void setupOrderGenerator() {
         currentOrderGenerator = orderGeneratorFactory.create();
+    }
+
+    @Override
+    public void endSimulation() {
+        terminationRequested = true;
+    }
+
+    @Override
+    public boolean toggleRunning() {
+        isRunning = !isRunning();
+        return isRunning;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public double getRatingForCriterion(RatingCriteria criterion) {
+        if (!currentRaterMap.containsKey(criterion)) {
+            throw new IllegalArgumentException("No rater for criterion " + criterion);
+        }
+
+        return currentRaterMap.get(criterion).getScore();
+    }
+
+    @Override
+    public SimulationConfig getSimulationConfig() {
+        return simulationConfig;
     }
 }

@@ -17,13 +17,17 @@ import java.util.function.Supplier;
 
 public class RaterFactoryMapIO {
 
-    private static final Map<String, Supplier<? extends Rater.FactoryBuilder>> DESERIALIZED_RATER_FACTORY_BUILDER = Map.of(
-        InTimeRater.Factory.class.getName(), InTimeRater.Factory::builder,
-        AmountDeliveredRater.Factory.class.getName(), AmountDeliveredRater.Factory::builder,
-        TravelDistanceRater.Factory.class.getName(), TravelDistanceRater.Factory::builder
-    );
+    private static final Map<String, Supplier<? extends Rater.FactoryBuilder>> DESERIALIZED_RATER_FACTORY_BUILDER =
+            Map.of(
+                    InTimeRater.Factory.class.getName(),
+                    InTimeRater.Factory::builder,
+                    AmountDeliveredRater.Factory.class.getName(),
+                    AmountDeliveredRater.Factory::builder,
+                    TravelDistanceRater.Factory.class.getName(),
+                    TravelDistanceRater.Factory::builder);
 
-    public static Map<RatingCriteria, Rater.Factory> readRaterFactoryMap(BufferedReader reader, VehicleManager vehicleManager) {
+    public static Map<RatingCriteria, Rater.Factory> readRaterFactoryMap(BufferedReader reader,
+                                                                         VehicleManager vehicleManager) {
 
         Map<RatingCriteria, Rater.Factory> map = new HashMap<>();
 
@@ -35,7 +39,6 @@ public class RaterFactoryMapIO {
             }
 
             while (!Objects.equals(line = reader.readLine(), "END RATER")) {
-
 
                 if (line.startsWith("R ")) {
                     Rater.FactoryBuilder builder;
@@ -60,7 +63,6 @@ public class RaterFactoryMapIO {
                     }
 
                     map.put(ratingCriteria, builder.build());
-
                 } else {
                     throw new RuntimeException("Illegal line read: %s".formatted(line));
                 }
@@ -77,16 +79,10 @@ public class RaterFactoryMapIO {
             writer.write("START RATER\n");
 
             for (Map.Entry<RatingCriteria, Rater.Factory> entry : factoryMap.entrySet()) {
-                writer.write("R %s %s".formatted(
-                    entry.getKey().name(),
-                    entry.getValue().getClass().getName())
-                );
+                writer.write("R %s %s".formatted(entry.getKey().name(), entry.getValue().getClass().getName()));
 
                 if (entry.getValue() instanceof InTimeRater.Factory inTimeFactory) {
-                    writer.write(" %d %d\n".formatted(
-                        inTimeFactory.ignoredTicksOff,
-                        inTimeFactory.maxTicksOff
-                    ));
+                    writer.write(" %d %d\n".formatted(inTimeFactory.ignoredTicksOff, inTimeFactory.maxTicksOff));
                 } else if (entry.getValue() instanceof AmountDeliveredRater.Factory amountDeliveredFactory) {
                     writer.write(" %s\n".formatted(Double.toString(amountDeliveredFactory.factor)));
                 } else if (entry.getValue() instanceof TravelDistanceRater.Factory travelDistanceFactory) {
@@ -98,6 +94,4 @@ public class RaterFactoryMapIO {
             throw new RuntimeException(e);
         }
     }
-
-
 }
