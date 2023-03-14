@@ -9,8 +9,6 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import static org.tudalgo.algoutils.student.Student.crash;
-
 class VehicleImpl implements Vehicle {
 
     private final int id;
@@ -55,12 +53,41 @@ class VehicleImpl implements Vehicle {
 
     @Override
     public void moveDirect(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction) {
-        crash(); // TODO: H5.4 - remove if implemented
+        this.checkMoveToNode(node);
+        this.moveQueue.clear();
+        this.moveFromEdge(arrivalAction);
+        this.moveQueued(node, arrivalAction);
+    }
+
+    private void moveFromEdge(BiConsumer<? super Vehicle, Long> arrivalAction) {
+        if (occupied instanceof OccupiedEdgeImpl currentEdge && this.getPreviousOccupied().getComponent() instanceof Region.Node previousNode) {
+            Deque<Region.Node> path = this.getPathToNextNode(currentEdge, previousNode);
+            moveQueue.add(new PathImpl(path, arrivalAction));
+        }
+    }
+
+    private Deque<Region.Node> getPathToNextNode(OccupiedEdgeImpl currentEdge, Region.Node previousNode) {
+        if (previousNode.equals(currentEdge.getComponent().getNodeA())) {
+            return this.calculatePath(previousNode, currentEdge.getComponent().getNodeB());
+        } else {
+            return this.calculatePath(previousNode, currentEdge.getComponent().getNodeA());
+        }
+    }
+
+    private Deque<Region.Node> calculatePath(Region.Node startingNode, Region.Node node) {
+        return vehicleManager.getPathCalculator().getPath(startingNode, node);
     }
 
     @Override
     public void moveQueued(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction) {
-        crash(); // TODO: H5.3 - remove if implemented
+        this.checkMoveToNode(node);
+        Region.Node startingNode = this.calculateStartingNode();
+        Deque<Region.Node> path = this.calculatePath(startingNode, node);
+        moveQueue.add(new PathImpl(path, arrivalAction));
+    }
+
+    private Region.Node calculateStartingNode() {
+        return moveQueue.isEmpty() ? this.startingNode.getComponent() : moveQueue.getLast().nodes.getLast();
     }
 
     @Override
@@ -117,8 +144,8 @@ class VehicleImpl implements Vehicle {
             }
         } else {
             Region.Node next = path.nodes().peek();
-            if (occupied instanceof OccupiedNodeImpl) {
-                vehicleManager.getOccupied(region.getEdge(((OccupiedNodeImpl<?>) occupied).getComponent(), next)).addVehicle(this, currentTick);
+            if (occupied instanceof OccupiedNodeImpl<?> occupiedNode) {
+                vehicleManager.getOccupied(region.getEdge(occupiedNode.getComponent(), next)).addVehicle(this, currentTick);
             } else if (occupied instanceof OccupiedEdgeImpl) {
                 vehicleManager.getOccupied(next).addVehicle(this, currentTick);
                 path.nodes().pop();
@@ -129,11 +156,15 @@ class VehicleImpl implements Vehicle {
     }
 
     void loadOrder(ConfirmedOrder order) {
-        crash(); // TODO: H5.2 - remove if implemented
+        double nextWeight = order.getWeight() + this.getCurrentWeight();
+        if (nextWeight > this.capacity) {
+            throw new VehicleOverloadedException(this, nextWeight);
+        }
+        this.orders.add(order);
     }
 
     void unloadOrder(ConfirmedOrder order) {
-        crash(); // TODO: H5.2 - remove if implemented
+        this.orders.removeIf(confirmedOrder -> confirmedOrder.getOrderID() == order.getOrderID());
     }
 
     @Override
