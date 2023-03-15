@@ -1,11 +1,17 @@
 package projekt.delivery.generator;
 
+import projekt.base.Location;
+import projekt.base.TickInterval;
 import projekt.delivery.routing.ConfirmedOrder;
 import projekt.delivery.routing.VehicleManager;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An implementation of an {@link OrderGenerator} that represents the incoming orders on an
@@ -18,6 +24,13 @@ import java.util.Random;
 public class FridayOrderGenerator implements OrderGenerator {
 
     private final Random random;
+    private final int orderCount;
+    private final VehicleManager vehicleManager;
+    private final int deliveryInterval;
+    private final double maxWeight;
+    private final double standardDeviation;
+    private final long lastTick;
+    private final List<List<ConfirmedOrder>> existingOrders;
 
     /**
      * Creates a new {@link FridayOrderGenerator} with the given parameters.
@@ -44,13 +57,90 @@ public class FridayOrderGenerator implements OrderGenerator {
                                  double standardDeviation,
                                  long lastTick,
                                  int seed) {
-        random = seed < 0 ? new Random() : new Random(seed);
+        this.random = seed < 0 ? new Random() : new Random(seed);
+        this.orderCount = orderCount;
+        this.vehicleManager = vehicleManager;
+        this.deliveryInterval = deliveryInterval;
+        this.maxWeight = maxWeight;
+        this.standardDeviation = standardDeviation;
+        this.lastTick = lastTick;
+        this.existingOrders = new LinkedList<>();
     }
 
     @Override
     public List<ConfirmedOrder> generateOrders(long tick) {
+        if (this.isValidTick(tick)) {
+            List<ConfirmedOrder> confirmedOrders = new ArrayList<>();
+            int ordersToGenerate = this.calculateOrdersToGenerate();
+            for (int i = 0; i < ordersToGenerate; i++) {
+                ConfirmedOrder confirmedOrder = this.generateOrder(tick);
+                confirmedOrders.add(confirmedOrder);
+            }
+            this.existingOrders.add(confirmedOrders);
+        }
+        return this.existingOrders.stream().skip(tick).findFirst().orElse(new ArrayList<>());
+    }
 
-        return null;
+    private boolean isValidTick(long tick) {
+        if (tick < 0) {
+            throw new IndexOutOfBoundsException(tick);
+        }
+        return tick < this.lastTick && tick >= this.existingOrders.size();
+    }
+
+    private int calculateOrdersToGenerate() {
+        return (int) (standardDeviation * (0.25 + random.nextGaussian()) / 2);
+    }
+
+    @NotNull
+    private ConfirmedOrder generateOrder(long tick) {
+        Location randomLocation = this.pickRandomLocation();
+        VehicleManager.OccupiedRestaurant randomRestaurant = this.pickRandomRestaurant();
+        TickInterval tickInterval = this.generateTickInterval(tick);
+        ArrayList<String> randomFoods = this.pickRandomFoods(randomRestaurant);
+        double randomWeight = this.getRandomWeight();
+        return new ConfirmedOrder(randomLocation, randomRestaurant, tickInterval, randomFoods, randomWeight);
+    }
+
+    private Location pickRandomLocation() {
+        VehicleManager.OccupiedNeighborhood neighborhood = vehicleManager.getOccupiedNeighborhoods()
+                                                                         .stream()
+                                                                         .skip(this.random.nextInt(vehicleManager.getOccupiedNeighborhoods()
+                                                                                                                 .size()))
+                                                                         .findFirst()
+                                                                         .orElse(null);
+        return Objects.requireNonNull(neighborhood).getComponent().getLocation();
+    }
+
+    private VehicleManager.OccupiedRestaurant pickRandomRestaurant() {
+        return vehicleManager.getOccupiedRestaurants()
+                             .stream()
+                             .skip(this.random.nextInt(vehicleManager.getOccupiedRestaurants().size()))
+                             .findFirst()
+                             .orElse(null);
+    }
+
+    @NotNull
+    private TickInterval generateTickInterval(long tick) {
+        return new TickInterval(tick, tick + deliveryInterval);
+    }
+
+    private ArrayList<String> pickRandomFoods(VehicleManager.OccupiedRestaurant restaurant) {
+        ArrayList<String> pickedFoods = new ArrayList<>();
+        int randomAmountOfFoods = this.random.nextInt(1, 10);
+        List<String> availableFoods = restaurant.getComponent().getAvailableFood();
+        for (int i = 0; i < randomAmountOfFoods; i++) {
+            pickedFoods.add(this.pickFood(availableFoods));
+        }
+        return pickedFoods;
+    }
+
+    private double getRandomWeight() {
+        return this.random.nextDouble(0, this.maxWeight);
+    }
+
+    private String pickFood(List<String> availableFoods) {
+        return availableFoods.get(this.random.nextInt(availableFoods.size()));
     }
 
     /**
