@@ -10,13 +10,13 @@ class ArrivedAtNeighborhoodEventImpl extends ArrivedAtNodeEventImpl implements A
     }
 
     @Override
-    public String toString() {
-        return "ArrivedAtNeighborhoodEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" +
-               getNode() + ", lastEdge=" + getLastEdge() + ')';
+    public Region.Neighborhood getNode() {
+        return (Region.Neighborhood) super.getNode();
     }
 
     @Override
-    public Region.Neighborhood getNode() {
-        return (Region.Neighborhood) super.getNode();
+    public String toString() {
+        return "ArrivedAtNeighborhoodEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node="
+               + getNode() + ", lastEdge=" + getLastEdge() + ')';
     }
 }

@@ -33,13 +33,13 @@ class NeighborhoodImpl extends NodeImpl implements Region.Neighborhood {
             return false;
         }
 
-        return Objects.equals(name, that.name) && Objects.equals(location, that.location) &&
-               Objects.equals(connections, that.connections);
+        return Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(connections,
+                                                                                                            that.connections);
     }
 
     @Override
     public String toString() {
-        return "NeighborhoodImpl(name='" + getName() + ", location=" + getLocation() + ", connections=" + connections +
-               ')';
+        return "NeighborhoodImpl(name='" + getName() + ", location=" + getLocation() + ", connections=" + connections
+               + ')';
     }
 }

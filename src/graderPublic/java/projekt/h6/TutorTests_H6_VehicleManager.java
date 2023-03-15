@@ -144,11 +144,11 @@ public class TutorTests_H6_VehicleManager {
         assertEquals(Class.forName("projekt.delivery.routing.OccupiedNodeImpl"),
                      occupiedNodes.get(nodeF).getClass(),
                      context,
-                     TR -> "The value mapped to " + locationF + " is not of the correct " + "type");
+                     TR -> "The value mapped to " + locationF + " is not of the correct type");
         assertEquals(Class.forName("projekt.delivery.routing.OccupiedNodeImpl"),
                      occupiedNodes.get(nodeG).getClass(),
                      context,
-                     TR -> "The value mapped to " + locationG + " is not of the correct " + "type");
+                     TR -> "The value mapped to " + locationG + " is not of the correct type");
     }
 
     @SuppressWarnings({"DuplicatedCode", "unchecked"})
@@ -202,11 +202,11 @@ public class TutorTests_H6_VehicleManager {
         assertEquals(Class.forName("projekt.delivery.routing.OccupiedNeighborhoodImpl"),
                      occupiedNodes.get(nodeF).getClass(),
                      context,
-                     TR -> "The value mapped" + " to " + locationF + " is not of the " + "correct type");
+                     TR -> "The value mapped to " + locationF + " is not of the correct type");
         assertEquals(Class.forName("projekt.delivery.routing.OccupiedRestaurantImpl"),
                      occupiedNodes.get(nodeG).getClass(),
                      context,
-                     TR -> "The value mapped " + "to " + locationG + " is not of the " + "correct type");
+                     TR -> "The value mapped to " + locationG + " is not of the correct type");
     }
 
     @Test
@@ -245,6 +245,7 @@ public class TutorTests_H6_VehicleManager {
                    occupiedEdges.get(edgeAE).getComponent(),
                    context,
                    TR -> "The value mapped to " + locationA + " -> " + locationE + " did not contain the correct edge");
+
     }
 
     @SuppressWarnings("DuplicatedCode")

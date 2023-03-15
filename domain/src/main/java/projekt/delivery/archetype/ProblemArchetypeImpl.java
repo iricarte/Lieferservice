@@ -33,8 +33,8 @@ public record ProblemArchetypeImpl(OrderGenerator.Factory orderGeneratorFactory,
             if (raterFactory instanceof TravelDistanceRater.Factory travelDistanceFactory) {
                 if (!travelDistanceFactory.vehicleManager.equals(vehicleManager)) {
                     throw new IllegalArgumentException(
-                            "The vehicle manager of the travel distance rater does not match the " +
-                            "given vehicle manager");
+                            "The vehicle manager of the travel distance rater does not match the "
+                            + "given vehicle manager");
                 }
             }
         }

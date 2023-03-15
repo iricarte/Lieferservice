@@ -9,12 +9,12 @@ class EventImpl implements Event {
     }
 
     @Override
-    public String toString() {
-        return "Event(" + "time=" + getTick() + ')';
+    public long getTick() {
+        return tick;
     }
 
     @Override
-    public long getTick() {
-        return tick;
+    public String toString() {
+        return "Event(" + "time=" + getTick() + ')';
     }
 }

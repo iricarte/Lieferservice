@@ -96,12 +96,6 @@ public class Utils {
         return (Region) constructor.newInstance();
     }
 
-    public static void addNodesToRegion(Region region, Region.Node... node) throws ReflectiveOperationException {
-        for (Region.Node n : node) {
-            addNodeToRegion(region, n);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static void addNodeToRegion(Region region, Region.Node node) throws ReflectiveOperationException {
         Field nodes = region.getClass().getDeclaredField("nodes");
@@ -109,9 +103,9 @@ public class Utils {
         ((Map<Location, Region.Node>) nodes.get(region)).put(node.getLocation(), node);
     }
 
-    public static void addEdgesToRegion(Region region, Region.Edge... edge) throws ReflectiveOperationException {
-        for (Region.Edge e : edge) {
-            addEdgeToRegion(region, e);
+    public static void addNodesToRegion(Region region, Region.Node... node) throws ReflectiveOperationException {
+        for (Region.Node n : node) {
+            addNodeToRegion(region, n);
         }
     }
 
@@ -120,6 +114,12 @@ public class Utils {
         Field allEdges = region.getClass().getDeclaredField("allEdges");
         allEdges.setAccessible(true);
         ((List<Region.Edge>) allEdges.get(region)).add(edge);
+    }
+
+    public static void addEdgesToRegion(Region region, Region.Edge... edge) throws ReflectiveOperationException {
+        for (Region.Edge e : edge) {
+            addEdgeToRegion(region, e);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -149,8 +149,8 @@ public class Utils {
         Constructor<?> constructor = Class.forName("projekt.delivery.routing.VehicleImpl")
                                           .getDeclaredConstructor(int.class,
                                                                   double.class,
-                                                                  Class.forName("projekt.delivery.routing" +
-                                                                                ".VehicleManagerImpl"),
+                                                                  Class.forName(
+                                                                          "projekt.delivery.routing.VehicleManagerImpl"),
                                                                   VehicleManager.OccupiedRestaurant.class);
         constructor.setAccessible(true);
         return (Vehicle) constructor.newInstance(id, capacity, vehicleManager, startingRestaurant);
@@ -250,12 +250,6 @@ public class Utils {
         return (Vehicle.Path) constructor.newInstance(nodes, arrivalAction);
     }
 
-    public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
-                                                                                                       Region.Node... nodes) throws
-                                                                                                                             ReflectiveOperationException {
-        return callToOccupiedNodes(vehicleManager, Arrays.asList(nodes));
-    }
-
     @SuppressWarnings("unchecked")
     public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
                                                                                                        Collection<Region.Node> nodes) throws
@@ -265,10 +259,10 @@ public class Utils {
         return (Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>>) method.invoke(vehicleManager, nodes);
     }
 
-    public static Map<Region.Edge, VehicleManager.Occupied<Region.Edge>> callToOccupiedEdges(VehicleManager vehicleManager,
-                                                                                             Region.Edge... edges) throws
-                                                                                                                   ReflectiveOperationException {
-        return callToOccupiedEdges(vehicleManager, Arrays.asList(edges));
+    public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
+                                                                                                       Region.Node... nodes) throws
+                                                                                                                             ReflectiveOperationException {
+        return callToOccupiedNodes(vehicleManager, Arrays.asList(nodes));
     }
 
     @SuppressWarnings("unchecked")
@@ -280,10 +274,15 @@ public class Utils {
         return (Map<Region.Edge, VehicleManager.Occupied<Region.Edge>>) method.invoke(vehicleManager, edges);
     }
 
+    public static Map<Region.Edge, VehicleManager.Occupied<Region.Edge>> callToOccupiedEdges(VehicleManager vehicleManager,
+                                                                                             Region.Edge... edges) throws
+                                                                                                                   ReflectiveOperationException {
+        return callToOccupiedEdges(vehicleManager, Arrays.asList(edges));
+    }
+
     public static void setOccupiedNodeOfVehicleManager(VehicleManager vehicleManager,
-                                                       Map<Region.Node,
-                                                                  VehicleManager.Occupied<? extends Region.Node>> map) throws
-                                                                                                                       ReflectiveOperationException {
+                                                       Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> map) throws
+                                                                                                                             ReflectiveOperationException {
         Field occupiedNodesField = vehicleManager.getClass().getDeclaredField("occupiedNodes");
         occupiedNodesField.setAccessible(true);
         occupiedNodesField.set(vehicleManager, map);

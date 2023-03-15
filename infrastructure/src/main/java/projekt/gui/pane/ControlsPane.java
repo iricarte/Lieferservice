@@ -83,8 +83,7 @@ public class ControlsPane extends BorderPane {
 
     private void updateText() {
         tickIntervalSliderLabel.setText("   Tick interval: %d ms %s".formatted((int) tickIntervalSlider.getValue(),
-                                                                               simulationConfig.isPaused() ?
-                                                                               "(paused)" : ""));
+                                                                               simulationConfig.isPaused() ? "(paused)" : ""));
     }
 
     public void updateTickLabel(long tick) {

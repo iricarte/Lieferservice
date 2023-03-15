@@ -106,6 +106,7 @@ public class TutorTests_H8_AmountDeliveredRaterTest {
                                            .build();
 
         assertEquals(expected, amountDeliveredRater2.getScore(), context2, TR -> "method did not return correct score");
+
     }
 
     @ParameterizedTest
@@ -157,6 +158,7 @@ public class TutorTests_H8_AmountDeliveredRaterTest {
                                             DeliverOrderEvent.of(2, vehicle, neighborhood, order4)), 2);
 
         assertEquals(expected, amountDeliveredRater.getScore(), context, TR -> "method did not return correct score");
+
     }
 
     @ParameterizedTest
@@ -236,5 +238,7 @@ public class TutorTests_H8_AmountDeliveredRaterTest {
                    context2,
                    TR -> "method did not return correct score. Expected %f but was %f".formatted(expected2,
                                                                                                  finalAmountDeliveredRater1.getScore()));
+
     }
+
 }

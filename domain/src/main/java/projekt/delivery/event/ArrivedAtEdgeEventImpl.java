@@ -15,12 +15,6 @@ class ArrivedAtEdgeEventImpl extends VehicleEventImpl implements ArrivedAtEdgeEv
     }
 
     @Override
-    public String toString() {
-        return "ArrivedAtEdgeEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", edge=" +
-               getEdge() + ", lastNode=" + getLastNode() + ')';
-    }
-
-    @Override
     public Region.Edge getEdge() {
         return edge;
     }
@@ -28,5 +22,11 @@ class ArrivedAtEdgeEventImpl extends VehicleEventImpl implements ArrivedAtEdgeEv
     @Override
     public Region.Node getLastNode() {
         return lastNode;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrivedAtEdgeEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", edge=" + getEdge()
+               + ", lastNode=" + getLastNode() + ')';
     }
 }

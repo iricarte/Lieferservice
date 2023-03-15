@@ -13,12 +13,12 @@ class SpawnEventImpl extends VehicleEventImpl implements SpawnEvent {
     }
 
     @Override
-    public String toString() {
-        return "SpawnEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" + getNode() + ')';
+    public Region.Node getNode() {
+        return node;
     }
 
     @Override
-    public Region.Node getNode() {
-        return node;
+    public String toString() {
+        return "SpawnEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" + getNode() + ')';
     }
 }

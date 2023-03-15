@@ -53,8 +53,8 @@ class VehicleImpl implements Vehicle {
     }
 
     private void moveFromEdge(BiConsumer<? super Vehicle, Long> arrivalAction) {
-        if (occupied instanceof OccupiedEdgeImpl currentEdge &&
-            this.getPreviousOccupied().getComponent() instanceof Region.Node previousNode) {
+        if (occupied instanceof OccupiedEdgeImpl currentEdge && this.getPreviousOccupied()
+                                                                    .getComponent() instanceof Region.Node previousNode) {
             Deque<Region.Node> path = this.getPathToNextNode(currentEdge, previousNode);
             moveQueue.add(new PathImpl(path, arrivalAction));
         }
@@ -175,8 +175,8 @@ class VehicleImpl implements Vehicle {
 
     @Override
     public String toString() {
-        return "VehicleImpl(" + "id=" + id + ", capacity=" + capacity + ", orders=" + orders + ", component=" +
-               occupied.component + ')';
+        return "VehicleImpl(" + "id=" + id + ", capacity=" + capacity + ", orders=" + orders + ", component="
+               + occupied.component + ')';
     }
 
     private record PathImpl(Deque<Region.Node> nodes, BiConsumer<? super Vehicle, Long> arrivalAction) implements Path {

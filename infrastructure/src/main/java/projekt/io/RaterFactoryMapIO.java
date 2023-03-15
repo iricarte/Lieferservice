@@ -17,14 +17,13 @@ import java.util.function.Supplier;
 
 public class RaterFactoryMapIO {
 
-    private static final Map<String, Supplier<? extends Rater.FactoryBuilder>> DESERIALIZED_RATER_FACTORY_BUILDER =
-            Map.of(
-                    InTimeRater.Factory.class.getName(),
-                    InTimeRater.Factory::builder,
-                    AmountDeliveredRater.Factory.class.getName(),
-                    AmountDeliveredRater.Factory::builder,
-                    TravelDistanceRater.Factory.class.getName(),
-                    TravelDistanceRater.Factory::builder);
+    private static final Map<String, Supplier<? extends Rater.FactoryBuilder>> DESERIALIZED_RATER_FACTORY_BUILDER = Map.of(
+            InTimeRater.Factory.class.getName(),
+            InTimeRater.Factory::builder,
+            AmountDeliveredRater.Factory.class.getName(),
+            AmountDeliveredRater.Factory::builder,
+            TravelDistanceRater.Factory.class.getName(),
+            TravelDistanceRater.Factory::builder);
 
     public static Map<RatingCriteria, Rater.Factory> readRaterFactoryMap(BufferedReader reader,
                                                                          VehicleManager vehicleManager) {

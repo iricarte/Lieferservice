@@ -35,9 +35,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         ProblemArchetype problem1;
 
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
-                             "problem1.txt"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
+                "problem1.txt"))))) {
             problem1 = ProblemArchetypeIO.readProblemArchetype(reader);
         }
 
@@ -54,8 +53,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
                                RatingCriteria.AMOUNT_DELIVERED)));
             assertTrue(r.get(RatingCriteria.IN_TIME) > 0.3,
                        context,
-                       TR -> ("The amount delivered in time should be greater than 0.3, but was %f" +
-                              ".").formatted(r.get(RatingCriteria.IN_TIME)));
+                       TR -> "The amount delivered in time should be greater than 0.3, but was %f.".formatted(r.get(
+                               RatingCriteria.IN_TIME)));
             assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.1,
                        context,
                        TR -> "The travel distance should be greater than 0.1, but was %f.".formatted(r.get(
@@ -70,9 +69,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         ProblemArchetype problem2;
 
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
-                             "problem2.txt"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
+                "problem2.txt"))))) {
             problem2 = ProblemArchetypeIO.readProblemArchetype(reader);
         }
 
@@ -89,8 +87,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
                                RatingCriteria.AMOUNT_DELIVERED)));
             assertTrue(r.get(RatingCriteria.IN_TIME) > 0.25,
                        context,
-                       TR -> ("The amount delivered in time should be greater than 0.25, but was " +
-                              "%f.").formatted(r.get(RatingCriteria.IN_TIME)));
+                       TR -> "The amount delivered in time should be greater than 0.25, but was %f.".formatted(r.get(
+                               RatingCriteria.IN_TIME)));
             assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.35,
                        context,
                        TR -> "The travel distance should be greater than 0.35, but was %f.".formatted(r.get(
@@ -105,9 +103,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         ProblemArchetype problem3;
 
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
-                             "problem3.txt"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
+                "problem3.txt"))))) {
             problem3 = ProblemArchetypeIO.readProblemArchetype(reader);
         }
 
@@ -124,8 +121,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
                                RatingCriteria.AMOUNT_DELIVERED)));
             assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2,
                        context,
-                       TR -> ("The amount delivered in time should be greater than 0.2, but was %f" +
-                              ".").formatted(r.get(RatingCriteria.IN_TIME)));
+                       TR -> "The amount delivered in time should be greater than 0.2, but was %f.".formatted(r.get(
+                               RatingCriteria.IN_TIME)));
             assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.05,
                        context,
                        TR -> "The travel distance should be greater than 0.05, but was %f.".formatted(r.get(
@@ -140,9 +137,8 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         ProblemArchetype problem4;
 
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
-                             "problem4.txt"))))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(
+                "problem4.txt"))))) {
             problem4 = ProblemArchetypeIO.readProblemArchetype(reader);
         }
 
@@ -159,12 +155,13 @@ public class TutorTests_H9_OurDeliveryServiceTest {
                                RatingCriteria.AMOUNT_DELIVERED)));
             assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2,
                        context,
-                       TR -> ("The amount delivered in time should be greater than 0.2, but was %f" +
-                              ".").formatted(r.get(RatingCriteria.IN_TIME)));
+                       TR -> "The amount delivered in time should be greater than 0.2, but was %f.".formatted(r.get(
+                               RatingCriteria.IN_TIME)));
             assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.2,
                        context,
                        TR -> "The travel distance should be greater than 0.2, but was %f.".formatted(r.get(
                                RatingCriteria.TRAVEL_DISTANCE)));
         });
     }
+
 }

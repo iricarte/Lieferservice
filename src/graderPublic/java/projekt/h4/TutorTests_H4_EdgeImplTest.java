@@ -97,7 +97,7 @@ public class TutorTests_H4_EdgeImplTest {
 
         assertTrue(edgeBC.compareTo(edgeAB) > 0,
                    context1,
-                   TR -> "The method did not return a positive value when the first nodeA is > " + "the second nodeB.");
+                   TR -> "The method did not return a positive value when the first nodeA is > the second nodeB.");
 
         Context context2 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
                                            .add("edge1", edgeAB)
@@ -106,7 +106,7 @@ public class TutorTests_H4_EdgeImplTest {
 
         assertTrue(edgeAB.compareTo(edgeBC) < 0,
                    context2,
-                   TR -> "The method did not return a negative value when the first nodeA is < " + "the second nodeB.");
+                   TR -> "The method did not return a negative value when the first nodeA is < the second nodeB.");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class TutorTests_H4_EdgeImplTest {
 
         assertTrue(edgeAB.compareTo(edgeAC) < 0,
                    context1,
-                   TR -> "The method did not return a negative value when the first nodeB is < " + "the second nodeB.");
+                   TR -> "The method did not return a negative value when the first nodeB is < the second nodeB.");
 
         Context context2 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
                                            .add("edge1", edgeAC)
@@ -127,7 +127,7 @@ public class TutorTests_H4_EdgeImplTest {
 
         assertTrue(edgeAC.compareTo(edgeAB) > 0,
                    context2,
-                   TR -> "The method did not return a positive value when the first nodeB is > " + "the second nodeB.");
+                   TR -> "The method did not return a positive value when the first nodeB is > the second nodeB.");
     }
 
     @SuppressWarnings("EqualsWithItself")
@@ -161,17 +161,17 @@ public class TutorTests_H4_EdgeImplTest {
         Region.Edge differentLocationA = createEdge(region, "AB", locationC, locationD, 1);
         assertFalse(edgeAB.equals(differentLocationA),
                     context,
-                    TR -> "The method did not return false when the object has a different " + "locationA.");
+                    TR -> "The method did not return false when the object has a different locationA.");
 
         Region.Edge differentLocationB = createEdge(region, "AB", locationA, locationC, 1);
         assertFalse(edgeAB.equals(differentLocationB),
                     context,
-                    TR -> "The method did not return false when the object has a different " + "locationB.");
+                    TR -> "The method did not return false when the object has a different locationB.");
 
         Region.Edge differentDuration = createEdge(region, "AB", locationA, locationB, 2);
         assertFalse(edgeAB.equals(differentDuration),
                     context,
-                    TR -> "The method did not return false when the object has a different " + "duration.");
+                    TR -> "The method did not return false when the object has a different duration.");
 
         Region.Edge differentName = createEdge(region, "AC", locationA, locationB, 1);
         assertFalse(edgeAB.equals(differentName),

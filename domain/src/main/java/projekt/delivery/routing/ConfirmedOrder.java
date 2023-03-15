@@ -171,8 +171,8 @@ public class ConfirmedOrder implements Serializable {
 
     @Override
     public String toString() {
-        return "ConfirmedOrder{" + "location=" + location + ", orderID=" + orderID + ", deliveryInterval=" +
-               deliveryInterval + ", foodList=" + foodList + ", weight=" + weight + ", restaurant=" + restaurant +
-               ", actualDeliveryTick=" + actualDeliveryTick + '}';
+        return "ConfirmedOrder{" + "location=" + location + ", orderID=" + orderID + ", deliveryInterval="
+               + deliveryInterval + ", foodList=" + foodList + ", weight=" + weight + ", restaurant=" + restaurant
+               + ", actualDeliveryTick=" + actualDeliveryTick + '}';
     }
 }

@@ -54,6 +54,10 @@ dependencies {
     compileOnly(project(":infrastructure"))
 }
 
+application {
+    mainClass.set("projekt.Main")
+}
+
 tasks {
     val runDir = File("build/run")
     withType<JavaExec> {

@@ -198,18 +198,22 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                    context,
                    TR -> "the pendingOrders list does not contain order %d".formatted(order4.getOrderID()));
 
-        assertTrue(pendingOrders.get(0).getDeliveryInterval().start() <=
-                   pendingOrders.get(1).getDeliveryInterval().start(),
+        assertTrue(pendingOrders.get(0).getDeliveryInterval().start() <= pendingOrders.get(1)
+                                                                                      .getDeliveryInterval()
+                                                                                      .start(),
                    context,
                    TR -> "the pendingOrders list is not sorted");
-        assertTrue(pendingOrders.get(1).getDeliveryInterval().start() <=
-                   pendingOrders.get(2).getDeliveryInterval().start(),
+        assertTrue(pendingOrders.get(1).getDeliveryInterval().start() <= pendingOrders.get(2)
+                                                                                      .getDeliveryInterval()
+                                                                                      .start(),
                    context,
                    TR -> "the pendingOrders list is not sorted");
-        assertTrue(pendingOrders.get(2).getDeliveryInterval().start() <=
-                   pendingOrders.get(3).getDeliveryInterval().start(),
+        assertTrue(pendingOrders.get(2).getDeliveryInterval().start() <= pendingOrders.get(3)
+                                                                                      .getDeliveryInterval()
+                                                                                      .start(),
                    context,
                    TR -> "the pendingOrders list is not sorted");
+
     }
 
     @Test
@@ -269,7 +273,7 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
         assertTrue(getPendingOrders(deliveryService).contains(order4),
                    context,
-                   TR -> "The order that did not fit on the vehicle was removed from " + "the pendingOrders list.");
+                   TR -> "The order that did not fit on the vehicle was removed from the pendingOrders list.");
     }
 
     @Test
@@ -410,8 +414,8 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                        .filter(n -> n.getLocation().equals(neighborhoodLocation))
                                        .count(),
                      context,
-                     TR -> ("The method moveQueued wasn't called the correct amount of times with" + " the " +
-                            "location %s.").formatted(neighborhoodLocation));
+                     TR -> "The method moveQueued wasn't called the correct amount of times with the location %s.".formatted(
+                             neighborhoodLocation));
     }
 
     @SuppressWarnings("unchecked")
@@ -453,11 +457,9 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
         callTick(deliveryService, 0, List.of());
 
-        VehicleManager.OccupiedNeighborhood occupiedNeighborhood =
-                spy((VehicleManager.OccupiedNeighborhood) getOccupiedNodes(
+        VehicleManager.OccupiedNeighborhood occupiedNeighborhood = spy((VehicleManager.OccupiedNeighborhood) getOccupiedNodes(
                 vehicleManager).get(neighborhood));
-        VehicleManager.OccupiedNeighborhood occupiedNeighborhood2 =
-                spy((VehicleManager.OccupiedNeighborhood) getOccupiedNodes(
+        VehicleManager.OccupiedNeighborhood occupiedNeighborhood2 = spy((VehicleManager.OccupiedNeighborhood) getOccupiedNodes(
                 vehicleManager).get(neighborhood2));
         HashMap<Region.Node, VehicleManager.Occupied<? extends Region.Node>> occupiedNodes = new HashMap<>(
                 getOccupiedNodes(vehicleManager));
@@ -482,8 +484,8 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
         assertEquals(2,
                      vehicleArgumentCaptor.getAllValues().size(),
                      context,
-                     TR -> ("The method deliverOrder wasn't called the correct amount of times " + "after " +
-                            "arriving at %s.").formatted(order1.getLocation()));
+                     TR -> "The method deliverOrder wasn't called the correct amount of times after arriving at %s.".formatted(
+                             order1.getLocation()));
 
         assertEquals(vehicle,
                      vehicleArgumentCaptor.getAllValues().get(0),

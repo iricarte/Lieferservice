@@ -57,8 +57,7 @@ public class BogoDeliveryService extends AbstractDeliveryService {
               .map(ArrivedAtNeighborhoodEvent.class::cast)
               .forEach(e -> {
                   final Vehicle vehicle = e.getVehicle();
-                  final VehicleManager.OccupiedNeighborhood neighborhood =
-                          vehicleManager.getOccupiedNeighborhood(e.getNode());
+                  final VehicleManager.OccupiedNeighborhood neighborhood = vehicleManager.getOccupiedNeighborhood(e.getNode());
                   for (ConfirmedOrder order : new ArrayList<>(vehicle.getOrders())) {
                       neighborhood.deliverOrder(vehicle, order, currentTick);
                   }

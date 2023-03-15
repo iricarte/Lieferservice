@@ -84,13 +84,13 @@ class NodeImpl implements Region.Node {
             return false;
         }
         NodeImpl node = (NodeImpl) o;
-        return Objects.equals(name, node.name) && Objects.equals(location, node.location) &&
-               Objects.equals(connections, node.connections);
+        return Objects.equals(name, node.name) && Objects.equals(location, node.location) && Objects.equals(connections,
+                                                                                                            node.connections);
     }
 
     @Override
     public String toString() {
-        return "NodeImpl(name='" + name + "', " + "location='" + location + "', " + "connections='" + connections +
-               "')";
+        return "NodeImpl(name='" + name + "', " + "location='" + location + "', " + "connections='" + connections
+               + "')";
     }
 }

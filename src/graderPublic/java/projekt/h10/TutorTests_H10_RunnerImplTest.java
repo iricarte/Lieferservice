@@ -135,19 +135,19 @@ public class TutorTests_H10_RunnerImplTest {
         assertSame(deliveryService1,
                    simulation1.getDeliveryService(),
                    context,
-                   TR -> "Simulation for the first problem does not have the correct " + "problem");
+                   TR -> "Simulation for the first problem does not have the correct problem");
         assertSame(simulationConfig,
                    simulation1.getSimulationConfig(),
                    context,
-                   TR -> "Simulation for the first problem does not have the correct " + "simulation config");
+                   TR -> "Simulation for the first problem does not have the correct simulation config");
         assertSame(orderGeneratorFactory1,
                    getOrderGeneratorFactory(simulation1),
                    context,
-                   TR -> "Simulation for the first problem does not have " + "the correct order generator factory");
+                   TR -> "Simulation for the first problem does not have the correct order generator factory");
         assertSame(problem1.raterFactoryMap(),
                    getRaterFactoryMap(simulation1),
                    context,
-                   TR -> "Simulation for the first problem does not have the " + "correct rater factory map");
+                   TR -> "Simulation for the first problem does not have the correct rater factory map");
 
         assertTrue(result.containsKey(problem2),
                    context,
@@ -158,19 +158,20 @@ public class TutorTests_H10_RunnerImplTest {
         assertSame(deliveryService2,
                    simulation2.getDeliveryService(),
                    context,
-                   TR -> "Simulation for the second problem does not have the correct " + "problem");
+                   TR -> "Simulation for the second problem does not have the correct problem");
         assertSame(simulationConfig,
                    simulation2.getSimulationConfig(),
                    context,
-                   TR -> "Simulation for the second problem does not have the correct" + " simulation config");
+                   TR -> "Simulation for the second problem does not have the correct simulation config");
         assertSame(orderGeneratorFactory2,
                    getOrderGeneratorFactory(simulation2),
                    context,
-                   TR -> "Simulation for the second problem does not have " + "the correct order generator factory");
+                   TR -> "Simulation for the second problem does not have the correct order generator factory");
         assertSame(problem2.raterFactoryMap(),
                    getRaterFactoryMap(simulation2),
                    context,
-                   TR -> "Simulation for the second problem does not have the" + " correct rater factory map");
+                   TR -> "Simulation for the second problem does not have the correct rater factory map");
+
     }
 
     @ParameterizedTest
@@ -202,6 +203,7 @@ public class TutorTests_H10_RunnerImplTest {
                      simulation2.runSimulationCalls,
                      context,
                      TR -> "Simulation2 was not executed the correct number of times");
+
     }
 
     @ParameterizedTest
@@ -250,36 +252,34 @@ public class TutorTests_H10_RunnerImplTest {
         assertEquals(iterations,
                      simulation1Actions.stream().filter(a -> a.action == SimulationActions.SETUP).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulationSetupHandler.accept is not correct " + "for" +
-                           " simulation1");
+                     TR -> "The amount of calls to simulationSetupHandler.accept is not correct for simulation1");
         assertEquals(iterations,
                      simulation2Actions.stream().filter(a -> a.action == SimulationActions.SETUP).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulationSetupHandler.accept is not correct " + "for" +
-                           " simulation2");
+                     TR -> "The amount of calls to simulationSetupHandler.accept is not correct for simulation2");
 
         for (int i = 0; i < iterations; i++) {
             int finalI = i;
             assertEquals(SimulationActions.SETUP,
                          simulation1Actions.get(i * 2).action,
                          context,
-                         TR -> ("Expected the action %d of simulation1 to be a " +
-                                "call to SimulationSetupHandler.accept but it " + "wasn't").formatted(finalI * 2 + 1));
+                         TR -> "Expected the action %d of simulation1 to be a call to SimulationSetupHandler.accept but it wasn't".formatted(
+                                 finalI * 2 + 1));
             assertEquals(SimulationActions.RUN,
                          simulation1Actions.get(i * 2 + 1).action,
                          context,
-                         TR -> ("Expected the action %d of simulation1 to be a call to Simulation" +
-                                ".run but it wasn't").formatted(finalI * 2 + 2));
+                         TR -> "Expected the action %d of simulation1 to be a call to Simulation.run but it wasn't".formatted(
+                                 finalI * 2 + 2));
             assertEquals(SimulationActions.SETUP,
                          simulation2Actions.get(i * 2).action,
                          context,
-                         TR -> ("Expected the action %d of simulation2 to be a " +
-                                "call to SimulationSetupHandler.accept but it " + "wasn't").formatted(finalI * 2 + 1));
+                         TR -> "Expected the action %d of simulation2 to be a call to SimulationSetupHandler.accept but it wasn't".formatted(
+                                 finalI * 2 + 1));
             assertEquals(SimulationActions.RUN,
                          simulation2Actions.get(i * 2 + 1).action,
                          context,
-                         TR -> ("Expected the action %d of simulation2 to be a call to Simulation" +
-                                ".run but it wasn't").formatted(finalI * 2 + 2));
+                         TR -> "Expected the action %d of simulation2 to be a call to Simulation.run but it wasn't".formatted(
+                                 finalI * 2 + 2));
         }
 
         for (int i = 0; i < iterations; i++) {
@@ -287,19 +287,17 @@ public class TutorTests_H10_RunnerImplTest {
             assertEquals(i,
                          simulation1Actions.get(i * 2).iteration,
                          context,
-                         TR -> ("Expected the iteration of SimulationSetupHandler.accept %d of " +
-                                "simulation1 to be %d but it was %d").formatted(finalI * 2 + 1,
-                                                                                finalI,
-                                                                                simulation1Actions.get(
-                                                                                        finalI * 2).iteration));
+                         TR -> "Expected the iteration of SimulationSetupHandler.accept %d of simulation1 to be %d but it was %d".formatted(
+                                 finalI * 2 + 1,
+                                 finalI,
+                                 simulation1Actions.get(finalI * 2).iteration));
             assertEquals(i,
                          simulation2Actions.get(i * 2).iteration,
                          context,
-                         TR -> ("Expected the iteration of SimulationSetupHandler.accept %d of " +
-                                "simulation2 to be %d but it was %d").formatted(finalI * 2 + 1,
-                                                                                finalI,
-                                                                                simulation2Actions.get(
-                                                                                        finalI * 2).iteration));
+                         TR -> "Expected the iteration of SimulationSetupHandler.accept %d of simulation2 to be %d but it was %d".formatted(
+                                 finalI * 2 + 1,
+                                 finalI,
+                                 simulation2Actions.get(finalI * 2).iteration));
         }
 
         for (ProblemArchetype problemArchetype : simulation1Actions.stream()
@@ -309,8 +307,7 @@ public class TutorTests_H10_RunnerImplTest {
             assertEquals(problem1,
                          problemArchetype,
                          context,
-                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler" + ".accept is " +
-                               "called with simulation1");
+                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler.accept is called with simulation1");
         }
         for (ProblemArchetype problemArchetype : simulation2Actions.stream()
                                                                    .filter(a -> a.action == SimulationActions.SETUP)
@@ -319,9 +316,9 @@ public class TutorTests_H10_RunnerImplTest {
             assertEquals(problem2,
                          problemArchetype,
                          context,
-                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler" + ".accept is " +
-                               "called with simulation2");
+                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler.accept is called with simulation2");
         }
+
     }
 
     @ParameterizedTest
@@ -370,37 +367,33 @@ public class TutorTests_H10_RunnerImplTest {
         assertEquals(iterations,
                      simulation1Actions.stream().filter(a -> a.action == SimulationActions.FINISHED).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulationFinishedHandler.accept is not " + "correct " +
-                           "for simulation1");
+                     TR -> "The amount of calls to simulationFinishedHandler.accept is not correct for simulation1");
         assertEquals(iterations,
                      simulation2Actions.stream().filter(a -> a.action == SimulationActions.FINISHED).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulationFinishedHandler.accept is not " + "correct " +
-                           "for simulation2");
+                     TR -> "The amount of calls to simulationFinishedHandler.accept is not correct for simulation2");
 
         for (int i = 0; i < iterations; i++) {
             int finalI = i;
             assertEquals(SimulationActions.RUN,
                          simulation1Actions.get(i * 2).action,
                          context,
-                         TR -> ("Expected the action %d of simulation1 to be a call to Simulation" +
-                                ".run but it wasn't").formatted(finalI * 2 + 1));
+                         TR -> "Expected the action %d of simulation1 to be a call to Simulation.run but it wasn't".formatted(
+                                 finalI * 2 + 1));
             assertEquals(SimulationActions.FINISHED,
                          simulation1Actions.get(i * 2 + 1).action,
                          context,
-                         TR -> ("Expected the action %d of simulation1 to be " +
-                                "a call to SimulationFinishedHandler.accept " + "but it wasn't").formatted(
+                         TR -> "Expected the action %d of simulation1 to be a call to SimulationFinishedHandler.accept but it wasn't".formatted(
                                  finalI * 2 + 2));
             assertEquals(SimulationActions.RUN,
                          simulation2Actions.get(i * 2).action,
                          context,
-                         TR -> ("Expected the action %d of simulation2 to be a call to Simulation" +
-                                ".run but it wasn't").formatted(finalI * 2 + 1));
+                         TR -> "Expected the action %d of simulation2 to be a call to Simulation.run but it wasn't".formatted(
+                                 finalI * 2 + 1));
             assertEquals(SimulationActions.FINISHED,
                          simulation2Actions.get(i * 2 + 1).action,
                          context,
-                         TR -> ("Expected the action %d of simulation2 to be " +
-                                "a call to SimulationFinishedHandler.accept " + "but it wasn't").formatted(
+                         TR -> "Expected the action %d of simulation2 to be a call to SimulationFinishedHandler.accept but it wasn't".formatted(
                                  finalI * 2 + 2));
         }
 
@@ -411,8 +404,7 @@ public class TutorTests_H10_RunnerImplTest {
             assertEquals(problem1,
                          problemArchetype,
                          context,
-                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler" + ".accept is " +
-                               "called with simulation1");
+                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler.accept is called with simulation1");
         }
         for (ProblemArchetype problemArchetype : simulation2Actions.stream()
                                                                    .filter(a -> a.action == SimulationActions.SETUP)
@@ -421,8 +413,7 @@ public class TutorTests_H10_RunnerImplTest {
             assertEquals(problem2,
                          problemArchetype,
                          context,
-                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler" + ".accept is " +
-                               "called with simulation2");
+                         TR -> "Expected the problem to be problem1 when SimulationSetupHandler.accept is called with simulation2");
         }
 
         List<SimulationAction> simulationActions = new ArrayList<>();
@@ -444,18 +435,16 @@ public class TutorTests_H10_RunnerImplTest {
         assertEquals(1,
                      simulationActions.stream().filter(a -> a.action == SimulationActions.RUN).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulation.run is not correct when " +
-                           "SimulationFinishedHandler.accept always returns true");
+                     TR -> "The amount of calls to simulation.run is not correct when SimulationFinishedHandler.accept always returns true");
         assertEquals(1,
                      simulationActions.stream().filter(a -> a.action == SimulationActions.FINISHED).toList().size(),
                      context,
-                     TR -> "The amount of calls to simulationFinishedHandler.accept is not correct when " +
-                           "SimulationFinishedHandler.accept always returns true");
+                     TR -> "The amount of calls to simulationFinishedHandler.accept is not correct when SimulationFinishedHandler.accept always returns true");
         assertEquals(0,
                      simulationActions.stream().filter(a -> a.action == SimulationActions.RESULT).toList().size(),
                      context,
-                     TR -> "The amount of calls to resultHandler.accept is not correct when " +
-                           "SimulationFinishedHandler.accept always returns true");
+                     TR -> "The amount of calls to resultHandler.accept is not correct when SimulationFinishedHandler.accept always returns true");
+
     }
 
     @ParameterizedTest
@@ -517,7 +506,7 @@ public class TutorTests_H10_RunnerImplTest {
         assertEquals(expectedAmountDelivererRating,
                      result.get(RatingCriteria.AMOUNT_DELIVERED),
                      context,
-                     TR -> "The AMOUNT_DELIVERED rating is not" + " correct");
+                     TR -> "The AMOUNT_DELIVERED rating is not correct");
     }
 
     @Test
@@ -532,8 +521,7 @@ public class TutorTests_H10_RunnerImplTest {
 
         ArgumentCaptor<ProblemGroup> problemGroupCaptor = ArgumentCaptor.forClass(ProblemGroup.class);
         ArgumentCaptor<SimulationConfig> simulationConfigCaptor = ArgumentCaptor.forClass(SimulationConfig.class);
-        ArgumentCaptor<DeliveryService.Factory> deliveryServiceFactoryCaptor =
-                ArgumentCaptor.forClass(DeliveryService.Factory.class);
+        ArgumentCaptor<DeliveryService.Factory> deliveryServiceFactoryCaptor = ArgumentCaptor.forClass(DeliveryService.Factory.class);
 
         TestSimulation simulation1 = new TestSimulation(null);
         TestSimulation simulation2 = new TestSimulation(null);
@@ -556,11 +544,11 @@ public class TutorTests_H10_RunnerImplTest {
         assertSame(simulationConfig,
                    simulationConfigCaptor.getValue(),
                    context,
-                   TR -> "The simulationConfig used to call createSimulations is not " + "correct");
+                   TR -> "The simulationConfig used to call createSimulations is not correct");
         assertSame(deliveryServiceFactory,
                    deliveryServiceFactoryCaptor.getValue(),
                    context,
-                   TR -> "The deliveryServiceFactory used to call " + "createSimulations is not correct");
+                   TR -> "The deliveryServiceFactory used to call createSimulations is not correct");
     }
 
     private enum SimulationActions {
@@ -601,8 +589,8 @@ public class TutorTests_H10_RunnerImplTest {
 
         @Override
         public String toString() {
-            return "SimulationAction{" + "action=" + action + ", simulation=" + simulation + ", problem=" + problem +
-                   ", iteration=" + iteration + '}';
+            return "SimulationAction{" + "action=" + action + ", simulation=" + simulation + ", problem=" + problem
+                   + ", iteration=" + iteration + '}';
         }
     }
 
@@ -693,4 +681,5 @@ public class TutorTests_H10_RunnerImplTest {
             throw new UnsupportedOperationException();
         }
     }
+
 }

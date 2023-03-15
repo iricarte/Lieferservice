@@ -106,13 +106,13 @@ class EdgeImpl implements Region.Edge {
             return false;
         }
         EdgeImpl edge = (EdgeImpl) o;
-        return duration == edge.duration && name.equals(edge.name) && locationA.equals(edge.locationA) &&
-               locationB.equals(edge.locationB);
+        return duration == edge.duration && name.equals(edge.name) && locationA.equals(edge.locationA)
+               && locationB.equals(edge.locationB);
     }
 
     @Override
     public String toString() {
-        return "EdgeImpl(name='" + name + "', " + "locationA='" + locationA + "', " + "locationB='" + locationB +
-               "', " + "duration='" + duration + "')";
+        return "EdgeImpl(name='" + name + "', " + "locationA='" + locationA + "', " + "locationB='" + locationB + "', "
+               + "duration='" + duration + "')";
     }
 }

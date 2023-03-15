@@ -128,15 +128,6 @@ public class MapPane extends Pane {
 
     // --- Edge Handling --- //
 
-    /**
-     * Adds a {@link Region.Node} to this {@link MapPane} and displays it.
-     *
-     * @param node The {@link Region.Node} to display.
-     */
-    public void addNode(Region.Node node) {
-        nodes.put(node, drawNode(node));
-    }
-
     @Nullable
     private static Float getStrokeWidth(int i, boolean inverted) {
         float strokeWidth;
@@ -152,6 +143,74 @@ public class MapPane extends Pane {
 
     private static Point2D getDifference(Point2D p1, Point2D p2) {
         return new Point2D.Double(p1.getX() - p2.getX(), p1.getY() - p2.getY());
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static Image loadImage(String name, Color color) {
+        try {
+            BufferedImage image = ImageIO.read(Objects.requireNonNull(MapPane.class.getClassLoader()
+                                                                                   .getResource(name)));
+            for (int x = 0; x < image.getWidth(); x++) {
+                for (int y = 0; y < image.getHeight(); y++) {
+                    if (image.getRGB(x, y) == java.awt.Color.BLACK.getRGB()) {
+                        image.setRGB(x,
+                                     y,
+                                     new java.awt.Color((float) color.getRed(),
+                                                        (float) color.getGreen(),
+                                                        (float) color.getBlue(),
+                                                        (float) color.getOpacity()).getRGB());
+                    }
+                }
+            }
+            return SwingFXUtils.toFXImage(image, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static Point2D midPoint(Region.Node node) {
+        return midPoint(node.getLocation());
+    }
+
+    private static Point2D midPoint(Location location) {
+        return new Point2D.Double(location.getX(), location.getY());
+    }
+
+    private static Point2D midPoint(Region.Edge edge) {
+        var l1 = edge.getNodeA().getLocation();
+        var l2 = edge.getNodeB().getLocation();
+        return new Point2D.Double((l1.getX() + l2.getX()) / 2d, (l1.getY() + l2.getY()) / 2d);
+    }
+
+    private static Point2D locationToPoint2D(Location location) {
+        return new Point2D.Double(location.getX(), location.getY());
+    }
+
+    private static Point2D midPoint(Vehicle vehicle) {
+        return midPoint(vehicle.getOccupied());
+    }
+
+    private static Point2D midPoint(VehicleManager.Occupied<?> occupied) {
+        if (occupied.getComponent() instanceof Region.Node) {
+            return midPoint(((Region.Node) occupied.getComponent()).getLocation());
+        } else if (occupied.getComponent() instanceof Region.Edge) {
+            return midPoint((Region.Edge) occupied.getComponent());
+        }
+        throw new UnsupportedOperationException("unsupported type of component");
+    }
+
+    // --- Node Handling --- //
+
+    /**
+     * Adds the {@link Region.Edge}s to this {@link MapPane} and displays them.
+     *
+     * @param edges The {@link Region.Edge}s to display.
+     */
+    public void addAllEdges(Collection<? extends Region.Edge> edges) {
+        for (Region.Edge edge : edges) {
+            addEdge(edge);
+        }
     }
 
     private void initListeners() {
@@ -176,8 +235,8 @@ public class MapPane extends Pane {
             }
             double scale = event.getDeltaY() > 0 ? SCALE_IN : SCALE_OUT;
 
-            if (((transformation.getScaleX() < MIN_SCALE || transformation.getScaleY() < MIN_SCALE) && scale < 1) ||
-                ((transformation.getScaleX() > MAX_SCALE || transformation.getScaleX() > MAX_SCALE) && scale > 1)) {
+            if (((transformation.getScaleX() < MIN_SCALE || transformation.getScaleY() < MIN_SCALE) && scale < 1) || (
+                    (transformation.getScaleX() > MAX_SCALE || transformation.getScaleX() > MAX_SCALE) && scale > 1)) {
                 return;
             }
 
@@ -218,33 +277,6 @@ public class MapPane extends Pane {
 
             drawPositionText();
         });
-    }
-
-    /**
-     * Adds the {@link Region.Edge}s to this {@link MapPane} and displays them.
-     *
-     * @param edges The {@link Region.Edge}s to display.
-     */
-    public void addAllEdges(Collection<? extends Region.Edge> edges) {
-        for (Region.Edge edge : edges) {
-            addEdge(edge);
-        }
-    }
-
-    /**
-     * Adds an {@link Region.Edge} to this {@link MapPane} and displays it.
-     *
-     * @param edge The {@link Region.Edge} to display.
-     */
-    public void addEdge(Region.Edge edge) {
-        if (selectedNode != null) {
-            if (edge.getNodeA().getLocation().equals(selectedNode.getLocation()) ||
-                edge.getNodeB().getLocation().equals(selectedNode.getLocation())) {
-                handleNodeClick(nodes.get(selectedNode).ellipse(), selectedNode);
-            }
-        }
-
-        edges.put(edge, drawEdge(edge));
     }
 
     private LabeledEdge drawEdge(Region.Edge edge) {
@@ -290,14 +322,6 @@ public class MapPane extends Pane {
         }
     }
 
-    private static Point2D midPoint(Region.Edge edge) {
-        var l1 = edge.getNodeA().getLocation();
-        var l2 = edge.getNodeB().getLocation();
-        return new Point2D.Double((l1.getX() + l2.getX()) / 2d, (l1.getY() + l2.getY()) / 2d);
-    }
-
-    // --- Node Handling --- //
-
     private Point2D transform(Point2D point) {
         return transformation.transform(point, null);
     }
@@ -306,32 +330,21 @@ public class MapPane extends Pane {
         return transformation.transform(locationToPoint2D(location), null);
     }
 
-    private static Point2D locationToPoint2D(Location location) {
-        return new Point2D.Double(location.getX(), location.getY());
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static Image loadImage(String name, Color color) {
-        try {
-            BufferedImage image = ImageIO.read(Objects.requireNonNull(MapPane.class.getClassLoader()
-                                                                                   .getResource(name)));
-            for (int x = 0; x < image.getWidth(); x++) {
-                for (int y = 0; y < image.getHeight(); y++) {
-                    if (image.getRGB(x, y) == java.awt.Color.BLACK.getRGB()) {
-                        image.setRGB(x,
-                                     y,
-                                     new java.awt.Color((float) color.getRed(),
-                                                        (float) color.getGreen(),
-                                                        (float) color.getBlue(),
-                                                        (float) color.getOpacity()).getRGB());
-                    }
-                }
+    /**
+     * Adds an {@link Region.Edge} to this {@link MapPane} and displays it.
+     *
+     * @param edge The {@link Region.Edge} to display.
+     */
+    public void addEdge(Region.Edge edge) {
+        if (selectedNode != null) {
+            if (edge.getNodeA().getLocation().equals(selectedNode.getLocation()) || edge.getNodeB()
+                                                                                        .getLocation()
+                                                                                        .equals(selectedNode.getLocation())) {
+                handleNodeClick(nodes.get(selectedNode).ellipse(), selectedNode);
             }
-            return SwingFXUtils.toFXImage(image, null);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
+
+        edges.put(edge, drawEdge(edge));
     }
 
     /**
@@ -360,6 +373,8 @@ public class MapPane extends Pane {
 
         handleEdgeClick(edges.get(edge).line(), edge);
     }
+
+    // --- Vehicle Handling --- //
 
     /**
      * Sets the action that is supposed to be executed when the user removes the selection of an
@@ -417,8 +432,6 @@ public class MapPane extends Pane {
         labeledEdge.text().setY(transformedMidPoint.getY());
     }
 
-    // --- Vehicle Handling --- //
-
     /**
      * Updates the position of all {@link Region.Edge}s on this {@link MapPane}.
      */
@@ -439,8 +452,38 @@ public class MapPane extends Pane {
         }
     }
 
-    private static Point2D midPoint(Region.Node node) {
-        return midPoint(node.getLocation());
+    private void handleNodeClick(Ellipse ellipse, Region.Node node) {
+        if (selectedNode != null) {
+            nodes.get(selectedNode).ellipse().setStroke(EDGE_COLOR);
+        }
+
+        if (node.equals(selectedNode)) {
+            if (nodeRemoveSelectionHandler != null) {
+                nodeRemoveSelectionHandler.accept(selectedNode);
+            }
+
+            if (vehiclesRemoveSelectionHandler != null && selectedVehicles != null) {
+                vehiclesRemoveSelectionHandler.accept(selectedVehicles);
+            }
+
+            selectedNode = null;
+            selectedVehicles = null;
+        } else {
+            ellipse.setStroke(COLOR_9B);
+            selectedNode = node;
+            selectedVehicles = vehicles.keySet()
+                                       .stream()
+                                       .filter(vehicle -> vehicle.getOccupied().getComponent().equals(selectedNode))
+                                       .toList();
+
+            if (nodeSelectionHandler != null) {
+                nodeSelectionHandler.accept(selectedNode);
+            }
+
+            if (vehiclesSelectionHandler != null && selectedVehicles.size() != 0) {
+                vehiclesSelectionHandler.accept(selectedVehicles);
+            }
+        }
     }
 
     private LabeledNode drawNode(Region.Node node) {
@@ -472,6 +515,8 @@ public class MapPane extends Pane {
     public Region.Node getSelectedNode() {
         return selectedNode;
     }
+
+    // --- Other Util --- //
 
     /**
      * Selects the given {@link Region.Node} and executes the action set by
@@ -518,7 +563,7 @@ public class MapPane extends Pane {
         this.nodeSelectionHandler = nodeSelectionHandler;
     }
 
-    // --- Other Util --- //
+    // --- Private Methods --- //
 
     /**
      * Updates the position of the given {@link Region.Node}.
@@ -563,8 +608,6 @@ public class MapPane extends Pane {
         }
     }
 
-    // --- Private Methods --- //
-
     /**
      * Adds a {@link Vehicle} to this {@link MapPane} and displays it.
      *
@@ -588,21 +631,13 @@ public class MapPane extends Pane {
         return imageView;
     }
 
-    private static Point2D midPoint(Location location) {
-        return new Point2D.Double(location.getX(), location.getY());
-    }
-
-    private static Point2D midPoint(Vehicle vehicle) {
-        return midPoint(vehicle.getOccupied());
-    }
-
-    private static Point2D midPoint(VehicleManager.Occupied<?> occupied) {
-        if (occupied.getComponent() instanceof Region.Node) {
-            return midPoint(((Region.Node) occupied.getComponent()).getLocation());
-        } else if (occupied.getComponent() instanceof Region.Edge) {
-            return midPoint((Region.Edge) occupied.getComponent());
-        }
-        throw new UnsupportedOperationException("unsupported type of component");
+    /**
+     * Adds a {@link Region.Node} to this {@link MapPane} and displays it.
+     *
+     * @param node The {@link Region.Node} to display.
+     */
+    public void addNode(Region.Node node) {
+        nodes.put(node, drawNode(node));
     }
 
     /**
@@ -804,40 +839,6 @@ public class MapPane extends Pane {
         redrawMap();
 
         alreadyCentered = true;
-    }
-
-    private void handleNodeClick(Ellipse ellipse, Region.Node node) {
-        if (selectedNode != null) {
-            nodes.get(selectedNode).ellipse().setStroke(EDGE_COLOR);
-        }
-
-        if (node.equals(selectedNode)) {
-            if (nodeRemoveSelectionHandler != null) {
-                nodeRemoveSelectionHandler.accept(selectedNode);
-            }
-
-            if (vehiclesRemoveSelectionHandler != null && selectedVehicles != null) {
-                vehiclesRemoveSelectionHandler.accept(selectedVehicles);
-            }
-
-            selectedNode = null;
-            selectedVehicles = null;
-        } else {
-            ellipse.setStroke(COLOR_9B);
-            selectedNode = node;
-            selectedVehicles = vehicles.keySet()
-                                       .stream()
-                                       .filter(vehicle -> vehicle.getOccupied().getComponent().equals(selectedNode))
-                                       .toList();
-
-            if (nodeSelectionHandler != null) {
-                nodeSelectionHandler.accept(selectedNode);
-            }
-
-            if (vehiclesSelectionHandler != null && selectedVehicles.size() != 0) {
-                vehiclesSelectionHandler.accept(selectedVehicles);
-            }
-        }
     }
 
     private void drawGrid() {

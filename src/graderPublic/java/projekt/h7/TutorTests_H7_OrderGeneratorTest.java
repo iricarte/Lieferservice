@@ -143,10 +143,10 @@ public class TutorTests_H7_OrderGeneratorTest {
         assertEquals(orderCount,
                      orders.size(),
                      context,
-                     TR -> ("Method did not create the correct amount of distinct orders in the " + "interval [0, %d]" +
-                            ".").formatted(lastTick));
+                     TR -> "Method did not create the correct amount of distinct orders in the interval [0, %d].".formatted(
+                             lastTick));
 
-        for (int i = lastTick + 1; i < 250; i++) {
+        for (int i = lastTick + 1; i < 1000; i++) {
             int finalI = i;
             assertNotNull(generator.generateOrders(i),
                           context,
@@ -155,6 +155,7 @@ public class TutorTests_H7_OrderGeneratorTest {
                        context,
                        TR -> "Method returned non-empty List for tick %d. Expected empty List".formatted(finalI));
         }
+
     }
 
     @Test
@@ -184,7 +185,7 @@ public class TutorTests_H7_OrderGeneratorTest {
 
         int fails = 0;
 
-        for (int k = 0; k < 1000; k++) {
+        for (int k = 0; k < 250; k++) {
             generator = FridayOrderGenerator.Factory.builder()
                                                     .setDeliveryInterval(1)
                                                     .setLastTick(50)
@@ -222,7 +223,7 @@ public class TutorTests_H7_OrderGeneratorTest {
         if (fails > 100) {
             int finalFails = fails;
             fail(context,
-                 TR -> ("Expected that at most 10%% (100) of the chi-squared tests fail but %d " + "failed.").formatted(
+                 TR -> "Expected that at most 10%% (100) of the chi-squared tests fail but %d failed.".formatted(
                          finalFails));
         }
     }
@@ -257,11 +258,11 @@ public class TutorTests_H7_OrderGeneratorTest {
 
         assertTrue(Math.abs(average - (maxWeight / 2.0)) < 0.5,
                    context,
-                   TR -> ("Expected to average weight of orders in the interval [0, %d] to be " +
-                          "between %f and %f but was %f.").formatted(lastTick,
-                                                                     maxWeight / 2.0 - 0.5,
-                                                                     maxWeight / 2.0 + 0.5,
-                                                                     average));
+                   TR -> "Expected to average weight of orders in the interval [0, %d] to be between %f and %f but was %f.".formatted(
+                           lastTick,
+                           maxWeight / 2.0 - 0.5,
+                           maxWeight / 2.0 + 0.5,
+                           average));
     }
 
     @Test
@@ -280,13 +281,12 @@ public class TutorTests_H7_OrderGeneratorTest {
                 assertEquals(i,
                              (int) order.getDeliveryInterval().start(),
                              context,
-                             TR -> "start of delivery interval is not equal to the tick it was " + "generated in.");
+                             TR -> "start of delivery interval is not equal to the tick it was generated in.");
 
                 assertEquals(i + deliveryInterval,
                              (int) order.getDeliveryInterval().end(),
                              context,
-                             TR -> "end of delivery interval is not equal to the tick it was " +
-                                   "generated in plus the delivery interval.");
+                             TR -> "end of delivery interval is not equal to the tick it was generated in plus the delivery interval.");
             }
         }
     }
@@ -305,7 +305,7 @@ public class TutorTests_H7_OrderGeneratorTest {
         for (int i = lastTick + 1; i <= lastTick * 10; i++) {
             assertTrue(generator.generateOrders(i).isEmpty(),
                        context,
-                       TR -> "Method did not return an empty list when the tick is greater than " + "the last tick.");
+                       TR -> "Method did not return an empty list when the tick is greater than the last tick.");
         }
     }
 
@@ -353,7 +353,7 @@ public class TutorTests_H7_OrderGeneratorTest {
         int finalNeighborhoodACount = neighborhoodACount;
         assertTrue(Math.abs(neighborhoodACount - (orderCount / 2.0)) < 10,
                    context,
-                   TR -> ("Expected to have between 40 and 60 orders for neighborhood A but was " + "%d").formatted(
+                   TR -> "Expected to have between 40 and 60 orders for neighborhood A but was %d".formatted(
                            finalNeighborhoodACount));
     }
 
@@ -389,9 +389,9 @@ public class TutorTests_H7_OrderGeneratorTest {
                     if (order.getRestaurant().getComponent().equals(restaurantD)) {
                         assertTrue(restaurantDFood.contains(food),
                                    context,
-                                   TR -> ("Order food list contains an invalid food for the " + "selected " +
-                                          "restaurant. available food: %s actual: %s").formatted(restaurantDFood.toString(),
-                                                                                                 food));
+                                   TR -> "Order food list contains an invalid food for the selected restaurant. available food: %s actual: %s".formatted(
+                                           restaurantDFood.toString(),
+                                           food));
 
                         restaurantDCount++;
                         if (food.equals(restaurantDFood.get(0))) {
@@ -400,9 +400,9 @@ public class TutorTests_H7_OrderGeneratorTest {
                     } else {
                         assertTrue(restaurantEFood.contains(food),
                                    context,
-                                   TR -> ("Order food list contains an invalid food for the " + "selected " +
-                                          "restaurant. available food: %s actual: %s").formatted(restaurantEFood.toString(),
-                                                                                                 food));
+                                   TR -> "Order food list contains an invalid food for the selected restaurant. available food: %s actual: %s".formatted(
+                                           restaurantEFood.toString(),
+                                           food));
 
                         restaurantECount++;
                         if (food.equals(restaurantEFood.get(0))) {
@@ -418,7 +418,7 @@ public class TutorTests_H7_OrderGeneratorTest {
 
         assertTrue(Math.abs(averageFoodCount - 5) < 1,
                    context,
-                   TR -> ("Expected the average foodList size to be between 4 and 6 orders but was" + " %f").formatted(
+                   TR -> "Expected the average foodList size to be between 4 and 6 orders but was %f".formatted(
                            averageFoodCount));
 
         int finalRestaurantDCount = restaurantDCount;
@@ -457,9 +457,9 @@ public class TutorTests_H7_OrderGeneratorTest {
                 assertEquals(orders,
                              generator.generateOrders(i),
                              context,
-                             TR -> "Method did not return the same list of orders when called " +
-                                   "multiple times with the same tick.");
+                             TR -> "Method did not return the same list of orders when called multiple times with the same tick.");
             }
         }
     }
+
 }

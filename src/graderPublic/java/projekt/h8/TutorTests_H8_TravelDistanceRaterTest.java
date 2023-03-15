@@ -132,6 +132,7 @@ public class TutorTests_H8_TravelDistanceRaterTest {
                                            DeliverOrderEvent.of(2, vehicle, neighborhood, order4)), 2);
 
         assertEquals(expected, travelDistanceRater.getScore(), context, TR -> "method did not return correct score");
+
     }
 
     @ParameterizedTest
@@ -274,4 +275,5 @@ public class TutorTests_H8_TravelDistanceRaterTest {
                    TR -> "method did not return correct score. Expected %f but was %f".formatted(expected,
                                                                                                  travelDistanceRater.getScore()));
     }
+
 }

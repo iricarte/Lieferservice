@@ -113,9 +113,8 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
                                      result -> {
                                          //execute the scene switching on the javafx thread
                                          Platform.runLater(() -> {
-                                             RaterScene raterScene =
-                                                     (RaterScene) SceneSwitcher.loadScene(SceneSwitcher.SceneType.RATING,
-                                                                                          getController().getStage());
+                                             RaterScene raterScene = (RaterScene) SceneSwitcher.loadScene(SceneSwitcher.SceneType.RATING,
+                                                                                                          getController().getStage());
                                              raterScene.init(problemGroup.problems(), result);
                                          });
                                      });

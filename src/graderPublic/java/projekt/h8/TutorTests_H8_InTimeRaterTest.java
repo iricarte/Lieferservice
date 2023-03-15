@@ -158,8 +158,7 @@ public class TutorTests_H8_InTimeRaterTest {
         assertEquals(expected,
                      inTimeRate1.getScore(),
                      context1,
-                     TR -> "method did not return correct score when no orders were delivered but" + " some " +
-                           "were received");
+                     TR -> "method did not return correct score when no orders were delivered but some were received");
 
         Rater inTimeRate2 = InTimeRater.Factory.builder()
                                                .setIgnoredTicksOff(ignoredTicksOff)
@@ -170,7 +169,8 @@ public class TutorTests_H8_InTimeRaterTest {
         assertEquals(expected,
                      inTimeRate2.getScore(),
                      context1,
-                     TR -> "method did not return correct score when no orders were received or " + "delivered");
+                     TR -> "method did not return correct score when no orders were received or delivered");
+
     }
 
     @ParameterizedTest

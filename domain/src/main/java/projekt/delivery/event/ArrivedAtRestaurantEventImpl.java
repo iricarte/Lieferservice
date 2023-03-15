@@ -23,7 +23,7 @@ class ArrivedAtRestaurantEventImpl extends ArrivedAtNodeEventImpl implements Arr
 
     @Override
     public String toString() {
-        return "ArrivedAtWarehouseEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node=" +
-               getNode() + ", lastEdge=" + getLastEdge() + ')';
+        return "ArrivedAtWarehouseEvent(" + "time=" + getTick() + ", vehicle=" + getVehicle().getId() + ", node="
+               + getNode() + ", lastEdge=" + getLastEdge() + ')';
     }
 }

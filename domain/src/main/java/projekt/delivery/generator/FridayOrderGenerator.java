@@ -1,8 +1,6 @@
 package projekt.delivery.generator;
 
-import projekt.delivery.event.VehicleEvent;
 import projekt.delivery.routing.ConfirmedOrder;
-import projekt.delivery.routing.Vehicle;
 import projekt.delivery.routing.VehicleManager;
 
 import java.util.List;
@@ -47,26 +45,11 @@ public class FridayOrderGenerator implements OrderGenerator {
                                  long lastTick,
                                  int seed) {
         random = seed < 0 ? new Random() : new Random(seed);
-        Vehicle vehicle = vehicleManager.getVehicles().stream().findFirst().orElse(null);
-        vehicleManager.getEventBus().queuePost(new VehicleEvent() {
-            @Override
-            public Vehicle getVehicle() {
-                return null;
-            }
-
-            @Override
-            public long getTick() {
-                return 0;
-            }
-        });
-        generateOrders(0);
     }
 
     @Override
     public List<ConfirmedOrder> generateOrders(long tick) {
-        if (tick < 0) {
-            throw new IndexOutOfBoundsException(tick);
-        }
+
         return null;
     }
 

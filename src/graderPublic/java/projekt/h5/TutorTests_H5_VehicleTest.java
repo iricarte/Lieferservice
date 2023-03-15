@@ -152,8 +152,7 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(order1.getWeight() + order3.getWeight(),
                      vehicle.getCurrentWeight(),
                      context,
-                     TR -> "Vehicle.getCurrentWeight() did not return the sum of the " +
-                           "weights of all orders in the vehicle");
+                     TR -> "Vehicle.getCurrentWeight() did not return the sum of the weights of all orders in the vehicle");
     }
 
     @Test
@@ -172,18 +171,16 @@ public class TutorTests_H5_VehicleTest {
         } catch (InvocationTargetException e) {
             assertTrue(e.getCause() instanceof VehicleOverloadedException,
                        context,
-                       TR -> "Vehicle.loadOrder(ConfirmedOrder) did not throw an " +
-                             "VehicleOverloadedException when the order could not be " + "loaded");
-            assertEquals(("Vehicle with id %d is overloaded! Maximum capacity: %f Necessary capacity: " +
-                          "%f").formatted(vehicle.getId(),
-                                          vehicle.getCapacity(),
-                                          order1.getWeight() + order2.getWeight() + order3.getWeight()),
+                       TR -> "Vehicle.loadOrder(ConfirmedOrder) did not throw an VehicleOverloadedException when the order could not be loaded");
+            assertEquals("Vehicle with id %d is overloaded! Maximum capacity: %f Necessary capacity: %f".formatted(
+                                 vehicle.getId(),
+                                 vehicle.getCapacity(),
+                                 order1.getWeight() + order2.getWeight() + order3.getWeight()),
                          e.getCause().getMessage(),
                          context,
-                         TR -> "Vehicle.loadOrder(ConfirmedOrder) did not throw an " +
-                               "VehicleOverloadedException with the correct message when the " + "order " +
-                               "could not be loaded");
+                         TR -> "Vehicle.loadOrder(ConfirmedOrder) did not throw an VehicleOverloadedException with the correct message when the order could not be loaded");
         }
+
     }
 
     @Test
@@ -205,11 +202,10 @@ public class TutorTests_H5_VehicleTest {
 
         assertTrue(getOrdersOfVehicle(vehicle).contains(order2),
                    context1,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the " +
-                         "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the orders list of the vehicle");
         assertTrue(getOrdersOfVehicle(vehicle).contains(order1),
                    context1,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the " + "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the orders list of the vehicle");
         assertEquals(2,
                      getOrdersOfVehicle(vehicle).size(),
                      context1,
@@ -232,14 +228,13 @@ public class TutorTests_H5_VehicleTest {
 
         assertTrue(getOrdersOfVehicle(vehicle).contains(order4),
                    context2,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the " +
-                         "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the orders list of the vehicle");
         assertTrue(getOrdersOfVehicle(vehicle).contains(order1),
                    context2,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the " + "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the orders list of the vehicle");
         assertTrue(getOrdersOfVehicle(vehicle).contains(order2),
                    context2,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the " + "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) removed an order from the orders list of the vehicle");
         assertEquals(3,
                      getOrdersOfVehicle(vehicle).size(),
                      context2,
@@ -261,8 +256,7 @@ public class TutorTests_H5_VehicleTest {
 
         assertTrue(getOrdersOfVehicle(vehicle).contains(order4),
                    context3,
-                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the " +
-                         "orders list of the vehicle");
+                   TR -> "Vehicle.loadOrder(ConfirmedOrder) did not add the order to the orders list of the vehicle");
         assertEquals(1,
                      getOrdersOfVehicle(vehicle).size(),
                      context3,
@@ -285,12 +279,10 @@ public class TutorTests_H5_VehicleTest {
 
         assertFalse(getOrdersOfVehicle(vehicle).contains(order3),
                     context,
-                    TR -> "Vehicle.unloadOrder(ConfirmedOrder) did not removed the order " +
-                          "from the orders list of the vehicle");
+                    TR -> "Vehicle.unloadOrder(ConfirmedOrder) did not removed the order from the orders list of the vehicle");
         assertTrue(getOrdersOfVehicle(vehicle).contains(order1),
                    context,
-                   TR -> "Vehicle.unloadOrder(ConfirmedOrder) removed the wrong order from " +
-                         "the orders list of the vehicle");
+                   TR -> "Vehicle.unloadOrder(ConfirmedOrder) removed the wrong order from the orders list of the vehicle");
         assertEquals(1,
                      getOrdersOfVehicle(vehicle).size(),
                      context,
@@ -304,13 +296,11 @@ public class TutorTests_H5_VehicleTest {
 
         assertTrue(getOrdersOfVehicle(vehicle).contains(order1),
                    context,
-                   TR -> "Vehicle.unloadOrder(ConfirmedOrder) removed the wrong order from " +
-                         "the orders list of the vehicle when the removed order was not in " + "the list");
+                   TR -> "Vehicle.unloadOrder(ConfirmedOrder) removed the wrong order from the orders list of the vehicle when the removed order was not in the list");
         assertEquals(1,
                      getOrdersOfVehicle(vehicle).size(),
                      context,
-                     TR -> "The orders list of the vehicle has an incorrect size when the removed " +
-                           "order was not in the list");
+                     TR -> "The orders list of the vehicle has an incorrect size when the removed order was not in the list");
     }
 
     @Test
@@ -324,8 +314,7 @@ public class TutorTests_H5_VehicleTest {
                      () -> vehicle.moveQueued(restaurantE, (v, t) -> {
                      }),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not throw an " +
-                           "IllegalArgumentException when the node to move to was the " + "currently occupied node");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not throw an IllegalArgumentException when the node to move to was the currently occupied node");
     }
 
     @Test
@@ -344,14 +333,13 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(1,
                      moveQueue.size(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the path to " +
-                           "the move queue or " + "added to many paths");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the path to the move queue or added to many paths");
 
         moveQueue.getFirst().arrivalAction().accept(vehicle, 0L);
 
         assertTrue(called.get(),
                    context,
-                   TR -> "The arrivalAction of the added path wasn't properly set to the given " + "arrivalAction");
+                   TR -> "The arrivalAction of the added path wasn't properly set to the given arrivalAction");
     }
 
     @Test
@@ -376,28 +364,24 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(1,
                      moveQueue.size(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the path to " +
-                           "the move queue or " + "added to many paths");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the path to the move queue or added to many paths");
 
         assertEquals(expectedNodes,
                      moveQueue.getFirst().nodes(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct " + "path to " +
-                           "the move queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct path to the move queue");
 
         verify(vehicleManager.getPathCalculator(), times(1)).getPath(any(), any());
 
         assertEquals(restaurantE,
                      startCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " +
-                           "start node to the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct start node to the getPath method of the path calculator");
 
         assertEquals(nodeA,
                      endCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "end node to " +
-                           "the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct end node to the getPath method of the path calculator");
     }
 
     @Test
@@ -429,28 +413,24 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(originalPath,
                      moveQueue.pop(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in" + " the move " +
-                           "queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in the move queue");
 
         assertEquals(expectedNodes,
                      moveQueue.pop().nodes(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct " + "path to " +
-                           "the end queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct path to the end queue");
 
         verify(vehicleManager.getPathCalculator(), times(1)).getPath(any(), any());
 
         assertEquals(nodeC,
                      startCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "start node" +
-                           " to the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct start node to the getPath method of the path calculator");
 
         assertEquals(nodeA,
                      endCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "end node to " +
-                           "the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct end node to the getPath method of the path calculator");
     }
 
     @Test
@@ -488,34 +468,30 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(originalPath1,
                      moveQueue.pop(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in" + " the move" +
-                           " queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in the move queue");
 
         assertEquals(originalPath2,
                      moveQueue.pop(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the second path " + "in the " +
-                           "move queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the second path in the move queue");
 
         assertEquals(expectedNodes,
                      moveQueue.pop().nodes(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct " + "path to " +
-                           "the end queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct path to the end queue");
 
         verify(vehicleManager.getPathCalculator(), times(1)).getPath(any(), any());
 
         assertEquals(nodeC,
                      startCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "start node" +
-                           " to the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct start node to the getPath method of the path calculator");
 
         assertEquals(nodeA,
                      endCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "end node to " +
-                           "the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct end node to the getPath method of the path calculator");
+
     }
 
     @Test
@@ -552,34 +528,29 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(originalPath1,
                      moveQueue.pop(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in" + " the move" +
-                           " queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the first path in the move queue");
 
         assertEquals(originalPath2,
                      moveQueue.pop(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the second path " + "in the " +
-                           "move queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) altered the second path in the move queue");
 
         assertEquals(expectedNodes,
                      moveQueue.pop().nodes(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct " + "path to " +
-                           "the end queue");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not add the correct path to the end queue");
 
         verify(vehicleManager.getPathCalculator(), times(1)).getPath(any(), any());
 
         assertEquals(nodeC,
                      startCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "start node" +
-                           " to the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct start node to the getPath method of the path calculator");
 
         assertEquals(nodeA,
                      endCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct " + "end node to " +
-                           "the getPath method of the path calculator");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not pass the correct end node to the getPath method of the path calculator");
     }
 
     @Test
@@ -593,8 +564,7 @@ public class TutorTests_H5_VehicleTest {
                      () -> vehicle.moveDirect(restaurantE, (v, t) -> {
                      }),
                      context,
-                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not throw an " +
-                           "IllegalArgumentException when the node to move to was the " + "currently occupied node");
+                     TR -> "Vehicle.moveQueued(Node, Consumer<Vehicle>) did not throw an IllegalArgumentException when the node to move to was the currently occupied node");
     }
 
     @Test
@@ -626,7 +596,7 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(0,
                      moveQueue.size(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not clear the move " + "queue");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not clear the move queue");
     }
 
     @Test
@@ -650,14 +620,12 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(nodeA,
                      nodeCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct " + "node to the" +
-                           " moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct node to the moveQueued method");
 
         assertEquals(arrivalAction,
                      arrivalActionCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the " +
-                           "correct arrival action to the moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct arrival action to the moveQueued method");
     }
 
     @SuppressWarnings({"JavaReflectionInvocation"})
@@ -682,8 +650,8 @@ public class TutorTests_H5_VehicleTest {
         }));
 
         Method addVehicle = VehicleManager.Occupied.class.getDeclaredMethod("addVehicle",
-                                                                            Class.forName("projekt" + ".delivery" +
-                                                                                          ".routing" + ".VehicleImpl"),
+                                                                            Class.forName(
+                                                                                    "projekt.delivery.routing.VehicleImpl"),
                                                                             long.class);
         addVehicle.setAccessible(true);
         addVehicle.invoke(vehicleManager.getOccupied(edgeDE), vehicle, 0);
@@ -697,34 +665,29 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(1,
                      getMoveQueueOfVehicle(vehicle).size(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not add a the path " +
-                           "to the next node to the move queue or added to many when the vehicle" + " is on an edge");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not add a the path to the next node to the move queue or added to many when the vehicle is on an edge");
 
         Deque<Region.Node> nodes = getMoveQueueOfVehicle(vehicle).pop().nodes();
 
         assertEquals(1,
                      nodes.size(),
                      context,
-                     TR -> "The first path added to the move queue does not contain the correct " +
-                           "number of nodes when the " + "vehicle is on an edge");
+                     TR -> "The first path added to the move queue does not contain the correct number of nodes when the vehicle is on an edge");
 
         assertEquals(nodeD,
                      nodes.pop(),
                      context,
-                     TR -> "The first path added to the move queue does not contain the node the " +
-                           "vehicle previously " + "moved to when the vehicle is on an edge");
+                     TR -> "The first path added to the move queue does not contain the node the vehicle previously moved to when the vehicle is on an edge");
 
         assertEquals(nodeA,
                      nodeCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct " + "node to the" +
-                           " moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct node to the moveQueued method");
 
         assertEquals(arrivalAction,
                      arrivalActionCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the " +
-                           "correct arrival action to the moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct arrival action to the moveQueued method");
     }
 
     @SuppressWarnings({"JavaReflectionInvocation"})
@@ -750,8 +713,8 @@ public class TutorTests_H5_VehicleTest {
         }));
 
         Method addVehicle = VehicleManager.Occupied.class.getDeclaredMethod("addVehicle",
-                                                                            Class.forName("projekt" + ".delivery" +
-                                                                                          ".routing" + ".VehicleImpl"),
+                                                                            Class.forName(
+                                                                                    "projekt.delivery.routing.VehicleImpl"),
                                                                             long.class);
         addVehicle.setAccessible(true);
         addVehicle.invoke(vehicleManager.getOccupied(edgeDE), vehicle, 0);
@@ -765,33 +728,29 @@ public class TutorTests_H5_VehicleTest {
         assertEquals(1,
                      getMoveQueueOfVehicle(vehicle).size(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not add a the path " +
-                           "to the next node to the move queue or added to many when the vehicle" + " is on an edge");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not add a the path to the next node to the move queue or added to many when the vehicle is on an edge");
 
         Deque<Region.Node> nodes = getMoveQueueOfVehicle(vehicle).pop().nodes();
 
         assertEquals(1,
                      nodes.size(),
                      context,
-                     TR -> "The first path added to the move queue does not contain the correct " +
-                           "number of nodes when the " + "vehicle is on an edge");
+                     TR -> "The first path added to the move queue does not contain the correct number of nodes when the vehicle is on an edge");
 
         assertEquals(restaurantE,
                      nodes.pop(),
                      context,
-                     TR -> "The first path added to the move queue does not contain the node the " + "vehicle " +
-                           "previously moved to when the vehicle is on an edge");
+                     TR -> "The first path added to the move queue does not contain the node the vehicle previously moved to when the vehicle is on an edge");
 
         assertEquals(nodeA,
                      nodeCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct " + "node to the" +
-                           " moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct node to the moveQueued method");
 
         assertEquals(arrivalAction,
                      arrivalActionCaptor.getValue(),
                      context,
-                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the " +
-                           "correct arrival action to the moveQueued method");
+                     TR -> "Vehicle.moveDirect(Node, Consumer<Vehicle>) did not pass the correct arrival action to the moveQueued method");
     }
+
 }

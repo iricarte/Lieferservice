@@ -88,11 +88,6 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         root.getStylesheets().add("projekt/gui/darkMode.css");
     }
 
-    @Override
-    public SC getController() {
-        return controller;
-    }
-
     /**
      * Creates a {@link TextField} that only accepts long values.
      *
@@ -190,8 +185,6 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         return negativeIntegerTextField;
     }
 
-    // --- common util --- //
-
     /**
      * Creates a {@link TextField} that only accepts positive double values.
      *
@@ -224,6 +217,8 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         return doubleTextField;
     }
 
+    // --- common util --- //
+
     /**
      * Creates an empty {@link Region} that always grows inside a {@link HBox}.<p>
      * It can be used for evenly space the components inside a {@link HBox} by putting an
@@ -239,6 +234,11 @@ public abstract class MenuScene<SC extends MenuSceneController> extends Scene im
         HBox.setHgrow(intermediateRegion, Priority.ALWAYS);
 
         return intermediateRegion;
+    }
+
+    @Override
+    public SC getController() {
+        return controller;
     }
 
     /**

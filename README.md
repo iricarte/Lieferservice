@@ -13,17 +13,21 @@ see: https://raw.githubusercontent.com/FOP-2223/FOP-2223-TeX/main/FOP-2223-Proje
 ## Project Description:
 
 You were asked by a well-known food delivery service to develop a program that allows you to simulate and
-to simulate the process of a delivery service and to evaluate it at the end. Complete the following tasks in the template
+to simulate the process of a delivery service and to evaluate it at the end. Complete the following tasks in the
+template
 the following tasks to complete the template that we provide to you. The template is divided into three
 parts:
+
 - Application: From here the actual simulation is started. Here you will implement the task H10.
-ting.
+  ting.
 - Domain: This is where the implementation of the basic problem is located. Except for task H10 and H11 you will
-implement your solutions here.
-- Infrastructure: This is where the communication with the "outside world" is located, i.e. the implementation of the GUI and IO
-operations.
+  implement your solutions here.
+- Infrastructure: This is where the communication with the "outside world" is located, i.e. the implementation of the
+  GUI and IO
+  operations.
 
 ### Domain
+
 The domain is built up in layers. The lowest layer is represented by
 the interfaces region (see H2) and describes the structure of the delivery
 of nodes (see H3) and edges (see H4) the structure of the delivery area.
@@ -62,8 +66,10 @@ following properties:
 The OrderGenerator interface (see H7) is responsible for generating these orders.
 
 Which problems are simulated is described by implementations of the interface ProblemArchetype.
-Classes implementing this interface consist of four components each, which can be retrieved via the methods declared in the interface.
+Classes implementing this interface consist of four components each, which can be retrieved via the methods declared in
+the interface.
 interface can be retrieved.
+
 - Vehicle Manager: Describes the structure of the underlying region and the available vehicles.
 - Order Generator Factory: Describes the orders received by the delivery service (see H7).
 - Rater Factory Map: Describes which rater is used to evaluate each criterion.

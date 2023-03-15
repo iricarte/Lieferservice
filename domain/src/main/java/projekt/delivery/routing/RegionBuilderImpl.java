@@ -36,6 +36,17 @@ class RegionBuilderImpl implements Region.Builder {
         return this;
     }
 
+    private void addName(String name) {
+        if (!allNames.add(name)) {
+            throw new IllegalArgumentException(String.format("Duplicate name '%s'", name));
+        }
+    }
+
+    @Override
+    public Region.Builder addRestaurant(Location location, Region.Restaurant.Preset restaurantPreset) {
+        return addRestaurant(restaurantPreset.name(), location, restaurantPreset.availableFoods());
+    }
+
     @Override
     public Region.Builder addRestaurant(String name, Location location, List<String> availableFood) {
         addName(name);
@@ -46,17 +57,6 @@ class RegionBuilderImpl implements Region.Builder {
         }
 
         return this;
-    }
-
-    @Override
-    public Region.Builder addRestaurant(Location location, Region.Restaurant.Preset restaurantPreset) {
-        return addRestaurant(restaurantPreset.name(), location, restaurantPreset.availableFoods());
-    }
-
-    private void addName(String name) {
-        if (!allNames.add(name)) {
-            throw new IllegalArgumentException(String.format("Duplicate name '%s'", name));
-        }
     }
 
     @Override
@@ -115,8 +115,8 @@ class RegionBuilderImpl implements Region.Builder {
         }
 
         return edges.stream()
-                    .noneMatch(edgeBuilder -> edgeBuilder.getLocationA().equals(locationA) &&
-                                              edgeBuilder.getLocationB().equals(locationB));
+                    .noneMatch(edgeBuilder -> edgeBuilder.getLocationA().equals(locationA) && edgeBuilder.getLocationB()
+                                                                                                         .equals(locationB));
     }
 
     @Override

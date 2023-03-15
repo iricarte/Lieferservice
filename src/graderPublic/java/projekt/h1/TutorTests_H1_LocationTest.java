@@ -31,10 +31,10 @@ public class TutorTests_H1_LocationTest {
 
         assertTrue(location1.compareTo(location2) < 0,
                    context,
-                   TR -> "Method did not return value lower than zero when location1.x < " + "location2.x");
+                   TR -> "Method did not return value lower than zero when location1.x < location2.x");
         assertTrue(location2.compareTo(location1) > 0,
                    context,
-                   TR -> "Method did not return value higher than zero when location1.x > " + "location2.x");
+                   TR -> "Method did not return value higher than zero when location1.x > location2.x");
     }
 
     @Test
@@ -63,10 +63,10 @@ public class TutorTests_H1_LocationTest {
 
         assertTrue(location1.compareTo(location2) < 0,
                    context,
-                   TR -> "Method did not return value lower than zero when location1.y < " + "location2.y");
+                   TR -> "Method did not return value lower than zero when location1.y < location2.y");
         assertTrue(location2.compareTo(location1) > 0,
                    context,
-                   TR -> "Method did not return value higher than zero when location1.y > " + "location2.y");
+                   TR -> "Method did not return value higher than zero when location1.y > location2.y");
     }
 
     @ParameterizedTest
@@ -157,4 +157,5 @@ public class TutorTests_H1_LocationTest {
                      context,
                      TR -> "Method did not return the correct string");
     }
+
 }
