@@ -129,7 +129,7 @@ class VehicleImpl implements Vehicle {
         orders.clear();
     }
 
-    void move(long currentTick) {
+    public void move(long currentTick) {
         final Region region = vehicleManager.getRegion();
         if (moveQueue.isEmpty()) {
             return;
@@ -157,7 +157,7 @@ class VehicleImpl implements Vehicle {
         }
     }
 
-    void loadOrder(ConfirmedOrder order) {
+    public void loadOrder(ConfirmedOrder order) {
         double nextWeight = order.getWeight() + this.getCurrentWeight();
         if (nextWeight > this.capacity) {
             throw new VehicleOverloadedException(this, nextWeight);
@@ -165,7 +165,7 @@ class VehicleImpl implements Vehicle {
         this.orders.add(order);
     }
 
-    void unloadOrder(ConfirmedOrder order) {
+    public void unloadOrder(ConfirmedOrder order) {
         this.orders.removeIf(confirmedOrder -> confirmedOrder.getOrderID() == order.getOrderID());
     }
 
