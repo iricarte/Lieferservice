@@ -40,6 +40,19 @@ public class TestBase {
     public VehicleManager.OccupiedRestaurant occupiedRestaurant2;
     public BasicDeliveryService deliveryService;
 
+    public static Region.Node createNode(Region region,
+                                         String name,
+                                         Location location,
+                                         Set<Location> connections) throws ReflectiveOperationException {
+        Constructor<?> constructor = Class.forName("projekt.delivery.routing.NodeImpl")
+                                          .getDeclaredConstructor(Region.class,
+                                                                  String.class,
+                                                                  Location.class,
+                                                                  Set.class);
+        constructor.setAccessible(true);
+        return (Region.Node) constructor.newInstance(region, name, location, connections);
+    }
+
     @BeforeEach
     public void setup() throws ReflectiveOperationException {
         neighborhoodLocation = new Location(1, 1);
