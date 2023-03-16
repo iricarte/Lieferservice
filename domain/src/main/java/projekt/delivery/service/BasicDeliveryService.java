@@ -5,9 +5,8 @@ import projekt.delivery.routing.ConfirmedOrder;
 import projekt.delivery.routing.VehicleManager;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-
-import static org.tudalgo.algoutils.student.Student.crash;
 
 /**
  * A very simple delivery service that distributes orders to compatible vehicles in a FIFO manner.
@@ -23,18 +22,22 @@ public class BasicDeliveryService extends AbstractDeliveryService {
 
     @Override
     protected List<Event> tick(long currentTick, List<ConfirmedOrder> newOrders) {
-        return crash(); // TODO: H9.1 - remove if implemented
-    }
-
-    @Override
-    public List<ConfirmedOrder> getPendingOrders() {
-        return pendingOrders;
+        List<Event> events = vehicleManager.tick(currentTick);
+        pendingOrders.addAll(newOrders);
+        pendingOrders.sort(Comparator.comparing(confirmedOrder -> confirmedOrder.getDeliveryInterval().start()));
+        super.handleRestaurants(currentTick);
+        return events;
     }
 
     @Override
     public void reset() {
         super.reset();
         pendingOrders.clear();
+    }
+
+    @Override
+    public List<ConfirmedOrder> getPendingOrders() {
+        return pendingOrders;
     }
 
     public interface Factory extends DeliveryService.Factory {

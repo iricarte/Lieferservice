@@ -2,15 +2,16 @@ package projekt.delivery.service;
 
 import projekt.delivery.event.Event;
 import projekt.delivery.routing.ConfirmedOrder;
+import projekt.delivery.routing.Vehicle;
 import projekt.delivery.routing.VehicleManager;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-
-import static org.tudalgo.algoutils.student.Student.crash;
 
 public class OurDeliveryService extends AbstractDeliveryService {
 
+    // List of orders that have not yet been loaded onto delivery vehicles
     protected final List<ConfirmedOrder> pendingOrders = new ArrayList<>();
 
     public OurDeliveryService(VehicleManager vehicleManager) {
@@ -19,8 +20,20 @@ public class OurDeliveryService extends AbstractDeliveryService {
 
     @Override
     protected List<Event> tick(long currentTick, List<ConfirmedOrder> newOrders) {
+        List<Event> events = vehicleManager.tick(currentTick);
+        pendingOrders.addAll(newOrders);
+        pendingOrders.sort(Comparator.comparing(confirmedOrder -> confirmedOrder.getDeliveryInterval().start()));
+        super.handleRestaurants(currentTick);
+        return events;
+    }
 
-        return crash(); // TODO: H9.2 - remove if implemented
+    @Override
+    protected void postDispatch(Vehicle vehicle) {
+        if (vehicle.getOrders().isEmpty()) {
+            super.returnToRestaurant(vehicle);
+        } else {
+            super.dispatchFirstOrderToDeliver(vehicle);
+        }
     }
 
     @Override

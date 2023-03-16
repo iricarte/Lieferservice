@@ -52,12 +52,31 @@ class VehicleImpl implements Vehicle {
         this.moveQueued(node, arrivalAction);
     }
 
+    @Override
+    public void moveQueued(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction) {
+        this.checkMoveToNode(node);
+        Region.Node startingNode = this.calculateStartingNode();
+        Deque<Region.Node> path = this.calculatePath(startingNode, node);
+        moveQueue.add(new PathImpl(path, arrivalAction));
+    }
+
     private void moveFromEdge(BiConsumer<? super Vehicle, Long> arrivalAction) {
         if (occupied instanceof OccupiedEdgeImpl currentEdge && this.getPreviousOccupied()
                                                                     .getComponent() instanceof Region.Node previousNode) {
             Deque<Region.Node> path = this.getPathToNextNode(currentEdge, previousNode);
             moveQueue.add(new PathImpl(path, arrivalAction));
         }
+    }
+
+    private void checkMoveToNode(Region.Node node) {
+        if (occupied.component.equals(node) && moveQueue.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle " + getId() + " cannot move to own node " + node);
+        }
+    }
+
+    private Region.Node calculateStartingNode() {
+        return moveQueue.isEmpty()
+               || moveQueue.getLast().nodes.isEmpty() ? this.startingNode.getComponent() : moveQueue.getLast().nodes.getLast();
     }
 
     @Override
@@ -74,31 +93,13 @@ class VehicleImpl implements Vehicle {
         }
     }
 
-    private Deque<Region.Node> calculatePath(Region.Node startingNode, Region.Node node) {
-        return vehicleManager.getPathCalculator().getPath(startingNode, node);
-    }
-
-    @Override
-    public void moveQueued(Region.Node node, BiConsumer<? super Vehicle, Long> arrivalAction) {
-        this.checkMoveToNode(node);
-        Region.Node startingNode = this.calculateStartingNode();
-        Deque<Region.Node> path = this.calculatePath(startingNode, node);
-        moveQueue.add(new PathImpl(path, arrivalAction));
-    }
-
-    private Region.Node calculateStartingNode() {
-        return moveQueue.isEmpty() ? this.startingNode.getComponent() : moveQueue.getLast().nodes.getLast();
-    }
-
-    private void checkMoveToNode(Region.Node node) {
-        if (occupied.component.equals(node) && moveQueue.isEmpty()) {
-            throw new IllegalArgumentException("Vehicle " + getId() + " cannot move to own node " + node);
-        }
-    }
-
     @Override
     public int getId() {
         return id;
+    }
+
+    private Deque<Region.Node> calculatePath(Region.Node startingNode, Region.Node node) {
+        return vehicleManager.getPathCalculator().getPath(startingNode, node);
     }
 
     @Override
