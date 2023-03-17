@@ -70,73 +70,76 @@ public class TutorTests_H4_EdgeImplTest {
 
     @Test
     public void testGetNodeA() {
-        Context context = contextBuilder().subject("EdgeImpl#getNodeA()")
-                                          .add("nodeA", nodeA)
-                                          .add("nodeB", nodeB)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#getNodeA()")
+                                  .add("nodeA", nodeA)
+                                  .add("nodeB", nodeB)
+                                  .build();
 
         assertSame(nodeA, edgeAB.getNodeA(), context, TR -> "The method did not return the correct node.");
     }
 
     @Test
     public void testGetNodeB() {
-        Context context = contextBuilder().subject("EdgeImpl#getNodeB()")
-                                          .add("nodeA", nodeA)
-                                          .add("nodeB", nodeB)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#getNodeB()")
+                                  .add("nodeA", nodeA)
+                                  .add("nodeB", nodeB)
+                                  .build();
 
         assertSame(nodeB, edgeAB.getNodeB(), context, TR -> "The method did not return the correct node.");
     }
 
     @Test
     public void testCompareToSimple() {
-        Context context1 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
-                                           .add("edge1", edgeBC)
-                                           .add("edge2", edgeAB)
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .subject("EdgeImpl#compareTo(EdgeImpl)")
+                                   .add("edge1", edgeBC)
+                                   .add("edge2", edgeAB)
+                                   .build();
 
-        assertTrue(edgeBC.compareTo(edgeAB) > 0,
-                   context1,
+        assertTrue(edgeBC.compareTo(edgeAB) > 0, context1,
                    TR -> "The method did not return a positive value when the first nodeA is > the second nodeB.");
 
-        Context context2 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
-                                           .add("edge1", edgeAB)
-                                           .add("edge2", edgeBC)
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .subject("EdgeImpl#compareTo(EdgeImpl)")
+                                   .add("edge1", edgeAB)
+                                   .add("edge2", edgeBC)
+                                   .build();
 
-        assertTrue(edgeAB.compareTo(edgeBC) < 0,
-                   context2,
+        assertTrue(edgeAB.compareTo(edgeBC) < 0, context2,
                    TR -> "The method did not return a negative value when the first nodeA is < the second nodeB.");
     }
 
     @Test
     public void testCompareToComplex() {
-        Context context1 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
-                                           .add("edge1", edgeAB)
-                                           .add("edge2", edgeAC)
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .subject("EdgeImpl#compareTo(EdgeImpl)")
+                                   .add("edge1", edgeAB)
+                                   .add("edge2", edgeAC)
+                                   .build();
 
-        assertTrue(edgeAB.compareTo(edgeAC) < 0,
-                   context1,
+        assertTrue(edgeAB.compareTo(edgeAC) < 0, context1,
                    TR -> "The method did not return a negative value when the first nodeB is < the second nodeB.");
 
-        Context context2 = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
-                                           .add("edge1", edgeAC)
-                                           .add("edge2", edgeAB)
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .subject("EdgeImpl#compareTo(EdgeImpl)")
+                                   .add("edge1", edgeAC)
+                                   .add("edge2", edgeAB)
+                                   .build();
 
-        assertTrue(edgeAC.compareTo(edgeAB) > 0,
-                   context2,
+        assertTrue(edgeAC.compareTo(edgeAB) > 0, context2,
                    TR -> "The method did not return a positive value when the first nodeB is > the second nodeB.");
     }
 
     @SuppressWarnings("EqualsWithItself")
     @Test
     public void testCompareToEqual() {
-        Context context = contextBuilder().subject("EdgeImpl#compareTo(EdgeImpl)")
-                                          .add("edge1", edgeAB)
-                                          .add("edge2", edgeAB)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#compareTo(EdgeImpl)")
+                                  .add("edge1", edgeAB)
+                                  .add("edge2", edgeAB)
+                                  .build();
 
         assertEquals(0,
                      edgeAB.compareTo(edgeAB),
@@ -147,7 +150,9 @@ public class TutorTests_H4_EdgeImplTest {
     @SuppressWarnings({"ConstantConditions", "EqualsWithItself"})
     @Test
     public void testEquals() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("EdgeImpl#equals(Object)").build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#equals(Object)")
+                                  .build();
 
         assertFalse(edgeAB.equals(null), context, TR -> "The method did not return false when the object is null.");
         assertFalse(edgeAB.equals(new Object()),
@@ -181,7 +186,9 @@ public class TutorTests_H4_EdgeImplTest {
 
     @Test
     public void testHashCode() {
-        Context context = contextBuilder().subject("EdgeImpl#hashCode()").build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#hashCode()")
+                                  .build();
 
         int expected = Objects.hash("AB", locationA, locationB, 1);
 
@@ -190,7 +197,9 @@ public class TutorTests_H4_EdgeImplTest {
 
     @Test
     public void testToString() {
-        Context context = contextBuilder().subject("EdgeImpl#toString()").build();
+        Context context = contextBuilder()
+                                  .subject("EdgeImpl#toString()")
+                                  .build();
 
         String expected = "EdgeImpl(name='AB', locationA='(0,0)', locationB='(1,1)', duration='1')";
 

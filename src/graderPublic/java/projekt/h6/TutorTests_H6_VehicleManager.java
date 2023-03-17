@@ -104,10 +104,11 @@ public class TutorTests_H6_VehicleManager {
 
         addNodesToRegion(region, nodeF, nodeG);
 
-        Context context = contextBuilder().subject("VehicleManager#toOccupiedNodes()")
-                                          .add("node1", locationF)
-                                          .add("node2", locationG)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#toOccupiedNodes()")
+                                  .add("node1", locationF)
+                                  .add("node2", locationG)
+                                  .build();
 
         Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> occupiedNodes = callToOccupiedNodes(
                 vehicleManager,
@@ -162,10 +163,11 @@ public class TutorTests_H6_VehicleManager {
 
         addNodesToRegion(region, nodeF, nodeG);
 
-        Context context = contextBuilder().subject("VehicleManager#toOccupiedNodes()")
-                                          .add("node1 (neighborhood)", locationF)
-                                          .add("node2 (restaurant)", locationG)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#toOccupiedNodes()")
+                                  .add("node1 (neighborhood)", locationF)
+                                  .add("node2 (restaurant)", locationG)
+                                  .build();
 
         Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> occupiedNodes = callToOccupiedNodes(
                 vehicleManager,
@@ -212,12 +214,13 @@ public class TutorTests_H6_VehicleManager {
     @Test
     public void testToOccupiedEdges() throws ReflectiveOperationException {
 
-        Context context = contextBuilder().subject("VehicleManager#toOccupiedEdges()")
-                                          .add("edge1A", locationA)
-                                          .add("edge1B", locationD)
-                                          .add("edge2A", locationA)
-                                          .add("edge2B", locationE)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#toOccupiedEdges()")
+                                  .add("edge1A", locationA)
+                                  .add("edge1B", locationD)
+                                  .add("edge2A", locationA)
+                                  .add("edge2B", locationE)
+                                  .build();
 
         Region.Edge edgeAD = createEdge(region, "AD", locationA, locationD, 1);
         Region.Edge edgeAE = createEdge(region, "AE", locationA, locationE, 1);
@@ -264,14 +267,15 @@ public class TutorTests_H6_VehicleManager {
 
         addEdgesToRegion(region, edgeAD, edgeAE);
 
-        Context context = contextBuilder().subject("VehicleManager#getAllOccupied()")
-                                          .add("node1", locationF)
-                                          .add("node2", locationG)
-                                          .add("edge1A", locationA)
-                                          .add("edge1B", locationD)
-                                          .add("edge2A", locationA)
-                                          .add("edge2B", locationE)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getAllOccupied()")
+                                  .add("node1", locationF)
+                                  .add("node2", locationG)
+                                  .add("edge1A", locationA)
+                                  .add("edge1B", locationD)
+                                  .add("edge2A", locationA)
+                                  .add("edge2B", locationE)
+                                  .build();
 
         VehicleManager.Occupied<Region.Node> occupiedNodeF = createOccupiedNode(vehicleManager, nodeF);
         VehicleManager.Occupied<Region.Node> occupiedNodeG = createOccupiedNode(vehicleManager, nodeG);
@@ -301,9 +305,10 @@ public class TutorTests_H6_VehicleManager {
 
     @Test
     public void testGetOccupiedNull() {
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("component", "null")
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("component", "null")
+                                  .build();
 
         try {
             vehicleManager.getOccupied(null);
@@ -324,9 +329,10 @@ public class TutorTests_H6_VehicleManager {
         VehicleManager.Occupied<Region.Node> occupiedNodeF = createOccupiedNode(vehicleManager, nodeF);
         setOccupiedNodeOfVehicleManager(vehicleManager, Map.of(nodeF, occupiedNodeF));
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("node", locationF)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("node", locationF)
+                                  .build();
 
         assertSame(occupiedNodeF,
                    vehicleManager.getOccupied(nodeF),
@@ -343,9 +349,10 @@ public class TutorTests_H6_VehicleManager {
 
         VehicleManager.Occupied<Region.Node> occupiedNodeF = createOccupiedNode(vehicleManager, nodeF);
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("node (not in region)", locationF)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("node (not in region)", locationF)
+                                  .build();
 
         try {
             vehicleManager.getOccupied(nodeF);
@@ -371,9 +378,10 @@ public class TutorTests_H6_VehicleManager {
 
         setOccupiedEdgeOfVehicleManager(vehicleManager, Map.of(edgeFG, occupiedEdgeFG));
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("edge", locationF + " -> " + locationG)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("edge", locationF + " -> " + locationG)
+                                  .build();
 
         assertSame(occupiedEdgeFG,
                    vehicleManager.getOccupied(edgeFG),
@@ -389,9 +397,10 @@ public class TutorTests_H6_VehicleManager {
 
         Region.Edge edgeFG = createEdge(region, "FG", locationF, locationG, 1);
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("edge (not in region)", locationF + " -> " + locationG)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("edge (not in region)", locationF + " -> " + locationG)
+                                  .build();
 
         try {
             vehicleManager.getOccupied(edgeFG);
@@ -406,17 +415,16 @@ public class TutorTests_H6_VehicleManager {
 
     @Test
     public void testGetOccupiedOtherSubtype() {
-        Context context = contextBuilder().subject("VehicleManager#getOccupied(Component)")
-                                          .add("Type", "Other")
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupied(Component)")
+                                  .add("Type", "Other")
+                                  .build();
 
         try {
             vehicleManager.getOccupied(new Other("other", region));
             fail(context, TR -> "The method should throw an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertEquals("Component is not of recognized subtype: " + Other.class.getName(),
-                         e.getMessage(),
-                         context,
+            assertEquals("Component is not of recognized subtype: " + Other.class.getName(), e.getMessage(), context,
                          TR -> "The exception message is not correct");
         }
     }
@@ -438,9 +446,10 @@ public class TutorTests_H6_VehicleManager {
         setOccupiedNodeOfVehicleManager(vehicleManager,
                                         Map.of(neighborhoodF, neighborhoodOccupiedF, nodeG, nodeOccupiedG));
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupiedNieghborhood(Node)")
-                                          .add("neighborhood", locationF)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupiedNieghborhood(Node)")
+                                  .add("neighborhood", locationF)
+                                  .build();
 
         assertSame(neighborhoodOccupiedF,
                    vehicleManager.getOccupiedNeighborhood(neighborhoodF),
@@ -456,9 +465,10 @@ public class TutorTests_H6_VehicleManager {
 
         Region.Neighborhood neighborhoodF = createNeighborhood(region, "F", locationF, Set.of());
 
-        Context context1 = contextBuilder().subject("VehicleManager#getOccupiedNieghborhood(Node)")
-                                           .add("neighborhood (not in region)", locationF)
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedNieghborhood(Node)")
+                                   .add("neighborhood (not in region)", locationF)
+                                   .build();
 
         try {
             vehicleManager.getOccupiedNeighborhood(neighborhoodF);
@@ -470,9 +480,10 @@ public class TutorTests_H6_VehicleManager {
                          TR -> "The exception message is not correct");
         }
 
-        Context context2 = contextBuilder().subject("VehicleManager#getOccupiedNieghborhood(Node)")
-                                           .add("neighborhood", "null")
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedNieghborhood(Node)")
+                                   .add("neighborhood", "null")
+                                   .build();
 
         try {
             vehicleManager.getOccupiedNeighborhood(null);
@@ -481,9 +492,10 @@ public class TutorTests_H6_VehicleManager {
             assertEquals("Node is null!", e.getMessage(), context2, TR -> "The exception message is not correct");
         }
 
-        Context context3 = contextBuilder().subject("VehicleManager#getOccupiedNieghborhood(Node)")
-                                           .add("restaurant", locationG)
-                                           .build();
+        Context context3 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedNieghborhood(Node)")
+                                   .add("restaurant", locationG)
+                                   .build();
 
         Region.Restaurant restaurantG = createRestaurant(region, "G", locationG, Set.of(), List.of());
 
@@ -518,9 +530,10 @@ public class TutorTests_H6_VehicleManager {
 
         setOccupiedNodeOfVehicleManager(vehicleManager, Map.of(restaurantF, restaurantOccupiedF, nodeG, nodeOccupiedG));
 
-        Context context = contextBuilder().subject("VehicleManager#getOccupiedRestaurant(Node)")
-                                          .add("restaurant", locationF)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("VehicleManager#getOccupiedRestaurant(Node)")
+                                  .add("restaurant", locationF)
+                                  .build();
 
         assertSame(restaurantOccupiedF,
                    vehicleManager.getOccupiedRestaurant(restaurantF),
@@ -536,9 +549,10 @@ public class TutorTests_H6_VehicleManager {
 
         Region.Restaurant restaurantF = createRestaurant(region, "F", locationF, Set.of(), List.of());
 
-        Context context1 = contextBuilder().subject("VehicleManager#getOccupiedRestaurant(Node)")
-                                           .add("restaurant (not in region)", locationF)
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedRestaurant(Node)")
+                                   .add("restaurant (not in region)", locationF)
+                                   .build();
 
         try {
             vehicleManager.getOccupiedRestaurant(restaurantF);
@@ -550,9 +564,10 @@ public class TutorTests_H6_VehicleManager {
                          TR -> "The exception message is not correct");
         }
 
-        Context context2 = contextBuilder().subject("VehicleManager#getOccupiedRestaurant(Node)")
-                                           .add("restaurant", "null")
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedRestaurant(Node)")
+                                   .add("restaurant", "null")
+                                   .build();
 
         try {
             vehicleManager.getOccupiedRestaurant(null);
@@ -561,9 +576,10 @@ public class TutorTests_H6_VehicleManager {
             assertEquals("Node is null!", e.getMessage(), context2, TR -> "The exception message is not correct");
         }
 
-        Context context3 = contextBuilder().subject("VehicleManager#getOccupiedRestaurant(Node)")
-                                           .add("restaurant", locationG)
-                                           .build();
+        Context context3 = contextBuilder()
+                                   .subject("VehicleManager#getOccupiedRestaurant(Node)")
+                                   .add("restaurant", locationG)
+                                   .build();
 
         Region.Neighborhood neigborhoodG = createNeighborhood(region, "G", locationG, Set.of());
 

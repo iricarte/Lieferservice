@@ -18,7 +18,7 @@ public class AmountDeliveredRater implements Rater {
     public static final RatingCriteria RATING_CRITERIA = RatingCriteria.AMOUNT_DELIVERED;
 
     private final double factor;
-    private int counterOrderReceivedEvent;
+    private int totalOrdersReceived;
     private int counterDeliverOrderEvent;
 
     private AmountDeliveredRater(double factor) {
@@ -27,20 +27,12 @@ public class AmountDeliveredRater implements Rater {
 
     @Override
     public double getScore() {
-        // TODO: Simplify
-
-        double resultScore;
-        int undeliveredOrders = counterOrderReceivedEvent - counterDeliverOrderEvent;
-        int totalOrders = counterOrderReceivedEvent;
-
-
-        if (undeliveredOrders >= 0 && undeliveredOrders < totalOrders * (1 - factor)) {
-            resultScore = 1 - (undeliveredOrders / (totalOrders * (1 - factor)));
+        int undeliveredOrders = totalOrdersReceived - counterDeliverOrderEvent;
+        if (0 <= undeliveredOrders && undeliveredOrders < totalOrdersReceived * (1 - factor)) {
+            return 1 - (undeliveredOrders / (totalOrdersReceived * (1 - factor)));
         } else {
-            resultScore = 0;
+            return 0;
         }
-
-        return resultScore;
     }
 
     @Override
@@ -51,13 +43,11 @@ public class AmountDeliveredRater implements Rater {
     // Counts the amount of DeliverOrderEvent and OrderReceivedEvents to calculate the Score
     @Override
     public void onTick(List<Event> events, long tick) {
-
         for (Event event : events) {
             if (event instanceof DeliverOrderEvent) {
                 counterDeliverOrderEvent++;
-            }
-            if (event instanceof OrderReceivedEvent) {
-                counterOrderReceivedEvent++;
+            } else if (event instanceof OrderReceivedEvent) {
+                totalOrdersReceived++;
             }
         }
 

@@ -6,8 +6,9 @@ import projekt.delivery.routing.ConfirmedOrder;
 import projekt.delivery.routing.VehicleManager;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -30,7 +31,9 @@ public class FridayOrderGenerator implements OrderGenerator {
     private final double maxWeight;
     private final double standardDeviation;
     private final long lastTick;
-    private final List<List<ConfirmedOrder>> existingOrders;
+    private final Map<Long, List<ConfirmedOrder>> tickToExistingOrders;
+
+    private int totalExistingOrders = 0;
 
     /**
      * Creates a new {@link FridayOrderGenerator} with the given parameters.
@@ -64,7 +67,7 @@ public class FridayOrderGenerator implements OrderGenerator {
         this.maxWeight = maxWeight;
         this.standardDeviation = standardDeviation;
         this.lastTick = lastTick;
-        this.existingOrders = new LinkedList<>();
+        this.tickToExistingOrders = new HashMap<>();
     }
 
     @Override
@@ -72,24 +75,27 @@ public class FridayOrderGenerator implements OrderGenerator {
         if (this.isValidTick(tick)) {
             List<ConfirmedOrder> confirmedOrders = new ArrayList<>();
             int ordersToGenerate = this.calculateOrdersToGenerate();
-            for (int i = 0; i < ordersToGenerate; i++) {
+            for (int i = 0; i < ordersToGenerate && totalExistingOrders < orderCount; i++) {
                 ConfirmedOrder confirmedOrder = this.generateOrder(tick);
                 confirmedOrders.add(confirmedOrder);
+                this.totalExistingOrders++;
             }
-            this.existingOrders.add(confirmedOrders);
+            this.tickToExistingOrders.put(tick, confirmedOrders);
         }
-        return this.existingOrders.stream().skip(tick).findFirst().orElse(new ArrayList<>());
+        return this.tickToExistingOrders.getOrDefault(tick, new ArrayList<>());
     }
 
     private boolean isValidTick(long tick) {
         if (tick < 0) {
             throw new IndexOutOfBoundsException(tick);
         }
-        return tick < this.lastTick && tick >= this.existingOrders.size();
+        return tick < this.lastTick && tick >= this.tickToExistingOrders.size();
     }
 
     private int calculateOrdersToGenerate() {
-        return (int) (standardDeviation * (0.25 + random.nextGaussian()) / 2);
+        double avgPerTick = (double) orderCount / lastTick;
+        double next = standardDeviation * random.nextGaussian();
+        return (int) Math.floor(next / avgPerTick);
     }
 
     @NotNull

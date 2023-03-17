@@ -1,8 +1,8 @@
 package projekt.delivery.rating;
 
 import projekt.delivery.event.ArrivedAtNodeEvent;
-import projekt.delivery.event.DeliverOrderEvent;
 import projekt.delivery.event.Event;
+import projekt.delivery.event.OrderReceivedEvent;
 import projekt.delivery.routing.PathCalculator;
 import projekt.delivery.routing.Region;
 import projekt.delivery.routing.VehicleManager;
@@ -51,31 +51,25 @@ public class TravelDistanceRater implements Rater {
     @Override
     public void onTick(List<Event> events, long tick) {
         for (Event event : events) {
-            if (event instanceof DeliverOrderEvent deliverOrderEvent) {
+            if (event instanceof OrderReceivedEvent deliverOrderEvent) {
                 Region.Restaurant restaurant = deliverOrderEvent.getOrder().getRestaurant().getComponent();
                 Region.Node destination = region.getNode(deliverOrderEvent.getOrder().getLocation());
 
                 Deque<Region.Node> path = pathCalculator.getPath(restaurant, destination);
-                worstDistance += calculateDistance(path, restaurant);
-
-                path = pathCalculator.getPath(destination, restaurant);
-                worstDistance += calculateDistance(path, destination);
+                worstDistance += calculateDistance(path, restaurant) * 2;
             } else if (event instanceof ArrivedAtNodeEvent arrivedAtNodeEvent) {
                 actualDistance += arrivedAtNodeEvent.getLastEdge().getDuration();
             }
         }
     }
 
-    private double calculateDistance(Deque<Region.Node> path, Region.Node destination) {
-        double totalDistance = 0;
+    private double calculateDistance(Deque<Region.Node> path, Region.Node startNode) {
         Region.Node currentNode = path.pop();
-        totalDistance = Objects.requireNonNull(region.getEdge(destination, currentNode)).getDuration();
-
+        double totalDistance = Objects.requireNonNull(region.getEdge(startNode, currentNode)).getDuration();
         while (!path.isEmpty()) {
             Region.Node nextNode = path.pop();
             totalDistance += Objects.requireNonNull(region.getEdge(currentNode, nextNode)).getDuration();
             currentNode = nextNode;
-
         }
         return totalDistance;
     }

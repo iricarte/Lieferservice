@@ -23,17 +23,15 @@ public class OurDeliveryService extends AbstractDeliveryService {
         List<Event> events = vehicleManager.tick(currentTick);
         pendingOrders.addAll(newOrders);
         pendingOrders.sort(Comparator.comparing(confirmedOrder -> confirmedOrder.getDeliveryInterval().start()));
-        super.handleRestaurants(currentTick);
+        if (!pendingOrders.isEmpty()) {
+            super.handleRestaurants(currentTick);
+        }
         return events;
     }
 
     @Override
     protected void postDispatch(Vehicle vehicle) {
-        if (vehicle.getOrders().isEmpty()) {
-            super.returnToRestaurant(vehicle);
-        } else {
-            super.dispatchFirstOrderToDeliver(vehicle);
-        }
+        super.returnToRestaurant(vehicle);
     }
 
     @Override

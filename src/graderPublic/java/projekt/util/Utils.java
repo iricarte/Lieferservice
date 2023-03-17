@@ -250,6 +250,12 @@ public class Utils {
         return (Vehicle.Path) constructor.newInstance(nodes, arrivalAction);
     }
 
+    public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
+                                                                                                       Region.Node... nodes) throws
+                                                                                                                             ReflectiveOperationException {
+        return callToOccupiedNodes(vehicleManager, Arrays.asList(nodes));
+    }
+
     @SuppressWarnings("unchecked")
     public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
                                                                                                        Collection<Region.Node> nodes) throws
@@ -259,10 +265,10 @@ public class Utils {
         return (Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>>) method.invoke(vehicleManager, nodes);
     }
 
-    public static Map<Region.Node, VehicleManager.Occupied<? extends Region.Node>> callToOccupiedNodes(VehicleManager vehicleManager,
-                                                                                                       Region.Node... nodes) throws
-                                                                                                                             ReflectiveOperationException {
-        return callToOccupiedNodes(vehicleManager, Arrays.asList(nodes));
+    public static Map<Region.Edge, VehicleManager.Occupied<Region.Edge>> callToOccupiedEdges(VehicleManager vehicleManager,
+                                                                                             Region.Edge... edges) throws
+                                                                                                                   ReflectiveOperationException {
+        return callToOccupiedEdges(vehicleManager, Arrays.asList(edges));
     }
 
     @SuppressWarnings("unchecked")
@@ -272,12 +278,6 @@ public class Utils {
         Method method = vehicleManager.getClass().getDeclaredMethod("toOccupiedEdges", Collection.class);
         method.setAccessible(true);
         return (Map<Region.Edge, VehicleManager.Occupied<Region.Edge>>) method.invoke(vehicleManager, edges);
-    }
-
-    public static Map<Region.Edge, VehicleManager.Occupied<Region.Edge>> callToOccupiedEdges(VehicleManager vehicleManager,
-                                                                                             Region.Edge... edges) throws
-                                                                                                                   ReflectiveOperationException {
-        return callToOccupiedEdges(vehicleManager, Arrays.asList(edges));
     }
 
     public static void setOccupiedNodeOfVehicleManager(VehicleManager vehicleManager,
@@ -348,8 +348,8 @@ public class Utils {
     public static Map<ProblemArchetype, Simulation> callCreateSimulations(RunnerImpl runner,
                                                                           ProblemGroup problemGroup,
                                                                           SimulationConfig simulationConfig,
-                                                                          DeliveryService.Factory deliveryServiceFactory) throws
-                                                                                                                          ReflectiveOperationException {
+                                                                          DeliveryService.Factory deliveryServiceFactory)
+            throws ReflectiveOperationException {
 
         Method method = runner.getClass()
                               .getDeclaredMethod("createSimulations",

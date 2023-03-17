@@ -31,7 +31,10 @@ public class TutorTests_H9_OurDeliveryServiceTest {
     @ParameterizedTest
     @CsvSource("10")
     public void testProblem1(int runs) throws IOException {
-        Context context = contextBuilder().add("runs", runs).add("problem", "problem1").build();
+        Context context = contextBuilder()
+                                  .add("runs", runs)
+                                  .add("problem", "problem1")
+                                  .build();
 
         ProblemArchetype problem1;
 
@@ -47,16 +50,13 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         runner.run(problemGroup, config, runs, DeliveryService.OUR, (s, p, i) -> {
         }, (s, p) -> false, (r) -> {
-            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.6,
-                       context,
+            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.6, context,
                        TR -> "The amount delivered should be greater than 0.6, but was %f.".formatted(r.get(
                                RatingCriteria.AMOUNT_DELIVERED)));
-            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.3,
-                       context,
+            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.3, context,
                        TR -> "The amount delivered in time should be greater than 0.3, but was %f.".formatted(r.get(
                                RatingCriteria.IN_TIME)));
-            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.1,
-                       context,
+            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.1, context,
                        TR -> "The travel distance should be greater than 0.1, but was %f.".formatted(r.get(
                                RatingCriteria.TRAVEL_DISTANCE)));
         });
@@ -65,7 +65,10 @@ public class TutorTests_H9_OurDeliveryServiceTest {
     @ParameterizedTest
     @CsvSource("10")
     public void testProblem2(int runs) throws IOException {
-        Context context = contextBuilder().add("runs", runs).add("problem", "problem2").build();
+        Context context = contextBuilder()
+                                  .add("runs", runs)
+                                  .add("problem", "problem2")
+                                  .build();
 
         ProblemArchetype problem2;
 
@@ -81,16 +84,13 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         runner.run(problemGroup, config, runs, DeliveryService.OUR, (s, p, i) -> {
         }, (s, p) -> false, (r) -> {
-            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.95,
-                       context,
+            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.95, context,
                        TR -> "The amount delivered should be greater than 0.95, but was %f.".formatted(r.get(
                                RatingCriteria.AMOUNT_DELIVERED)));
-            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.25,
-                       context,
+            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.25, context,
                        TR -> "The amount delivered in time should be greater than 0.25, but was %f.".formatted(r.get(
                                RatingCriteria.IN_TIME)));
-            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.35,
-                       context,
+            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.35, context,
                        TR -> "The travel distance should be greater than 0.35, but was %f.".formatted(r.get(
                                RatingCriteria.TRAVEL_DISTANCE)));
         });
@@ -99,7 +99,10 @@ public class TutorTests_H9_OurDeliveryServiceTest {
     @ParameterizedTest
     @CsvSource("10")
     public void testProblem3(int runs) throws IOException {
-        Context context = contextBuilder().add("runs", runs).add("problem", "problem3").build();
+        Context context = contextBuilder()
+                                  .add("runs", runs)
+                                  .add("problem", "problem3")
+                                  .build();
 
         ProblemArchetype problem3;
 
@@ -115,16 +118,13 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         runner.run(problemGroup, config, runs, DeliveryService.OUR, (s, p, i) -> {
         }, (s, p) -> false, (r) -> {
-            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.95,
-                       context,
+            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.95, context,
                        TR -> "The amount delivered should be greater than 0.95, but was %f.".formatted(r.get(
                                RatingCriteria.AMOUNT_DELIVERED)));
-            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2,
-                       context,
+            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2, context,
                        TR -> "The amount delivered in time should be greater than 0.2, but was %f.".formatted(r.get(
                                RatingCriteria.IN_TIME)));
-            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.05,
-                       context,
+            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.05, context,
                        TR -> "The travel distance should be greater than 0.05, but was %f.".formatted(r.get(
                                RatingCriteria.TRAVEL_DISTANCE)));
         });
@@ -133,7 +133,10 @@ public class TutorTests_H9_OurDeliveryServiceTest {
     @ParameterizedTest
     @CsvSource("10")
     public void testProblem4(int runs) throws IOException {
-        Context context = contextBuilder().add("runs", runs).add("problem", "problem4").build();
+        Context context = contextBuilder()
+                                  .add("runs", runs)
+                                  .add("problem", "problem4")
+                                  .build();
 
         ProblemArchetype problem4;
 
@@ -149,16 +152,13 @@ public class TutorTests_H9_OurDeliveryServiceTest {
 
         runner.run(problemGroup, config, runs, DeliveryService.OUR, (s, p, i) -> {
         }, (s, p) -> false, (r) -> {
-            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.5,
-                       context,
+            assertTrue(r.get(RatingCriteria.AMOUNT_DELIVERED) > 0.5, context,
                        TR -> "The amount delivered should be greater than 0.5, but was %f.".formatted(r.get(
                                RatingCriteria.AMOUNT_DELIVERED)));
-            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2,
-                       context,
+            assertTrue(r.get(RatingCriteria.IN_TIME) > 0.2, context,
                        TR -> "The amount delivered in time should be greater than 0.2, but was %f.".formatted(r.get(
                                RatingCriteria.IN_TIME)));
-            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.2,
-                       context,
+            assertTrue(r.get(RatingCriteria.TRAVEL_DISTANCE) > 0.2, context,
                        TR -> "The travel distance should be greater than 0.2, but was %f.".formatted(r.get(
                                RatingCriteria.TRAVEL_DISTANCE)));
         });

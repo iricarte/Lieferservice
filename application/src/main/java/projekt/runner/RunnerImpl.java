@@ -60,7 +60,6 @@ public class RunnerImpl implements Runner {
                                 Map<ProblemArchetype, Simulation> simulations,
                                 ResultHandler resultHandler) {
         Map<RatingCriteria, Double> criteriaToAverage = new HashMap<>();
-
         Map<RatingCriteria, List<Double>> criteriaToRatings = new HashMap<>();
         criteriaToRatings.put(RatingCriteria.AMOUNT_DELIVERED, new ArrayList<>());
         criteriaToRatings.put(RatingCriteria.IN_TIME, new ArrayList<>());
@@ -68,9 +67,12 @@ public class RunnerImpl implements Runner {
         for (int i = 0; i < simulationRuns; i++) {
             for (Map.Entry<ProblemArchetype, Simulation> simulationEntry : simulations.entrySet()) {
                 Simulation simulation = simulationEntry.getValue();
+                if (simulation instanceof BasicDeliverySimulation) {
+                    criteriaToRatings.put(RatingCriteria.TRAVEL_DISTANCE, new ArrayList<>());
+                }
                 ProblemArchetype problem = simulationEntry.getKey();
                 simulationSetupHandler.accept(simulation, problem, i);
-                simulation.runSimulation(10);
+                simulation.runSimulation(problem.simulationLength());
                 this.measureCriteria(simulation, criteriaToRatings);
                 if (simulationFinishedHandler.accept(simulation, problem)) {
                     return;

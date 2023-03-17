@@ -24,7 +24,9 @@ public class TutorTests_H1_LocationTest {
 
     @Test
     public void testCompareToXValueDifferent() {
-        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
+        Context context = contextBuilder()
+                                  .subject("Location#compareTo(Location)")
+                                  .build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(2, 2);
@@ -39,7 +41,9 @@ public class TutorTests_H1_LocationTest {
 
     @Test
     public void testCompareToEqual() {
-        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
+        Context context = contextBuilder()
+                                  .subject("Location#compareTo(Location)")
+                                  .build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(1, 2);
@@ -56,7 +60,9 @@ public class TutorTests_H1_LocationTest {
 
     @Test
     public void testCompareToYValueDifferent() {
-        Context context = contextBuilder().subject("Location#compareTo(Location)").build();
+        Context context = contextBuilder()
+                                  .subject("Location#compareTo(Location)")
+                                  .build();
 
         Location location1 = new Location(1, 2);
         Location location2 = new Location(1, 3);
@@ -99,10 +105,11 @@ public class TutorTests_H1_LocationTest {
             hashes.add(location.hashCode());
         }
 
-        Context context = contextBuilder().subject("Location#hashCode()")
-                                          .add("seed", seed)
-                                          .add("generated locations", locations.size())
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("Location#hashCode()")
+                                  .add("seed", seed)
+                                  .add("generated locations", locations.size())
+                                  .build();
 
         assertEquals(locations.size(),
                      hashes.size(),
@@ -135,12 +142,12 @@ public class TutorTests_H1_LocationTest {
 
         testEquals(new Location(1, 2), null, false, "Method did not return false for null");
     }
-
     private void testEquals(Object a, Object b, boolean expected, String description) {
-        Context context = contextBuilder().subject("Location#equals(Object)")
-                                          .add("LocationA", Objects.toString(a))
-                                          .add("LocationB", Objects.toString(b))
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("Location#equals(Object)")
+                                  .add("LocationA", Objects.toString(a))
+                                  .add("LocationB", Objects.toString(b))
+                                  .build();
 
         assertEquals(expected, a.equals(b), context, TR -> description);
     }
@@ -148,7 +155,11 @@ public class TutorTests_H1_LocationTest {
     @ParameterizedTest
     @CsvSource("1, 2")
     public void testToString(int x, int y) {
-        Context context = contextBuilder().add("x", x).add("y", y).subject("Location#equals(Object)").build();
+        Context context = contextBuilder()
+                                  .add("x", x)
+                                  .add("y", y)
+                                  .subject("Location#equals(Object)")
+                                  .build();
 
         Location location = new Location(x, y);
 

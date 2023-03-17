@@ -119,7 +119,9 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
     @Test
     public void testReturnedEvents() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("BasicDeliveryService#tick").build();
+        Context context = contextBuilder()
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         long tick = 69;
         List<Event> expected = List.of(SpawnEvent.of(69, vehicle, restaurant));
@@ -132,12 +134,11 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
         List<Event> actual = callTick(deliveryService, tick, List.of());
 
-        assertEquals(tick,
-                     argumentCaptor.getValue(),
-                     context,
+        assertEquals(tick, argumentCaptor.getValue(), context,
                      TR -> "The method vehicleManager.tick() was called with the wrong tick.");
 
-        assertEquals(expected, actual, context, TR -> "The method did not return the correct events.");
+        assertEquals(expected, actual, context,
+                     TR -> "The method did not return the correct events.");
     }
 
     @Test
@@ -167,12 +168,11 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("pendingOrders",
-                                               "%d, %d".formatted(order1.getOrderID(), order2.getOrderID()))
-                                          .add("newOrders",
-                                               "%d, %d".formatted(order4.getOrderID(), order3.getOrderID()))
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("pendingOrders", "%d, %d".formatted(order1.getOrderID(), order2.getOrderID()))
+                                  .add("newOrders", "%d, %d".formatted(order4.getOrderID(), order3.getOrderID()))
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1, order2));
 
@@ -180,38 +180,29 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
         List<ConfirmedOrder> pendingOrders = getPendingOrders(deliveryService);
 
-        assertEquals(4,
-                     pendingOrders.size(),
-                     context,
+        assertEquals(4, pendingOrders.size(), context,
                      TR -> "The size of the pendingOrders list is not correct after calling tick");
 
-        assertTrue(pendingOrders.contains(order1),
-                   context,
+        assertTrue(pendingOrders.contains(order1), context,
                    TR -> "the pendingOrders list does not contain order %d".formatted(order1.getOrderID()));
-        assertTrue(pendingOrders.contains(order2),
-                   context,
+        assertTrue(pendingOrders.contains(order2), context,
                    TR -> "the pendingOrders list does not contain order %d".formatted(order2.getOrderID()));
-        assertTrue(pendingOrders.contains(order3),
-                   context,
+        assertTrue(pendingOrders.contains(order3), context,
                    TR -> "the pendingOrders list does not contain order %d".formatted(order3.getOrderID()));
-        assertTrue(pendingOrders.contains(order4),
-                   context,
+        assertTrue(pendingOrders.contains(order4), context,
                    TR -> "the pendingOrders list does not contain order %d".formatted(order4.getOrderID()));
 
         assertTrue(pendingOrders.get(0).getDeliveryInterval().start() <= pendingOrders.get(1)
                                                                                       .getDeliveryInterval()
-                                                                                      .start(),
-                   context,
+                                                                                      .start(), context,
                    TR -> "the pendingOrders list is not sorted");
         assertTrue(pendingOrders.get(1).getDeliveryInterval().start() <= pendingOrders.get(2)
                                                                                       .getDeliveryInterval()
-                                                                                      .start(),
-                   context,
+                                                                                      .start(), context,
                    TR -> "the pendingOrders list is not sorted");
         assertTrue(pendingOrders.get(2).getDeliveryInterval().start() <= pendingOrders.get(3)
                                                                                       .getDeliveryInterval()
-                                                                                      .start(),
-                   context,
+                                                                                      .start(), context,
                    TR -> "the pendingOrders list is not sorted");
 
     }
@@ -239,40 +230,33 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("order1 weight", order1.getWeight())
-                                          .add("order2 weight", order2.getWeight())
-                                          .add("order3 weight", order3.getWeight())
-                                          .add("order4 weight", order4.getWeight())
-                                          .add("vehicle capacity", vehicle.getCapacity())
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("order1 weight", order1.getWeight())
+                                  .add("order2 weight", order2.getWeight())
+                                  .add("order3 weight", order3.getWeight())
+                                  .add("order4 weight", order4.getWeight())
+                                  .add("vehicle capacity", vehicle.getCapacity())
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1, order2, order3, order4));
 
         callTick(deliveryService, 0, List.of());
 
-        assertEquals(3,
-                     vehicle.getOrders().size(),
-                     context,
+        assertEquals(3, vehicle.getOrders().size(), context,
                      TR -> "The vehicle has not loaded the correct amount of orders.");
 
-        assertTrue(vehicle.getOrders().contains(order1),
-                   context,
+        assertTrue(vehicle.getOrders().contains(order1), context,
                    TR -> "The orders were not loaded onto the vehicle in the correct order.");
-        assertTrue(vehicle.getOrders().contains(order2),
-                   context,
+        assertTrue(vehicle.getOrders().contains(order2), context,
                    TR -> "The orders were not loaded onto the vehicle in the correct order.");
-        assertTrue(vehicle.getOrders().contains(order3),
-                   context,
+        assertTrue(vehicle.getOrders().contains(order3), context,
                    TR -> "The orders were not loaded onto the vehicle in the correct order.");
 
-        assertEquals(1,
-                     getPendingOrders(deliveryService).size(),
-                     context,
+        assertEquals(1, getPendingOrders(deliveryService).size(), context,
                      TR -> "The size of the pendingOrders list is not correct.");
 
-        assertTrue(getPendingOrders(deliveryService).contains(order4),
-                   context,
+        assertTrue(getPendingOrders(deliveryService).contains(order4), context,
                    TR -> "The order that did not fit on the vehicle was removed from the pendingOrders list.");
     }
 
@@ -299,40 +283,37 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("order1 weight", order1.getWeight())
-                                          .add("order2 weight", order2.getWeight())
-                                          .add("order3 weight", order3.getWeight())
-                                          .add("order4 weight", order4.getWeight())
-                                          .add("vehicle capacity", vehicle.getCapacity())
-                                          .add("order1 restaurant", order1.getRestaurant().getComponent().getName())
-                                          .add("order2 restaurant", order2.getRestaurant().getComponent().getName())
-                                          .add("order3 restaurant", order3.getRestaurant().getComponent().getName())
-                                          .add("order4 restaurant", order4.getRestaurant().getComponent().getName())
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("order1 weight", order1.getWeight())
+                                  .add("order2 weight", order2.getWeight())
+                                  .add("order3 weight", order3.getWeight())
+                                  .add("order4 weight", order4.getWeight())
+                                  .add("vehicle capacity", vehicle.getCapacity())
+                                  .add("order1 restaurant", order1.getRestaurant().getComponent().getName())
+                                  .add("order2 restaurant", order2.getRestaurant().getComponent().getName())
+                                  .add("order3 restaurant", order3.getRestaurant().getComponent().getName())
+                                  .add("order4 restaurant", order4.getRestaurant().getComponent().getName())
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1, order2, order3, order4));
 
         callTick(deliveryService, 0, List.of());
 
-        assertEquals(2,
-                     vehicle.getOrders().size(),
-                     context,
+        assertEquals(2, vehicle.getOrders().size(), context,
                      TR -> "The vehicle has not loaded the correct amount of orders.");
 
-        assertTrue(vehicle.getOrders().contains(order1), context, TR -> "order1 wasn't loaded onto the vehicle.");
-        assertTrue(vehicle.getOrders().contains(order2), context, TR -> "order2 wasn't loaded onto the vehicle.");
+        assertTrue(vehicle.getOrders().contains(order1), context,
+                   TR -> "order1 wasn't loaded onto the vehicle.");
+        assertTrue(vehicle.getOrders().contains(order2), context,
+                   TR -> "order2 wasn't loaded onto the vehicle.");
 
-        assertEquals(2,
-                     getPendingOrders(deliveryService).size(),
-                     context,
+        assertEquals(2, getPendingOrders(deliveryService).size(), context,
                      TR -> "The size of the pendingOrders list is not correct.");
 
-        assertTrue(getPendingOrders(deliveryService).contains(order3),
-                   context,
+        assertTrue(getPendingOrders(deliveryService).contains(order3), context,
                    TR -> "order3 was removed from the pendingOrders list.");
-        assertTrue(getPendingOrders(deliveryService).contains(order4),
-                   context,
+        assertTrue(getPendingOrders(deliveryService).contains(order4), context,
                    TR -> "order4 was removed from the pendingOrders list.");
     }
 
@@ -344,10 +325,11 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("order1 weight", order1.getWeight())
-                                          .add("vehicle capacity", vehicle.getCapacity())
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("order1 weight", order1.getWeight())
+                                  .add("vehicle capacity", vehicle.getCapacity())
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1));
 
@@ -359,13 +341,9 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
 
         verify(vehicle, times(2)).moveQueued(any(), any());
 
-        assertEquals(neighborhood,
-                     nodeArgumentCaptor.getAllValues().get(0),
-                     context,
+        assertEquals(neighborhood, nodeArgumentCaptor.getAllValues().get(0), context,
                      TR -> "The first move of the vehicle is not to the neighborhood.");
-        assertEquals(restaurant,
-                     nodeArgumentCaptor.getAllValues().get(1),
-                     context,
+        assertEquals(restaurant, nodeArgumentCaptor.getAllValues().get(1), context,
                      TR -> "The second move of the vehicle is not to the restaurant.");
     }
 
@@ -388,15 +366,16 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("order1 weight", order1.getWeight())
-                                          .add("order2 weight", order2.getWeight())
-                                          .add("order3 weight", order3.getWeight())
-                                          .add("vehicle capacity", vehicle.getCapacity())
-                                          .add("order1 location", order1.getLocation())
-                                          .add("order2 location", order2.getLocation())
-                                          .add("order3 location", order3.getLocation())
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("order1 weight", order1.getWeight())
+                                  .add("order2 weight", order2.getWeight())
+                                  .add("order3 weight", order3.getWeight())
+                                  .add("vehicle capacity", vehicle.getCapacity())
+                                  .add("order1 location", order1.getLocation())
+                                  .add("order2 location", order2.getLocation())
+                                  .add("order3 location", order3.getLocation())
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1, order2, order3));
 
@@ -438,15 +417,16 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
                                                    foodList,
                                                    1);
 
-        Context context = contextBuilder().add("order1 weight", order1.getWeight())
-                                          .add("order2 weight", order2.getWeight())
-                                          .add("order3 weight", order3.getWeight())
-                                          .add("vehicle capacity", vehicle.getCapacity())
-                                          .add("order1 location", order1.getLocation())
-                                          .add("order2 location", order2.getLocation())
-                                          .add("order3 location", order3.getLocation())
-                                          .subject("BasicDeliveryService#tick")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("order1 weight", order1.getWeight())
+                                  .add("order2 weight", order2.getWeight())
+                                  .add("order3 weight", order3.getWeight())
+                                  .add("vehicle capacity", vehicle.getCapacity())
+                                  .add("order1 location", order1.getLocation())
+                                  .add("order2 location", order2.getLocation())
+                                  .add("order3 location", order3.getLocation())
+                                  .subject("BasicDeliveryService#tick")
+                                  .build();
 
         addPendingOrders(deliveryService, List.of(order1, order2, order3));
 
@@ -481,34 +461,25 @@ public class TutorTests_H9_BasicDeliveryServiceTest {
         setOccupiedOfVehicle(vehicle, occupiedNeighborhood);
         arrivalActionArgumentCaptor.getAllValues().get(0).accept(vehicle, tick);
 
-        assertEquals(2,
-                     vehicleArgumentCaptor.getAllValues().size(),
-                     context,
+        assertEquals(2, vehicleArgumentCaptor.getAllValues().size(), context,
                      TR -> "The method deliverOrder wasn't called the correct amount of times after arriving at %s.".formatted(
                              order1.getLocation()));
 
-        assertEquals(vehicle,
-                     vehicleArgumentCaptor.getAllValues().get(0),
-                     context,
+        assertEquals(vehicle, vehicleArgumentCaptor.getAllValues().get(0), context,
                      TR -> "The vehicle passed to the method deliverOrder is not correct.");
-        assertEquals(vehicle,
-                     vehicleArgumentCaptor.getAllValues().get(1),
-                     context,
+        assertEquals(vehicle, vehicleArgumentCaptor.getAllValues().get(1), context,
                      TR -> "The vehicle passed to the method deliverOrder is not correct.");
 
-        assertTrue(orderArgumentCaptor.getAllValues().contains(order1), context, TR -> "order1 was not delivered.");
-        assertTrue(orderArgumentCaptor.getAllValues().contains(order2), context, TR -> "order2 was not delivered.");
-        assertFalse(orderArgumentCaptor.getAllValues().contains(order3),
-                    context,
+        assertTrue(orderArgumentCaptor.getAllValues().contains(order1), context,
+                   TR -> "order1 was not delivered.");
+        assertTrue(orderArgumentCaptor.getAllValues().contains(order2), context,
+                   TR -> "order2 was not delivered.");
+        assertFalse(orderArgumentCaptor.getAllValues().contains(order3), context,
                     TR -> "order3 was delivered even though it was not in the same neighborhood.");
 
-        assertEquals(tick,
-                     tickArgumentCaptor.getAllValues().get(0),
-                     context,
+        assertEquals(tick, tickArgumentCaptor.getAllValues().get(0), context,
                      TR -> "The tick passed to the method deliverOrder is not correct.");
-        assertEquals(tick,
-                     tickArgumentCaptor.getAllValues().get(1),
-                     context,
+        assertEquals(tick, tickArgumentCaptor.getAllValues().get(1), context,
                      TR -> "The tick passed to the method deliverOrder is not correct.");
     }
 }

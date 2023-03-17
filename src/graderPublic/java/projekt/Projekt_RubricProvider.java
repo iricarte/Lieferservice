@@ -1,7 +1,5 @@
 package projekt;
 
-
-import org.sourcegrade.jagr.api.rubric.*;
 import projekt.h1.TutorTests_H1_LocationTest;
 import projekt.h10.TutorTests_H10_RunnerImplTest;
 import projekt.h2.TutorTests_H2_RegionImplTest;
@@ -18,15 +16,24 @@ import projekt.h9.TutorTests_H9_BasicDeliveryServiceTest;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
+import org.sourcegrade.jagr.api.rubric.Criterion;
+import org.sourcegrade.jagr.api.rubric.GradeResult;
+import org.sourcegrade.jagr.api.rubric.Grader;
+import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
+import org.sourcegrade.jagr.api.rubric.Rubric;
+import org.sourcegrade.jagr.api.rubric.RubricProvider;
+
 public class Projekt_RubricProvider implements RubricProvider {
 
     @SafeVarargs
-    private static Criterion createCriterion(String shortDescription, int maxPoints, Callable<Method>... methodReferences) {
+    private static Criterion createCriterion(String shortDescription,
+                                             int maxPoints,
+                                             Callable<Method>... methodReferences) {
 
         if (methodReferences.length == 0) {
             return Criterion.builder()
-                .shortDescription(shortDescription)
-                .maxPoints(maxPoints)
+                            .shortDescription(shortDescription)
+                            .maxPoints(maxPoints)
                 .build();
         }
 

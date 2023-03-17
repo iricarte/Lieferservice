@@ -72,28 +72,27 @@ public class TutorTests_H3_NodeImplTest {
 
     @Test
     public void testGetEdge() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("NodeImpl#getEdge(Region.Node)").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#getEdge(Region.Node)")
+                                  .build();
 
-        assertSame(edgeAB,
-                   nodeA.getEdge(nodeB),
-                   context,
+        assertSame(edgeAB, nodeA.getEdge(nodeB), context,
                    TR -> "The methode getEdge did not return the correct edge if the region contains the given node.");
 
         Region.Node nodeE = createNode(region, "E", new Location(4, 4), Set.of());
 
-        assertNull(nodeA.getEdge(nodeE),
-                   context,
+        assertNull(nodeA.getEdge(nodeE), context,
                    TR -> "The methode getEdge did not return null if the region does not contain the given node.");
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetAdjacentNodes() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("NodeImpl#getAdjacentNodes()").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#getAdjacentNodes()")
+                                  .build();
 
-        assertEquals(Set.of(nodeB, nodeC),
-                     nodeA.getAdjacentNodes(),
-                     context,
+        assertEquals(Set.of(nodeB, nodeC), nodeA.getAdjacentNodes(), context,
                      TR -> "The methode getAdjacentNodes did not return the correct nodes.");
 
         Location locationE = new Location(4, 4);
@@ -103,20 +102,18 @@ public class TutorTests_H3_NodeImplTest {
         nodes.setAccessible(true);
         ((Map<Location, Region.Node>) nodes.get(region)).put(locationE, nodeE);
 
-        assertEquals(Set.of(),
-                     nodeE.getAdjacentNodes(),
-                     context,
+        assertEquals(Set.of(), nodeE.getAdjacentNodes(), context,
                      TR -> "The methode getAdjacentNodes did not return the correct nodes when the given node has no connections.");
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetAdjacentEdges() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("NodeImpl#getAdjacentEdges()").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#getAdjacentEdges()")
+                                  .build();
 
-        assertEquals(Set.of(edgeAB, edgeAC),
-                     nodeA.getAdjacentEdges(),
-                     context,
+        assertEquals(Set.of(edgeAB, edgeAC), nodeA.getAdjacentEdges(), context,
                      TR -> "The methode getAdjacentEdges did not return the correct edges.");
 
         Location locationE = new Location(4, 4);
@@ -126,90 +123,84 @@ public class TutorTests_H3_NodeImplTest {
         nodes.setAccessible(true);
         ((Map<Location, Region.Node>) nodes.get(region)).put(locationE, nodeE);
 
-        assertEquals(Set.of(),
-                     nodeE.getAdjacentEdges(),
-                     context,
+        assertEquals(Set.of(), nodeE.getAdjacentEdges(), context,
                      TR -> "The methode getAdjacentEdges did not return the correct edges when the given node has no connections.");
     }
 
     @Test
     public void testCompareTo() throws ReflectiveOperationException {
-        Context context1 = contextBuilder().add("this", locationA)
-                                           .add("other", locationB)
-                                           .subject("NodeImpl#compareTo(Region.Node)")
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .add("this", locationA)
+                                   .add("other", locationB)
+                                   .subject("NodeImpl#compareTo(Region.Node)")
+                                   .build();
 
-        assertTrue(nodeA.compareTo(nodeB) < 0,
-                   context1,
+        assertTrue(nodeA.compareTo(nodeB) < 0, context1,
                    TR -> "The methode compareTo did not return a negative number if nodeA < nodeB.");
 
-        Context context2 = contextBuilder().add("this", locationB)
-                                           .add("other", locationA)
-                                           .subject("NodeImpl#compareTo(Region.Node)")
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .add("this", locationB)
+                                   .add("other", locationA)
+                                   .subject("NodeImpl#compareTo(Region.Node)")
+                                   .build();
 
-        assertTrue(nodeB.compareTo(nodeA) > 0,
-                   context2,
+        assertTrue(nodeB.compareTo(nodeA) > 0, context2,
                    TR -> "The methode compareTo did not return a positive number if nodeA > nodeB.");
 
-        Context context3 = contextBuilder().add("this", locationA)
-                                           .add("other", locationA)
-                                           .subject("NodeImpl#compareTo(Region.Node)")
-                                           .build();
+        Context context3 = contextBuilder()
+                                   .add("this", locationA)
+                                   .add("other", locationA)
+                                   .subject("NodeImpl#compareTo(Region.Node)")
+                                   .build();
 
-        assertEquals(0,
-                     nodeA.compareTo(createNode(region, "E", locationA, Set.of())),
-                     context3,
+        assertEquals(0, nodeA.compareTo(createNode(region, "E", locationA, Set.of())), context3,
                      TR -> "The methode compareTo did not return 0 if nodeA == nodeB.");
     }
 
     @SuppressWarnings({"ConstantConditions", "EqualsWithItself"})
     @Test
     public void testEquals() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("NodeImpl#equals(Object)").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#equals(Object)")
+                                  .build();
 
-        assertFalse(nodeA.equals(null),
-                    context,
+        assertFalse(nodeA.equals(null), context,
                     TR -> "The methode equals did not return false if the given object is null.");
 
-        assertFalse(nodeA.equals(new Object()),
-                    context,
+        assertFalse(nodeA.equals(new Object()), context,
                     TR -> "The methode equals did not return false if the given object is not a node.");
 
-        assertTrue(nodeA.equals(nodeA),
-                   context,
+        assertTrue(nodeA.equals(nodeA), context,
                    TR -> "The methode equals did not return true if the given object is the same node.");
 
-        assertFalse(nodeA.equals(createNode(region, "B", locationA, Set.of(locationB, locationC))),
-                    context,
+        assertFalse(nodeA.equals(createNode(region, "B", locationA, Set.of(locationB, locationC))), context,
                     TR -> "The methode equals did not return false if the name of the given node is different.");
 
-        assertFalse(nodeA.equals(createNode(region, "A", locationB, Set.of(locationB, locationC))),
-                    context,
+        assertFalse(nodeA.equals(createNode(region, "A", locationB, Set.of(locationB, locationC))), context,
                     TR -> "The methode equals did not return false if the location of the given node is different.");
 
-        assertFalse(nodeA.equals(createNode(region, "A", locationA, Set.of(locationB))),
-                    context,
+        assertFalse(nodeA.equals(createNode(region, "A", locationA, Set.of(locationB))), context,
                     TR -> "The methode equals did not return false if the connections of the given node are different.");
 
-        assertTrue(nodeA.equals(createNode(region, "A", locationA, Set.of(locationB, locationC))),
-                   context,
+        assertTrue(nodeA.equals(createNode(region, "A", locationA, Set.of(locationB, locationC))), context,
                    TR -> "The methode equals did not return true if the given node is equal.");
     }
 
     @Test
     public void testHashCode() {
-        Context context = contextBuilder().subject("NodeImpl#hashCode()").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#hashCode()")
+                                  .build();
 
-        assertEquals(Objects.hash("A", locationA, Set.of(locationB, locationC)),
-                     nodeA.hashCode(),
-                     context,
+        assertEquals(Objects.hash("A", locationA, Set.of(locationB, locationC)), nodeA.hashCode(), context,
                      TR -> "The methode hashCode did not return the correct hash code.");
     }
 
     @Test
     public void testToString() {
-        Context context = contextBuilder().subject("NodeImpl#toString()").build();
+        Context context = contextBuilder()
+                                  .subject("NodeImpl#toString()")
+                                  .build();
 
         assertEquals("NodeImpl(name='A', location='(0,0)', connections='" + Set.of(locationB, locationC) + "')",
                      nodeA.toString(),

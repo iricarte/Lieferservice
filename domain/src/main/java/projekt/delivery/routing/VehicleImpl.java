@@ -9,7 +9,7 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-class VehicleImpl implements Vehicle {
+public class VehicleImpl implements Vehicle {
 
     private final int id;
     private final double capacity;

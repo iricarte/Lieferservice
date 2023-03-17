@@ -115,7 +115,9 @@ public class TutorTests_H10_RunnerImplTest {
     @Test
     public void testCreateSimulations() throws ReflectiveOperationException {
 
-        Context context = contextBuilder().subject("RunnerImpl#createSimulations").build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#createSimulations")
+                                  .build();
 
         RunnerImpl runner = new RunnerImpl();
 
@@ -132,21 +134,13 @@ public class TutorTests_H10_RunnerImplTest {
 
         Simulation simulation1 = result.get(problem1);
 
-        assertSame(deliveryService1,
-                   simulation1.getDeliveryService(),
-                   context,
+        assertSame(deliveryService1, simulation1.getDeliveryService(), context,
                    TR -> "Simulation for the first problem does not have the correct problem");
-        assertSame(simulationConfig,
-                   simulation1.getSimulationConfig(),
-                   context,
+        assertSame(simulationConfig, simulation1.getSimulationConfig(), context,
                    TR -> "Simulation for the first problem does not have the correct simulation config");
-        assertSame(orderGeneratorFactory1,
-                   getOrderGeneratorFactory(simulation1),
-                   context,
+        assertSame(orderGeneratorFactory1, getOrderGeneratorFactory(simulation1), context,
                    TR -> "Simulation for the first problem does not have the correct order generator factory");
-        assertSame(problem1.raterFactoryMap(),
-                   getRaterFactoryMap(simulation1),
-                   context,
+        assertSame(problem1.raterFactoryMap(), getRaterFactoryMap(simulation1), context,
                    TR -> "Simulation for the first problem does not have the correct rater factory map");
 
         assertTrue(result.containsKey(problem2),
@@ -155,21 +149,13 @@ public class TutorTests_H10_RunnerImplTest {
 
         Simulation simulation2 = result.get(problem2);
 
-        assertSame(deliveryService2,
-                   simulation2.getDeliveryService(),
-                   context,
+        assertSame(deliveryService2, simulation2.getDeliveryService(), context,
                    TR -> "Simulation for the second problem does not have the correct problem");
-        assertSame(simulationConfig,
-                   simulation2.getSimulationConfig(),
-                   context,
+        assertSame(simulationConfig, simulation2.getSimulationConfig(), context,
                    TR -> "Simulation for the second problem does not have the correct simulation config");
-        assertSame(orderGeneratorFactory2,
-                   getOrderGeneratorFactory(simulation2),
-                   context,
+        assertSame(orderGeneratorFactory2, getOrderGeneratorFactory(simulation2), context,
                    TR -> "Simulation for the second problem does not have the correct order generator factory");
-        assertSame(problem2.raterFactoryMap(),
-                   getRaterFactoryMap(simulation2),
-                   context,
+        assertSame(problem2.raterFactoryMap(), getRaterFactoryMap(simulation2), context,
                    TR -> "Simulation for the second problem does not have the correct rater factory map");
 
     }
@@ -178,10 +164,11 @@ public class TutorTests_H10_RunnerImplTest {
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9})
     public void testSimulationsExecuted(int iterations) {
 
-        Context context = contextBuilder().subject("RunnerImpl#run")
-                                          .add("simulations", "simulation1, simulation2")
-                                          .add("simulationRuns", iterations)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#run")
+                                  .add("simulations", "simulation1, simulation2")
+                                  .add("simulationRuns", iterations)
+                                  .build();
 
         RunnerImpl runner = spy(new RunnerImpl());
 
@@ -209,10 +196,11 @@ public class TutorTests_H10_RunnerImplTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9})
     public void testSimulationSetupHandler(int iterations) {
-        Context context = contextBuilder().subject("RunnerImpl#run")
-                                          .add("simulations", "simulation1, simulation2")
-                                          .add("simulationRuns", iterations)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#run")
+                                  .add("simulations", "simulation1, simulation2")
+                                  .add("simulationRuns", iterations)
+                                  .build();
 
         RunnerImpl runner = spy(new RunnerImpl());
 
@@ -228,13 +216,15 @@ public class TutorTests_H10_RunnerImplTest {
         runner.run(problemGroup, simulationConfig, iterations, deliveryServiceFactory, (s, p, i) -> {
 
             if (s == simulation1) {
-                simulation1Actions.add(new SimulationAction(SimulationActions.SETUP).setSimulation(s)
-                                                                                    .setProblem(p)
-                                                                                    .setIteration(i));
+                simulation1Actions.add(new SimulationAction(SimulationActions.SETUP)
+                                               .setSimulation(s)
+                                               .setProblem(p)
+                                               .setIteration(i));
             } else if (s == simulation2) {
-                simulation2Actions.add(new SimulationAction(SimulationActions.SETUP).setSimulation(s)
-                                                                                    .setProblem(p)
-                                                                                    .setIteration(i));
+                simulation2Actions.add(new SimulationAction(SimulationActions.SETUP)
+                                               .setSimulation(s)
+                                               .setProblem(p)
+                                               .setIteration(i));
             } else {
                 fail(context, TR -> "Unexpected simulation: " + s);
             }
@@ -325,10 +315,11 @@ public class TutorTests_H10_RunnerImplTest {
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9})
     public void testSimulationFinishedHandler(int iterations) {
 
-        Context context = contextBuilder().subject("RunnerImpl#run")
-                                          .add("simulations", "simulation1, simulation2")
-                                          .add("simulationRuns", iterations)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#run")
+                                  .add("simulations", "simulation1, simulation2")
+                                  .add("simulationRuns", iterations)
+                                  .build();
 
         RunnerImpl runner = spy(new RunnerImpl());
 
@@ -345,9 +336,13 @@ public class TutorTests_H10_RunnerImplTest {
         }, (s, p) -> {
 
             if (s == simulation1) {
-                simulation1Actions.add(new SimulationAction(SimulationActions.FINISHED).setSimulation(s).setProblem(p));
+                simulation1Actions.add(new SimulationAction(SimulationActions.FINISHED)
+                                               .setSimulation(s)
+                                               .setProblem(p));
             } else if (s == simulation2) {
-                simulation2Actions.add(new SimulationAction(SimulationActions.FINISHED).setSimulation(s).setProblem(p));
+                simulation2Actions.add(new SimulationAction(SimulationActions.FINISHED)
+                                               .setSimulation(s)
+                                               .setProblem(p));
             } else {
                 fail(context, TR -> "Unexpected simulation: " + s);
             }
@@ -459,14 +454,15 @@ public class TutorTests_H10_RunnerImplTest {
                 "9,7.5,8.5"})
     public void testResultHandler(int iterations, double expectedInTimeRating, double expectedAmountDelivererRating) {
 
-        Context context = contextBuilder().subject("RunnerImpl#run")
-                                          .add("simulations", "simulation1, simulation2")
-                                          .add("simulation1 IN_TIME rating", "2*iteration")
-                                          .add("simulation1 AMOUNT_DELIVERED rating", "2*iteration + 1")
-                                          .add("simulation2 AMOUNT_DELIVERED rating", "iteration")
-                                          .add("simulation2 IN_TIME rating", "iteration + 1")
-                                          .add("simulationRuns", iterations)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#run")
+                                  .add("simulations", "simulation1, simulation2")
+                                  .add("simulation1 IN_TIME rating", "2*iteration")
+                                  .add("simulation1 AMOUNT_DELIVERED rating", "2*iteration + 1")
+                                  .add("simulation2 AMOUNT_DELIVERED rating", "iteration")
+                                  .add("simulation2 IN_TIME rating", "iteration + 1")
+                                  .add("simulationRuns", iterations)
+                                  .build();
 
         RunnerImpl runner = spy(new RunnerImpl());
 
@@ -480,7 +476,8 @@ public class TutorTests_H10_RunnerImplTest {
 
         runner.run(problemGroup, simulationConfig, iterations, deliveryServiceFactory, (s, p, i) -> {
         }, (s, p) -> false, r -> {
-            simulationActions.add(new SimulationAction(SimulationActions.RESULT).setResult(r));
+            simulationActions.add(new SimulationAction(SimulationActions.RESULT)
+                                          .setResult(r));
         });
 
         assertEquals(1,
@@ -512,10 +509,11 @@ public class TutorTests_H10_RunnerImplTest {
     @Test
     public void testCreateSimulationsCall() {
 
-        Context context = contextBuilder().subject("RunnerImpl#run")
-                                          .add("simulations", "simulation1, simulation2")
-                                          .add("simulationRuns", 2)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RunnerImpl#run")
+                                  .add("simulations", "simulation1, simulation2")
+                                  .add("simulationRuns", 2)
+                                  .build();
 
         RunnerImpl runner = spy(new RunnerImpl());
 
@@ -552,10 +550,14 @@ public class TutorTests_H10_RunnerImplTest {
     }
 
     private enum SimulationActions {
-        SETUP, RUN, FINISHED, RESULT
+        SETUP,
+        RUN,
+        FINISHED,
+        RESULT
     }
 
     private static class SimulationAction {
+
 
         final SimulationActions action;
         Simulation simulation;
@@ -589,17 +591,21 @@ public class TutorTests_H10_RunnerImplTest {
 
         @Override
         public String toString() {
-            return "SimulationAction{" + "action=" + action + ", simulation=" + simulation + ", problem=" + problem
-                   + ", iteration=" + iteration + '}';
+            return "SimulationAction{" +
+                   "action=" + action +
+                   ", simulation=" + simulation +
+                   ", problem=" + problem +
+                   ", iteration=" + iteration +
+                   '}';
         }
     }
 
     private static class TestSimulation implements Simulation {
 
-        final Function<Integer, Integer> ratingFunction;
-        final List<SimulationAction> simulationActions;
         int runSimulationCalls = 0;
         long maxTicks = 0;
+        final Function<Integer, Integer> ratingFunction;
+        final List<SimulationAction> simulationActions;
 
         public TestSimulation(List<SimulationAction> simulationActions) {
             this.simulationActions = simulationActions;

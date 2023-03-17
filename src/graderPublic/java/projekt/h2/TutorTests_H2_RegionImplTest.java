@@ -80,23 +80,29 @@ public class TutorTests_H2_RegionImplTest {
 
     @Test
     public void testGetNode() throws ReflectiveOperationException {
-        Context context1 = contextBuilder().add("location", locationA).subject("RegionImpl#getNode(Location)").build();
+        Context context1 = contextBuilder()
+                                   .add("location", locationA)
+                                   .subject("RegionImpl#getNode(Location)")
+                                   .build();
 
         assertEquals(createNode(region, "A", locationA, Set.of(locationB, locationC)),
                      region.getNode(locationA),
                      context1,
                      TR -> "RegionImpl#getNode() does not the correct node if the nodes map contains the given location.");
 
-        Context context2 = contextBuilder().add("location", new Location(4, 4)).build();
+        Context context2 = contextBuilder()
+                                   .add("location", new Location(4, 4))
+                                   .build();
 
-        assertNull(region.getNode(new Location(4, 4)),
-                   context2,
+        assertNull(region.getNode(new Location(4, 4)), context2,
                    TR -> "RegionImpl#getNode() does not return null if the nodes map does not contain the given location.");
     }
 
     @Test
     public void testPutNodeException() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("RegionImpl#putNode(Node)").build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#putNode(Node)")
+                                  .build();
 
         Region region2 = createRegion();
 
@@ -108,12 +114,9 @@ public class TutorTests_H2_RegionImplTest {
             fail(context,
                  TR -> "RegionImpl#putNode(Node) does not throw an Exception if the given node is in another region.");
         } catch (InvocationTargetException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException,
-                       context,
+            assertTrue(e.getCause() instanceof IllegalArgumentException, context,
                        TR -> "RegionImpl#putNode(Node) does not throw an IllegalArgumentException if the given node is in another region.");
-            assertEquals("Node %s has incorrect region".formatted(node.toString()),
-                         e.getCause().getMessage(),
-                         context,
+            assertEquals("Node %s has incorrect region".formatted(node.toString()), e.getCause().getMessage(), context,
                          TR -> "RegionImpl#putNode(Node) does not throw an IllegalArgumentException with the correct message if the given node is in another region.");
         }
     }
@@ -121,7 +124,9 @@ public class TutorTests_H2_RegionImplTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testPutNodeSuccess() throws Throwable {
-        Context context = contextBuilder().subject("RegionImpl#putNode(Node)").build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#putNode(Node)")
+                                  .build();
 
         Region.Node node = createNode(region, "E", new Location(4, 4), Set.of(locationB, locationC));
 
@@ -135,84 +140,81 @@ public class TutorTests_H2_RegionImplTest {
         nodes.setAccessible(true);
         Map<Location, Region.Node> nodesMap = (Map<Location, Region.Node>) nodes.get(region);
 
-        assertTrue(nodesMap.containsKey(new Location(4, 4)),
-                   context,
+        assertTrue(nodesMap.containsKey(new Location(4, 4)), context,
                    TR -> "RegionImpl#putNode(Node) does not add the location of the given node to the nodes map if the given node is not in another region.");
 
-        assertSame(node,
-                   nodesMap.get(new Location(4, 4)),
-                   context,
+        assertSame(node, nodesMap.get(new Location(4, 4)), context,
                    TR -> "RegionImpl#putNode(Node) does not add the given node to the nodes map if the given node is not in another region.");
     }
 
     @Test
     public void testGetEdgeSimple() {
-        Context context = contextBuilder().add("locationA", locationA)
-                                          .add("locationB", locationB)
-                                          .subject("RegionImpl#getEdge(Location, Location)")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("locationA", locationA)
+                                  .add("locationB", locationB)
+                                  .subject("RegionImpl#getEdge(Location, Location)")
+                                  .build();
 
-        assertSame(edgeAB,
-                   region.getEdge(locationA, locationB),
-                   context,
+        assertSame(edgeAB, region.getEdge(locationA, locationB), context,
                    TR -> "RegionImpl#getEdge() does not return the correct edge if the edges map contains the given locations and locationA < locationB.");
     }
 
     @Test
     public void testGetEdgeNull() {
-        Context context1 = contextBuilder().add("locationA", locationA)
-                                           .add("locationB", locationD)
-                                           .subject("RegionImpl#getEdge(Location, Location)")
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .add("locationA", locationA)
+                                   .add("locationB", locationD)
+                                   .subject("RegionImpl#getEdge(Location, Location)")
+                                   .build();
 
-        assertNull(region.getEdge(locationA, locationD),
-                   context1,
+        assertNull(region.getEdge(locationA, locationD), context1,
                    TR -> "RegionImpl#getEdge() does not return null if the outer edges map does not contain locationA and locationA < locationB.");
 
-        Context context2 = contextBuilder().add("locationA", locationA)
-                                           .add("locationB", new Location(4, 4))
-                                           .subject("RegionImpl#getEdge(Location, Location)")
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .add("locationA", locationA)
+                                   .add("locationB", new Location(4, 4))
+                                   .subject("RegionImpl#getEdge(Location, Location)")
+                                   .build();
 
-        assertNull(region.getEdge(locationA, new Location(4, 4)),
-                   context2,
+        assertNull(region.getEdge(locationA, new Location(4, 4)), context2,
                    TR -> "RegionImpl#getEdge() does not return null if the outer edges map contains locationA but the inner edges map does not contain locationB and locationA < locationB.");
     }
 
     @Test
     public void testGetEdgeComplex() {
-        Context context1 = contextBuilder().add("locationA", locationC)
-                                           .add("locationB", locationA)
-                                           .subject("RegionImpl#getEdge(Location, Location)")
-                                           .build();
+        Context context1 = contextBuilder()
+                                   .add("locationA", locationC)
+                                   .add("locationB", locationA)
+                                   .subject("RegionImpl#getEdge(Location, Location)")
+                                   .build();
 
-        assertSame(edgeAC,
-                   region.getEdge(locationC, locationA),
-                   context1,
+        assertSame(edgeAC, region.getEdge(locationC, locationA), context1,
                    TR -> "RegionImpl#getEdge() does not return the correct edge if the edges map contains the given locations and locationA > locationB.");
 
-        Context context2 = contextBuilder().add("locationA", new Location(5, 5))
-                                           .add("locationB", new Location(4, 4))
-                                           .subject("RegionImpl#getEdge(Location, Location)")
-                                           .build();
+        Context context2 = contextBuilder()
+                                   .add("locationA", new Location(5, 5))
+                                   .add("locationB", new Location(4, 4))
+                                   .subject("RegionImpl#getEdge(Location, Location)")
+                                   .build();
 
-        assertNull(region.getEdge(new Location(5, 5), new Location(4, 4)),
-                   context2,
+        assertNull(region.getEdge(new Location(5, 5), new Location(4, 4)), context2,
                    TR -> "RegionImpl#getEdge() does not return null if the outer edges map does not contain locationB and locationA > locationB.");
 
-        Context context3 = contextBuilder().add("locationA", new Location(5, 5))
-                                           .add("locationB", new Location(4, 4))
-                                           .subject("RegionImpl#getEdge(Location, Location)")
-                                           .build();
+        Context context3 = contextBuilder()
+                                   .add("locationA", new Location(5, 5))
+                                   .add("locationB", new Location(4, 4))
+                                   .subject("RegionImpl#getEdge(Location, Location)")
+                                   .build();
 
-        assertNull(region.getEdge(new Location(5, 5), locationA),
-                   context3,
+        assertNull(region.getEdge(new Location(5, 5), locationA), context3,
                    TR -> "RegionImpl#getEdge() does not return null if the outer edges map contains locationB but the inner edges map does not contain locationA and locationA > locationB.");
     }
 
     @Test
     public void testPutEdgeException() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("RegionImpl#putEdge(Edge)").build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#putEdge(Edge)")
+                                  .build();
 
         Region region2 = createRegion();
 
@@ -227,12 +229,9 @@ public class TutorTests_H2_RegionImplTest {
             fail(context,
                  TR -> "RegionImpl#putEdge(Edge) does not throw an Exception if the given edge is in another region.");
         } catch (InvocationTargetException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException,
-                       context,
+            assertTrue(e.getCause() instanceof IllegalArgumentException, context,
                        TR -> "RegionImpl#putEdge(Edge) does not throw an IllegalArgumentException if the given edge is in another region.");
-            assertEquals("Edge %s has incorrect region".formatted(edge.toString()),
-                         e.getCause().getMessage(),
-                         context,
+            assertEquals("Edge %s has incorrect region".formatted(edge.toString()), e.getCause().getMessage(), context,
                          TR -> "RegionImpl#putEdge(Edge) does not throw an IllegalArgumentException with the correct message if the given edge is in another region.");
         }
 
@@ -248,14 +247,14 @@ public class TutorTests_H2_RegionImplTest {
             fail(context,
                  TR -> "RegionImpl#putEdge(Edge) does not throw an Exception if nodeA of the given edge is in another region.");
         } catch (InvocationTargetException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException,
-                       context,
+            assertTrue(e.getCause() instanceof IllegalArgumentException, context,
                        TR -> "RegionImpl#putEdge(Edge) does not throw an IllegalArgumentException if nodeA of the given edge is in another region.");
             assertEquals("NodeA %s is not part of the region".formatted(locationA.toString()),
                          e.getCause().getMessage(),
                          context,
                          TR -> "RegionImpl#putEdge(Edge) does not throw an IllegalArgumentException with the correct message if nodeA of the given edge is in another region.");
         }
+
 
         Field locationBField = edge.getClass().getDeclaredField("locationB");
         locationBField.setAccessible(true);
@@ -269,8 +268,7 @@ public class TutorTests_H2_RegionImplTest {
             fail(context,
                  TR -> "RegionImpl#putEdge(Edge) does not throw an Exception if nodeB of the given edge is in another region.");
         } catch (InvocationTargetException e) {
-            assertTrue(e.getCause() instanceof IllegalArgumentException,
-                       context,
+            assertTrue(e.getCause() instanceof IllegalArgumentException, context,
                        TR -> "RegionImpl#putEdge(Edge) does not throw an IllegalArgumentException if nodeB of the given edge is in another region.");
             assertEquals("NodeB %s is not part of the region".formatted(locationB.toString()),
                          e.getCause().getMessage(),
@@ -282,10 +280,11 @@ public class TutorTests_H2_RegionImplTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testPutEdgeAllEdges() throws Throwable {
-        Context context = contextBuilder().subject("RegionImpl#putEdge(Edge)")
-                                          .add("locationA", locationA)
-                                          .add("locationB", locationD)
-                                          .build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#putEdge(Edge)")
+                                  .add("locationA", locationA)
+                                  .add("locationB", locationD)
+                                  .build();
 
         Region.Edge edge = createEdge(region, "AD", locationA, locationD, 1);
 
@@ -299,18 +298,18 @@ public class TutorTests_H2_RegionImplTest {
         allEdgesField.setAccessible(true);
         List<Region.Edge> allEdges = (List<Region.Edge>) allEdgesField.get(region);
 
-        assertTrue(allEdges.contains(edge),
-                   context,
+        assertTrue(allEdges.contains(edge), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add the given edge to the allEdges set.");
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testPutEdgeSimple() throws Throwable {
-        Context context = contextBuilder().add("locationA", locationA)
-                                          .add("locationB", locationD)
-                                          .subject("RegionImpl#putEdge(Edge)")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("locationA", locationA)
+                                  .add("locationB", locationD)
+                                  .subject("RegionImpl#putEdge(Edge)")
+                                  .build();
 
         Region.Edge edge = createEdge(region, "AD", locationA, locationD, 1);
 
@@ -325,23 +324,21 @@ public class TutorTests_H2_RegionImplTest {
         Map<Location, Map<Location, Region.Edge>> edges = (Map<Location, Map<Location, Region.Edge>>) edgesField.get(
                 region);
 
-        assertTrue(edges.get(locationA).containsKey(locationD),
-                   context,
+        assertTrue(edges.get(locationA).containsKey(locationD), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add locationB as a key to the inner edges map if there are already entries for locationA.");
 
-        assertSame(edge,
-                   edges.get(locationA).get(locationD),
-                   context,
+        assertSame(edge, edges.get(locationA).get(locationD), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add the given edge to the inner edges map if there are already entries for locationA.");
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testPutEdgeComplex() throws Throwable {
-        Context context = contextBuilder().add("locationA", new Location(-1, -1))
-                                          .add("locationB", locationA)
-                                          .subject("RegionImpl#putEdge(Edge)")
-                                          .build();
+        Context context = contextBuilder()
+                                  .add("locationA", new Location(-1, -1))
+                                  .add("locationB", locationA)
+                                  .subject("RegionImpl#putEdge(Edge)")
+                                  .build();
 
         Region.Edge edge = createEdge(region, "AD", locationA, locationD, 1);
 
@@ -356,96 +353,85 @@ public class TutorTests_H2_RegionImplTest {
         Map<Location, Map<Location, Region.Edge>> edges = (Map<Location, Map<Location, Region.Edge>>) edgesField.get(
                 region);
 
-        assertTrue(edges.containsKey(locationA),
-                   context,
+        assertTrue(edges.containsKey(locationA), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add locationA as a key to the outer edges map if there are no entries for locationA.");
 
-        assertTrue(edges.get(locationA).containsKey(locationD),
-                   context,
+        assertTrue(edges.get(locationA).containsKey(locationD), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add locationB as a key to the inner edges map if there are already entries for locationA.");
 
-        assertSame(edge,
-                   edges.get(locationA).get(locationD),
-                   context,
+        assertTrue(edges.get(locationA).containsKey(locationB), context,
+                   TR -> "RegionImpl#putEdge(Edge) removes locationB as a key to the inner edges map if there are already entries for locationA.");
+
+        assertTrue(edges.get(locationA).containsKey(locationC), context,
+                   TR -> "RegionImpl#putEdge(Edge) removes locationC as a key to the inner edges map if there are already entries for locationA.");
+
+        assertSame(edge, edges.get(locationA).get(locationD), context,
                    TR -> "RegionImpl#putEdge(Edge) does not add the given edge to the inner edges map if there are already entries for locationA.");
 
     }
 
     @Test
     public void testGetNodes() {
-        Context build = contextBuilder().subject("RegionImpl#getNodes()").build();
+        Context build = contextBuilder()
+                                .subject("RegionImpl#getNodes()")
+                                .build();
 
         Collection<Region.Node> actual = region.getNodes();
 
-        assertThrows(UnsupportedOperationException.class,
-                     () -> actual.add(null),
-                     build,
+        assertThrows(UnsupportedOperationException.class, () -> actual.add(null), build,
                      TR -> "RegionImpl#getNodes() does not return an unmodifiable collection.");
 
-        assertEquals(4,
-                     actual.size(),
-                     build,
+        assertEquals(4, actual.size(), build,
                      TR -> "RegionImpl#getNodes() does not return a collection with the correct size.");
 
-        assertTrue(actual.contains(nodeA),
-                   build,
+        assertTrue(actual.contains(nodeA), build,
                    TR -> "RegionImpl#getNodes() does not return a collection containing nodeA, which is part of the region.");
-        assertTrue(actual.contains(nodeB),
-                   build,
+        assertTrue(actual.contains(nodeB), build,
                    TR -> "RegionImpl#getNodes() does not return a collection containing nodeB, which is part of the region.");
-        assertTrue(actual.contains(nodeC),
-                   build,
+        assertTrue(actual.contains(nodeC), build,
                    TR -> "RegionImpl#getNodes() does not return a collection containing nodeC, which is part of the region.");
-        assertTrue(actual.contains(nodeD),
-                   build,
+        assertTrue(actual.contains(nodeD), build,
                    TR -> "RegionImpl#getNodes() does not return a collection containing nodeD, which is part of the region.");
     }
 
     @Test
     public void testGetEdges() {
-        Context build = contextBuilder().subject("RegionImpl#getEdges()").build();
+        Context build = contextBuilder()
+                                .subject("RegionImpl#getEdges()")
+                                .build();
 
         Collection<Region.Edge> actual = region.getEdges();
 
-        assertThrows(UnsupportedOperationException.class,
-                     () -> actual.add(null),
-                     build,
+        assertThrows(UnsupportedOperationException.class, () -> actual.add(null), build,
                      TR -> "RegionImpl#getEdges() does not return an unmodifiable collection.");
 
-        assertEquals(4,
-                     actual.size(),
-                     build,
+        assertEquals(4, actual.size(), build,
                      TR -> "RegionImpl#getEdges() does not return a collection with the correct size.");
 
-        assertTrue(actual.contains(edgeAB),
-                   build,
+        assertTrue(actual.contains(edgeAB), build,
                    TR -> "RegionImpl#getEdges() does not return a collection containing edgeAB, which is part of the region.");
-        assertTrue(actual.contains(edgeAC),
-                   build,
+        assertTrue(actual.contains(edgeAC), build,
                    TR -> "RegionImpl#getEdges() does not return a collection containing edgeAC, which is part of the region.");
-        assertTrue(actual.contains(edgeBC),
-                   build,
+        assertTrue(actual.contains(edgeBC), build,
                    TR -> "RegionImpl#getEdges() does not return a collection containing edgeBC, which is part of the region.");
-        assertTrue(actual.contains(edgeCD),
-                   build,
+        assertTrue(actual.contains(edgeCD), build,
                    TR -> "RegionImpl#getEdges() does not return a collection containing edgeCD, which is part of the region.");
     }
 
     @SuppressWarnings({"EqualsWithItself", "ConstantConditions"})
     @Test
     public void testEquals() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("RegionImpl#equals(Object)").build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#equals(Object)")
+                                  .build();
 
-        assertTrue(region.equals(region),
-                   context,
+        assertTrue(region.equals(region), context,
                    TR -> "RegionImpl#equals(Object) does not return true if the given object is the same as the region.");
 
-        assertFalse(region.equals(null),
-                    context,
+        assertFalse(region.equals(null), context,
                     TR -> "RegionImpl#equals(Object) does not return false if the given object is null.");
 
-        assertFalse(region.equals(new Object()),
-                    context,
+        assertFalse(region.equals(new Object()), context,
                     TR -> "RegionImpl#equals(Object) does not return false if the given object is not a RegionImpl.");
 
         Region region2 = createRegion();
@@ -459,34 +445,32 @@ public class TutorTests_H2_RegionImplTest {
         nodesField.set(region2, new HashMap<>());
         edgesField.set(region2, new HashMap<>());
 
-        assertFalse(region.equals(region2),
-                    context,
+        assertFalse(region.equals(region2), context,
                     TR -> "RegionImpl#equals(Object) does not return false if the given object has different nodes and edges than the region.");
 
         nodesField.set(region2, nodesField.get(region));
 
-        assertFalse(region.equals(region2),
-                    context,
+        assertFalse(region.equals(region2), context,
                     TR -> "RegionImpl#equals(Object) does not return false if the given object has the same nodes but different edges than the region.");
 
         edgesField.set(region2, edgesField.get(region));
         nodesField.set(region2, new HashMap<>());
 
-        assertFalse(region.equals(region2),
-                    context,
+        assertFalse(region.equals(region2), context,
                     TR -> "RegionImpl#equals(Object) does not return false if the given object has the same edges but different nodes than the region.");
 
         nodesField.set(region2, nodesField.get(region));
 
-        assertTrue(region.equals(region2),
-                   context,
+        assertTrue(region.equals(region2), context,
                    TR -> "RegionImpl#equals(Object) does not return true if the given object has the same nodes and edges as the region.");
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testHashCode() throws ReflectiveOperationException {
-        Context context = contextBuilder().subject("RegionImpl#hashCode()").build();
+        Context context = contextBuilder()
+                                  .subject("RegionImpl#hashCode()")
+                                  .build();
 
         Field nodesField = region.getClass().getDeclaredField("nodes");
         nodesField.setAccessible(true);
@@ -510,11 +494,8 @@ public class TutorTests_H2_RegionImplTest {
             return;
         }
 
-        fail(context,
-             TR -> "RegionImpl#hashCode() does not return the expected hash code. Expected %d or %d but was %d".formatted(
-                     expected1,
-                     expected2,
-                     actual));
+        fail(context, TR -> "RegionImpl#hashCode() does not return the expected hash code. Expected %d or %d but was %d"
+                                    .formatted(expected1, expected2, actual));
     }
 
 }
