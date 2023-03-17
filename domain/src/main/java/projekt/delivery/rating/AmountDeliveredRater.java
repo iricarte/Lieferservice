@@ -1,11 +1,11 @@
 package projekt.delivery.rating;
 
+import projekt.delivery.event.DeliverOrderEvent;
 import projekt.delivery.event.Event;
+import projekt.delivery.event.OrderReceivedEvent;
 import projekt.delivery.simulation.Simulation;
 
 import java.util.List;
-
-import static org.tudalgo.algoutils.student.Student.crash;
 
 /**
  * Rates the observed {@link Simulation} based on the amount of delivered orders.<p>
@@ -18,6 +18,8 @@ public class AmountDeliveredRater implements Rater {
     public static final RatingCriteria RATING_CRITERIA = RatingCriteria.AMOUNT_DELIVERED;
 
     private final double factor;
+    private int counterOrderReceivedEvent;
+    private int counterDeliverOrderEvent;
 
     private AmountDeliveredRater(double factor) {
         this.factor = factor;
@@ -25,7 +27,20 @@ public class AmountDeliveredRater implements Rater {
 
     @Override
     public double getScore() {
-        return crash(); // TODO: H8.1 - remove if implemented
+        // TODO: Simplify
+
+        double resultScore;
+        int undeliveredOrders = counterOrderReceivedEvent - counterDeliverOrderEvent;
+        int totalOrders = counterOrderReceivedEvent;
+
+
+        if (undeliveredOrders >= 0 && undeliveredOrders < totalOrders * (1 - factor)) {
+            resultScore = 1 - (undeliveredOrders / (totalOrders * (1 - factor)));
+        } else {
+            resultScore = 0;
+        }
+
+        return resultScore;
     }
 
     @Override
@@ -33,9 +48,19 @@ public class AmountDeliveredRater implements Rater {
         return RATING_CRITERIA;
     }
 
+    // Counts the amount of DeliverOrderEvent and OrderReceivedEvents to calculate the Score
     @Override
     public void onTick(List<Event> events, long tick) {
-        crash(); // TODO: H8.1 - remove if implemented
+
+        for (Event event : events) {
+            if (event instanceof DeliverOrderEvent) {
+                counterDeliverOrderEvent++;
+            }
+            if (event instanceof OrderReceivedEvent) {
+                counterOrderReceivedEvent++;
+            }
+        }
+
     }
 
     /**

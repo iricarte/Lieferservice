@@ -1,14 +1,17 @@
 package projekt.delivery.rating;
 
+import projekt.base.Location;
+import projekt.delivery.event.ArrivedAtNodeEvent;
+import projekt.delivery.event.DeliverOrderEvent;
 import projekt.delivery.event.Event;
+import projekt.delivery.event.OrderReceivedEvent;
 import projekt.delivery.routing.PathCalculator;
 import projekt.delivery.routing.Region;
 import projekt.delivery.routing.VehicleManager;
 import projekt.delivery.simulation.Simulation;
 
+import java.util.Deque;
 import java.util.List;
-
-import static org.tudalgo.algoutils.student.Student.crash;
 
 /**
  * Rates the observed {@link Simulation} based on the distance traveled by all vehicles.<p>
@@ -23,6 +26,8 @@ public class TravelDistanceRater implements Rater {
     private final Region region;
     private final PathCalculator pathCalculator;
     private final double factor;
+    private double actualDistance;
+    private double worstDistance;
 
     private TravelDistanceRater(VehicleManager vehicleManager, double factor) {
         region = vehicleManager.getRegion();
@@ -32,7 +37,12 @@ public class TravelDistanceRater implements Rater {
 
     @Override
     public double getScore() {
-        return crash(); // TODO: H8.3 - remove if implemented
+
+        if (0 < actualDistance && actualDistance < worstDistance * factor) {
+            return 1 - (actualDistance / worstDistance * factor);
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -42,7 +52,61 @@ public class TravelDistanceRater implements Rater {
 
     @Override
     public void onTick(List<Event> events, long tick) {
-        crash(); // TODO: H8.3 - remove if implemented
+        // TODO: Separate evaluation for actualDistance and worstDistance -> more readable, easier to maintain
+
+        // calculate worstDistance
+
+
+        double tempWorstDistance = 0.0;
+
+        for (Event event : events) {
+            if (event instanceof DeliverOrderEvent) {
+                Location restaurantLocation = ((DeliverOrderEvent) event).getOrder().getRestaurant().getComponent().getLocation();
+                Location deliveryLocation = ((DeliverOrderEvent) event).getOrder().getLocation();
+                /*Deque<Region.Node> listOfNodes = pathCalculator.getPath(region.getNode(restaurantLocation), region.getNode(deliveryLocation));
+
+                double distance = 0.0;
+                Region.Node currentNode = null;
+                for (Region.Node node : listOfNodes) {
+                    if (currentNode != null) {
+                        distance += region.getEdge(currentNode, node).getDuration();
+                    }
+                    currentNode = node;
+                }*/
+                tempWorstDistance += calculateDistance(region.getNode(restaurantLocation), region.getNode(deliveryLocation));
+            }
+        }
+        worstDistance = 2 * tempWorstDistance;
+
+
+        // calculate actualDistance
+        double tempActualDistance = 0.0;
+
+        for (Event event : events) {
+
+            if (event instanceof ArrivedAtNodeEvent) {
+                tempActualDistance += ((ArrivedAtNodeEvent) event).getLastEdge().getDuration();
+            }
+        }
+        actualDistance = tempActualDistance;
+    }
+
+
+    private double calculateDistance(Region.Node start, Region.Node end) {
+        Deque<Region.Node> listOfNodes = pathCalculator.getPath(start,end);
+
+        double distance = 0.0;
+        Region.Node currentNode = null;
+        for (Region.Node node : listOfNodes) {
+            if (currentNode == null) {
+                distance += region.getEdge(start, node).getDuration();
+            } else {
+                distance += region.getEdge(currentNode, node).getDuration();
+            }
+            currentNode = node;
+        }
+
+        return distance;
     }
 
     /**

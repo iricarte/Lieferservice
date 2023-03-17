@@ -1,12 +1,13 @@
 package projekt.delivery.rating;
 
+import projekt.delivery.event.DeliverOrderEvent;
 import projekt.delivery.event.Event;
+import projekt.delivery.event.OrderReceivedEvent;
 import projekt.delivery.routing.ConfirmedOrder;
 import projekt.delivery.simulation.Simulation;
 
 import java.util.List;
 
-import static org.tudalgo.algoutils.student.Student.crash;
 
 /**
  * Rates the observed {@link Simulation} based on the punctuality of the orders.<p>
@@ -19,6 +20,9 @@ public class InTimeRater implements Rater {
 
     private final long ignoredTicksOff;
     private final long maxTicksOff;
+
+    private double actualTotalTicksOff;
+    private double maxTotalTicksOff;
 
     /**
      * Creates a new {@link InTimeRater} instance.
@@ -41,14 +45,61 @@ public class InTimeRater implements Rater {
         this.maxTicksOff = maxTicksOff;
     }
 
+    // Calculates and returns Score due to Criteria IN_TIME / if orders are delivered in Time
     @Override
     public double getScore() {
-        return crash(); // TODO: H8.2 - remove if implemented
+
+        if (maxTotalTicksOff != 0.0 && actualTotalTicksOff != 0.0) {
+            return 1.0 - (actualTotalTicksOff / maxTotalTicksOff);
+        } else if (actualTotalTicksOff == 0.0 && maxTotalTicksOff != 0.0) {
+            return 1.0;
+        } else {
+            return 0.0;
+        }
+
     }
 
-    @Override
+    // Calculates actualTotalTicksOff and maxTotalTicksOff to evaluate the Score @getScore()
     public void onTick(List<Event> events, long tick) {
-        crash(); // TODO: H8.2 - remove if implemented
+
+        // @param deliveryInterval The {@link TickInterval} in which the {@link ConfirmedOrder} should be delivered.
+        // Duration: The TickInterval in which the ConfirmedOrder was actually delivered
+
+        double deliveredCounter = 0.0;
+        double receivedCounter = 0.0;
+        double tempActualTotalTicksOff = 0.0;
+
+        for (Event event : events) {
+
+            if (event instanceof DeliverOrderEvent) {
+
+                long actualDeliveryTick = ((DeliverOrderEvent) event).getOrder().getActualDeliveryTick();
+                //long deliveryIntervallDuration = ((DeliverOrderEvent) event).getOrder().getDeliveryInterval().getDuration();
+                long deliveryIntervallEnd = ((DeliverOrderEvent) event).getOrder().getDeliveryInterval().end();
+
+                // long ticksOff = actualDeliveryTick - deliveryIntervallEnd - ignoredTicksOff;
+                long ticksOff;
+
+                if (actualDeliveryTick > ((DeliverOrderEvent) event).getOrder().getDeliveryInterval().start() &&
+                    actualDeliveryTick < (deliveryIntervallEnd + ignoredTicksOff)) {
+                    tempActualTotalTicksOff += 0.0;
+                } else {
+                    ticksOff = actualDeliveryTick - deliveryIntervallEnd - ignoredTicksOff;
+                    if (ticksOff > 0.0) {
+                        tempActualTotalTicksOff += Math.min(ticksOff, maxTicksOff);
+                    }
+                }
+                deliveredCounter++;
+            }
+
+            if (event instanceof OrderReceivedEvent) {
+                receivedCounter++;
+            }
+        }
+
+        //double notDelivered = receivedCounter - deliveredCounter;
+        actualTotalTicksOff = (receivedCounter - deliveredCounter) * maxTicksOff + tempActualTotalTicksOff;
+        maxTotalTicksOff = receivedCounter * maxTicksOff;
     }
 
     /**
