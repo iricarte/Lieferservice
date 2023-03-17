@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,8 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
     private int simulationRuns = 1;
     private DeliveryService.Factory deliveryServiceFactory;
 
+    private ProblemArchetype problemArchetype;
+
     public MainMenuScene() {
         super(new MainMenuSceneController(), "Delivery Service Simulation");
     }
@@ -48,8 +51,10 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
         optionsVbox.setPadding(preferredPadding);
 
         optionsVbox.getChildren()
-                   .addAll(createStartSimulationButton(), createSimulationRunsHBox(), createDeliveryServiceChoiceBox()
-                           //TODO H11.2
+                   .addAll(createStartSimulationButton(),
+                           createSimulationRunsHBox(),
+                           createDeliveryServiceChoiceBox(),
+                           createDeliveryProblemChoiceBox()
                           );
 
         optionsVbox.getChildren().stream().filter(Button.class::isInstance).map(Button.class::cast).forEach(button -> {
@@ -124,11 +129,6 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
         return startSimulationButton;
     }
 
-    @Override
-    public MainMenuSceneController getController() {
-        return controller;
-    }
-
     private HBox createSimulationRunsHBox() {
         HBox simulationRunsHBox = new HBox();
         simulationRunsHBox.setMaxWidth(200);
@@ -190,6 +190,39 @@ public class MainMenuScene extends MenuScene<MainMenuSceneController> {
         deliveryServiceVBox.getChildren().addAll(label, choiceBox);
 
         return deliveryServiceVBox;
+    }
+
+    private VBox createDeliveryProblemChoiceBox() {
+        VBox deliveryProblemBox = new VBox();
+        deliveryProblemBox.setMaxWidth(200);
+        deliveryProblemBox.setSpacing(10);
+
+        HBox labelHBox = new HBox();
+        Label label = new Label("Delivery Problem:");
+        labelHBox.getChildren().addAll(label);
+
+        HBox choiceBoxHBox = new HBox();
+        TableView<ProblemArchetype> tableView = new TableView<>();
+
+        tableView.getItems().setAll(super.problems);
+
+        tableView.getSelectionModel()
+                 .selectedIndexProperty()
+                 .addListener((obs, oldValue, newValue) -> problemArchetype = tableView.getItems()
+                                                                                       .get((Integer) newValue));
+
+        tableView.getSelectionModel().select(0);
+
+        choiceBoxHBox.getChildren().addAll(tableView);
+
+        deliveryProblemBox.getChildren().addAll(label, tableView);
+
+        return deliveryProblemBox;
+    }
+
+    @Override
+    public MainMenuSceneController getController() {
+        return controller;
     }
 
     /**

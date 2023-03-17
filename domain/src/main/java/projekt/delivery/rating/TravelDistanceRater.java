@@ -1,10 +1,8 @@
 package projekt.delivery.rating;
 
-import projekt.base.Location;
 import projekt.delivery.event.ArrivedAtNodeEvent;
 import projekt.delivery.event.DeliverOrderEvent;
 import projekt.delivery.event.Event;
-import projekt.delivery.event.OrderReceivedEvent;
 import projekt.delivery.routing.PathCalculator;
 import projekt.delivery.routing.Region;
 import projekt.delivery.routing.VehicleManager;
@@ -12,6 +10,7 @@ import projekt.delivery.simulation.Simulation;
 
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Rates the observed {@link Simulation} based on the distance traveled by all vehicles.<p>
@@ -37,9 +36,8 @@ public class TravelDistanceRater implements Rater {
 
     @Override
     public double getScore() {
-
-        if (0 < actualDistance && actualDistance < worstDistance * factor) {
-            return 1 - (actualDistance / worstDistance * factor);
+        if (0 <= actualDistance && actualDistance < worstDistance * factor) {
+            return 1 - (actualDistance / (worstDistance * factor));
         } else {
             return 0;
         }
@@ -52,61 +50,34 @@ public class TravelDistanceRater implements Rater {
 
     @Override
     public void onTick(List<Event> events, long tick) {
-        // TODO: Separate evaluation for actualDistance and worstDistance -> more readable, easier to maintain
-
-        // calculate worstDistance
-
-
-        double tempWorstDistance = 0.0;
-
         for (Event event : events) {
-            if (event instanceof DeliverOrderEvent) {
-                Location restaurantLocation = ((DeliverOrderEvent) event).getOrder().getRestaurant().getComponent().getLocation();
-                Location deliveryLocation = ((DeliverOrderEvent) event).getOrder().getLocation();
-                /*Deque<Region.Node> listOfNodes = pathCalculator.getPath(region.getNode(restaurantLocation), region.getNode(deliveryLocation));
+            if (event instanceof DeliverOrderEvent deliverOrderEvent) {
+                Region.Restaurant restaurant = deliverOrderEvent.getOrder().getRestaurant().getComponent();
+                Region.Node destination = region.getNode(deliverOrderEvent.getOrder().getLocation());
 
-                double distance = 0.0;
-                Region.Node currentNode = null;
-                for (Region.Node node : listOfNodes) {
-                    if (currentNode != null) {
-                        distance += region.getEdge(currentNode, node).getDuration();
-                    }
-                    currentNode = node;
-                }*/
-                tempWorstDistance += calculateDistance(region.getNode(restaurantLocation), region.getNode(deliveryLocation));
+                Deque<Region.Node> path = pathCalculator.getPath(restaurant, destination);
+                worstDistance += calculateDistance(path, restaurant);
+
+                path = pathCalculator.getPath(destination, restaurant);
+                worstDistance += calculateDistance(path, destination);
+            } else if (event instanceof ArrivedAtNodeEvent arrivedAtNodeEvent) {
+                actualDistance += arrivedAtNodeEvent.getLastEdge().getDuration();
             }
         }
-        worstDistance = 2 * tempWorstDistance;
-
-
-        // calculate actualDistance
-        double tempActualDistance = 0.0;
-
-        for (Event event : events) {
-
-            if (event instanceof ArrivedAtNodeEvent) {
-                tempActualDistance += ((ArrivedAtNodeEvent) event).getLastEdge().getDuration();
-            }
-        }
-        actualDistance = tempActualDistance;
     }
 
+    private double calculateDistance(Deque<Region.Node> path, Region.Node destination) {
+        double totalDistance = 0;
+        Region.Node currentNode = path.pop();
+        totalDistance = Objects.requireNonNull(region.getEdge(destination, currentNode)).getDuration();
 
-    private double calculateDistance(Region.Node start, Region.Node end) {
-        Deque<Region.Node> listOfNodes = pathCalculator.getPath(start,end);
+        while (!path.isEmpty()) {
+            Region.Node nextNode = path.pop();
+            totalDistance += Objects.requireNonNull(region.getEdge(currentNode, nextNode)).getDuration();
+            currentNode = nextNode;
 
-        double distance = 0.0;
-        Region.Node currentNode = null;
-        for (Region.Node node : listOfNodes) {
-            if (currentNode == null) {
-                distance += region.getEdge(start, node).getDuration();
-            } else {
-                distance += region.getEdge(currentNode, node).getDuration();
-            }
-            currentNode = node;
         }
-
-        return distance;
+        return totalDistance;
     }
 
     /**

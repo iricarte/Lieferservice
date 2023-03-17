@@ -11,7 +11,9 @@ import projekt.runner.handler.ResultHandler;
 import projekt.runner.handler.SimulationFinishedHandler;
 import projekt.runner.handler.SimulationSetupHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RunnerImpl implements Runner {
@@ -29,12 +31,12 @@ public class RunnerImpl implements Runner {
                                                                                simulationConfig,
                                                                                deliveryServiceFactory);
 
-        Map<RatingCriteria, Double> result = this.runSimulations(simulationRuns,
-                                                                 simulationSetupHandler,
-                                                                 simulationFinishedHandler,
-                                                                 simulations);
+        this.runSimulations(simulationRuns,
+                            simulationSetupHandler,
+                            simulationFinishedHandler,
+                            simulations,
+                            resultHandler);
 
-        resultHandler.accept(result);
     }
 
     @Override
@@ -52,34 +54,40 @@ public class RunnerImpl implements Runner {
         return retVal;
     }
 
-    private Map<RatingCriteria, Double> runSimulations(int simulationRuns,
-                                                       SimulationSetupHandler simulationSetupHandler,
-                                                       SimulationFinishedHandler simulationFinishedHandler,
-                                                       Map<ProblemArchetype, Simulation> simulations) {
+    private void runSimulations(int simulationRuns,
+                                SimulationSetupHandler simulationSetupHandler,
+                                SimulationFinishedHandler simulationFinishedHandler,
+                                Map<ProblemArchetype, Simulation> simulations,
+                                ResultHandler resultHandler) {
         Map<RatingCriteria, Double> criteriaToAverage = new HashMap<>();
+
+        Map<RatingCriteria, List<Double>> criteriaToRatings = new HashMap<>();
+        criteriaToRatings.put(RatingCriteria.AMOUNT_DELIVERED, new ArrayList<>());
+        criteriaToRatings.put(RatingCriteria.IN_TIME, new ArrayList<>());
+
         for (int i = 0; i < simulationRuns; i++) {
             for (Map.Entry<ProblemArchetype, Simulation> simulationEntry : simulations.entrySet()) {
                 Simulation simulation = simulationEntry.getValue();
                 ProblemArchetype problem = simulationEntry.getKey();
                 simulationSetupHandler.accept(simulation, problem, i);
-                simulation.runSimulation(1000);
-                this.measureCriteria(simulation, RatingCriteria.TRAVEL_DISTANCE, criteriaToAverage);
-                this.measureCriteria(simulation, RatingCriteria.AMOUNT_DELIVERED, criteriaToAverage);
-                this.measureCriteria(simulation, RatingCriteria.IN_TIME, criteriaToAverage);
+                simulation.runSimulation(10);
+                this.measureCriteria(simulation, criteriaToRatings);
                 if (simulationFinishedHandler.accept(simulation, problem)) {
-                    return criteriaToAverage;
+                    return;
                 }
             }
         }
-        return criteriaToAverage;
+        criteriaToRatings.forEach((criterion, ratings) -> criteriaToAverage.put(criterion,
+                                                                                ratings.stream()
+                                                                                       .mapToDouble(d -> d)
+                                                                                       .sum() / ratings.size()));
+        resultHandler.accept(criteriaToAverage);
     }
 
-    private void measureCriteria(Simulation simulation,
-                                 RatingCriteria criteria,
-                                 Map<RatingCriteria, Double> criteriaToAverage) {
-        double ratingForCriterion = simulation.getRatingForCriterion(RatingCriteria.TRAVEL_DISTANCE);
-        criteriaToAverage.merge(criteria,
-                                ratingForCriterion,
-                                (existingRationing, newRating) -> (existingRationing + newRating) / 2);
+    private void measureCriteria(Simulation simulation, Map<RatingCriteria, List<Double>> criteriaToRatings) {
+        for (Map.Entry<RatingCriteria, List<Double>> criterionToRatings : criteriaToRatings.entrySet()) {
+            double ratingForCriterion = simulation.getRatingForCriterion(criterionToRatings.getKey());
+            criterionToRatings.getValue().add(ratingForCriterion);
+        }
     }
 }
