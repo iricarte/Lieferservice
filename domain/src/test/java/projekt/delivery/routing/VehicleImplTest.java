@@ -1,6 +1,5 @@
 package projekt.delivery.routing;
 
-import projekt.TestBase;
 import projekt.base.TickInterval;
 
 import java.util.List;
@@ -16,7 +15,7 @@ class VehicleImplTest extends TestBase {
 
     @Override
     @BeforeEach
-    public void setup() throws ReflectiveOperationException {
+    public void setup() {
         super.setup();
         this.order1 = new ConfirmedOrder(neighborhoodLocation,
                                          occupiedRestaurant,
@@ -32,7 +31,7 @@ class VehicleImplTest extends TestBase {
 
     @Test
     void moveDirect() {
-        VehicleImpl vehicle = ((VehicleImpl) super.vehicle);
+        VehicleImpl vehicle = super.vehicle;
         Assertions.assertDoesNotThrow(() -> vehicle.moveDirect(neighborhood));
         Assertions.assertThrows(IllegalArgumentException.class, () -> vehicle.moveDirect(restaurant));
         Assertions.assertDoesNotThrow(() -> vehicle.moveDirect(neighborhood));
@@ -41,7 +40,7 @@ class VehicleImplTest extends TestBase {
 
     @Test
     void moveQueued() {
-        VehicleImpl vehicle = ((VehicleImpl) super.vehicle);
+        VehicleImpl vehicle = super.vehicle;
         Assertions.assertThrows(IllegalArgumentException.class, () -> vehicle.moveQueued(restaurant));
         Assertions.assertDoesNotThrow(() -> vehicle.moveQueued(neighborhood));
         Assertions.assertDoesNotThrow(() -> vehicle.moveQueued(restaurant));
@@ -50,7 +49,7 @@ class VehicleImplTest extends TestBase {
 
     @Test
     void loadOrder() {
-        VehicleImpl vehicle = ((VehicleImpl) super.vehicle);
+        VehicleImpl vehicle = super.vehicle;
         Assertions.assertEquals(0, vehicle.getOrders().size());
         Assertions.assertDoesNotThrow(() -> vehicle.loadOrder(order1));
         Assertions.assertEquals(1, vehicle.getOrders().size());
@@ -65,7 +64,7 @@ class VehicleImplTest extends TestBase {
 
     @Test
     void unloadOrder() {
-        VehicleImpl vehicle = ((VehicleImpl) super.vehicle);
+        VehicleImpl vehicle = super.vehicle;
         Assertions.assertEquals(0, vehicle.getOrders().size());
         Assertions.assertDoesNotThrow(() -> vehicle.loadOrder(order1));
         Assertions.assertDoesNotThrow(() -> vehicle.loadOrder(order2));
@@ -79,7 +78,7 @@ class VehicleImplTest extends TestBase {
 
     @Test
     void currentWeight() {
-        VehicleImpl vehicle = ((VehicleImpl) super.vehicle);
+        VehicleImpl vehicle = super.vehicle;
         vehicle.loadOrder(order1);
         Assertions.assertEquals(2, vehicle.getCurrentWeight());
         vehicle.loadOrder(order2);

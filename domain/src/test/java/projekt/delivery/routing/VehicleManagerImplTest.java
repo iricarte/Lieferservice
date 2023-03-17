@@ -1,7 +1,5 @@
 package projekt.delivery.routing;
 
-import projekt.TestBase;
-
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,13 +9,13 @@ class VehicleManagerImplTest extends TestBase {
 
     @Override
     @BeforeEach
-    public void setup() throws ReflectiveOperationException {
+    public void setup() {
         super.setup();
     }
 
     @Test
     void getOccupiedRestaurant() {
-        VehicleManagerImpl vehicleManager = (VehicleManagerImpl) super.vehicleManager;
+        VehicleManagerImpl vehicleManager = super.vehicleManager;
         Assertions.assertEquals(restaurant, vehicleManager.getOccupiedRestaurant(restaurant).getComponent());
         Assertions.assertThrowsExactly(NullPointerException.class,
                                        () -> vehicleManager.getOccupiedRestaurant(null),
@@ -28,8 +26,8 @@ class VehicleManagerImplTest extends TestBase {
     }
 
     @Test
-    void getOccupied() throws ReflectiveOperationException {
-        VehicleManagerImpl vehicleManager = (VehicleManagerImpl) super.vehicleManager;
+    void getOccupied() {
+        VehicleManagerImpl vehicleManager = super.vehicleManager;
         Assertions.assertEquals(restaurant, vehicleManager.getOccupied(restaurant).getComponent());
         Assertions.assertEquals(edge, vehicleManager.getOccupied(edge).getComponent());
         Assertions.assertThrowsExactly(NullPointerException.class,
@@ -53,7 +51,7 @@ class VehicleManagerImplTest extends TestBase {
 
     @Test
     void getOccupiedNeighborhood() {
-        VehicleManagerImpl vehicleManager = (VehicleManagerImpl) super.vehicleManager;
+        VehicleManagerImpl vehicleManager = super.vehicleManager;
         Assertions.assertEquals(neighborhood, vehicleManager.getOccupiedNeighborhood(neighborhood).getComponent());
         Assertions.assertThrowsExactly(NullPointerException.class,
                                        () -> vehicleManager.getOccupiedNeighborhood(null),
